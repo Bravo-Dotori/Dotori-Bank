@@ -1,26 +1,17 @@
-/* =========================
-   App Layout
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 
-.container {
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 12px;
-  padding: 20px;
+:root {
+  --black-color: #1F1B16;
+  --brand-color: #5C3A1E;
+  --brand-color-primary: #8B5E3C;
+  --surface-color: #F5EDE0;
+  --base-color: #FAF7F2;
 }
 
-.title {
-  font-size: 48px;
-  font-weight: 700;
-  color: #222;
+body {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.description {
-  font-size: 18px;
-  color: #666;
+.main {
+  margin: 0 auto;
 }

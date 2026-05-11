@@ -1,14 +1,34 @@
-import "./App.css";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MainLayout from '@/layout/MainLayout';
 
-function App() {
+import Login from '@/pages/login/LoginPage';
+import Signup from '@/pages/signup/SignupPage';
+
+import Account from '@/pages/account/AccountPage';
+import Transfer from '@/pages/transfer/TransferPage';
+import History from '@/pages/history/HistoryPage';
+import Products from '@/pages/products/ProductsPage';
+import Deposit from '@/pages/deposit/DepositPage';
+
+const App = () => {
   return (
-    <div className="container">
-      <h1 className="title">Dotori Bank</h1>
-      <p className="description">
-        React + Vite 기본 세팅 완료
-      </p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path='signup' element={<Signup />} />
+
+          <Route path="account" element={<Account />} />
+          <Route path="transfer" element={<Transfer />} />
+          <Route path="history" element={<History />} />
+          <Route path="products" element={<Products />} />
+          <Route index element={<Deposit />} />
+          <Route path="deposit" element={<Deposit />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
