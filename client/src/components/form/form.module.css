@@ -1,0 +1,30 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    color: var(--black-color);
+    font-size: 13px;
+    font-weight: 500
+}
+
+input {
+    width: 480px;
+    height: 47px;
+    border: 1px solid var(--surface-color);
+    border-radius: 8px;
+    background-color: white;
+    outline: none;
+    transition: border-color 0.2s ease;
+    padding: 0 10px;
+}
+
+input:focus {
+    border-color: var(--brand-color-primary);
+    background-color: white;
+}
+
+input::placeholder {
+    color: var(--brand-color-tertiary);
+}

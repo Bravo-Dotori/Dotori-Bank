@@ -1,0 +1,17 @@
+.text {
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--brand-color-tertiary);
+}
+
+.link {
+    color: var(--brand-color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

@@ -4,7 +4,7 @@ import styles from './gnb.module.css'
 import { useNavigate } from 'react-router-dom';
 
 import logo from "@/assets/logo.png"
-import SmallBtn from '@/components/button/SmallBtn'
+import Btn from '@/components/button/Btn'
 
 import useMenuStore from '@/store/useMenuStore';
 
@@ -26,14 +26,14 @@ const Gnb = () => {
       </div>
 
       <div className={styles.authBtns}>
-        <SmallBtn
+        <Btn
           name="로그인"
           value="/login"
           active={activeMenu === 'login'}
           onClick={() => setActiveMenu('login')}
         />
 
-        <SmallBtn
+        <Btn
           name="회원가입"
           value="/signup"
           active={activeMenu === 'signup'}

@@ -1,6 +1,11 @@
 import styles from "./login.module.css"
 import keyVisual from "@/assets/key-visual.png"
 
+import PageHeader from "@/components/pageHeader/PageHeader"
+import Form from "@/components/form/Form"
+import Btn from "@/components/button/Btn"
+import AuthRedirect from "@/components/authRedirect/AuthRedirect"
+
 const LoginPage = () => {
   return (
     <div className={styles.main}>
@@ -19,7 +24,34 @@ const LoginPage = () => {
       </div>
 
       <div className={styles.rightPanel}>
-        {/* 로그인 폼 들어갈 자리 */}
+        <div className={styles.login}>
+          <PageHeader
+            title="로그인"
+            description="아이디와 비밀번호로 로그인하세요"
+          />
+          <div className={styles.formArea}>
+            <Form
+              name="아이디"
+              type="text"
+              placeholder="아이디를 입력하세요"
+            />
+            <Form
+              name="비밀번호"
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+            />
+          </div>
+          <Btn
+            name="로그인"
+            size="big"
+            active
+          />
+          <AuthRedirect
+            text="아직 회원이 아니신가요?"
+            linkText="회원가입"
+            to="/signup"
+          />
+        </div>
       </div>
     </div>
   )
