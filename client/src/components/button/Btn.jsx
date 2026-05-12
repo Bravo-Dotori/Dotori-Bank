@@ -3,17 +3,24 @@ import styles from './button.module.css'
 
 import { useNavigate } from 'react-router-dom';
 
-const SmallBtn = ({ name, value, active, onClick }) => {
+const Btn = ({ name, value, active, onClick, size }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     onClick?.();
-    navigate(value);
+
+    if (value) {
+      navigate(value);
+    }
   };
 
   return (
     <button
-      className={`${styles.btn} ${active ? styles.active : ''}`}
+      className={`
+        ${styles.btn}
+        ${active ? styles.active : ''}
+        ${size === 'big' ? styles.big : ''}
+      `}
       onClick={handleClick}
     >
       {name}
@@ -21,4 +28,4 @@ const SmallBtn = ({ name, value, active, onClick }) => {
   );
 };
 
-export default SmallBtn;
+export default Btn;

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import styles from './layout.module.css'
 
@@ -6,16 +6,20 @@ import Gnb from '@/components/topbar/Gnb';
 import Snb from '@/components/sidebar/Snb';
 
 const MainLayout = () => {
+  const location = useLocation();
+
+  const hideSnbPaths = ['/login', '/signup'];
+
+  const isHideSnb = hideSnbPaths.includes(location.pathname);
+
   return (
     <div className={styles.layout}>
-      {/* 고정 영역 */}
       <header>
         <Gnb />
       </header>
 
-      {/* 바뀌는 영역 */}
       <main>
-        <Snb />
+        {!isHideSnb && <Snb />}
         <Outlet />
       </main>
     </div>
