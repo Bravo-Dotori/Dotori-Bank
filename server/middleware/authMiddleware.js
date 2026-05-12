@@ -18,4 +18,5 @@ const authToken = (req, res, next) => {
     next(); // 처리 성공시 다음으로 넘겨야 함
   })
 }
+
 module.exports = authToken;
