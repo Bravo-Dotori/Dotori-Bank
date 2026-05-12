@@ -11,9 +11,15 @@ export default defineConfig({
   },
   server: {
     host: true,
+    watch: {
+      usePolling: true,
+    },
     allowedHosts: [
       '.trycloudflare.com'
-    ]
+    ],
+    watch: {
+      usePolling: true
+    }
   },
   build: {
     outDir: "../server/static",
