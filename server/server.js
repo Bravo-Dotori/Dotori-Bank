@@ -1,4 +1,13 @@
-// server.js : 서버 구현 
+require('dotenv').config(); 
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser"); 
+const app = express(); 
+const port = 5000;
+const userRouter = require('./routes/userRouter');
+const cors = require('cors');
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger/swagger");
 
 // 모듈 설정
 require('dotenv').config(); // .env 파일 읽기 (JWT_SECRET 랜덤키 설정)
@@ -16,9 +25,10 @@ const recommendRouter = require('./routes/recommendRouter'); // recommendationRo
 const cors = require('cors'); // CORS 모듈 (다른 도메인 내에서 내 서버에 요청할 수 있게 허용해주는 설정용 미들웨어)
 app.use(cors({
   origin: "http://localhost:5173",
-  credentials: true // 쿠키를 주고받을 수 있게 허용
-})); // CORS 설정
-app.use(express.json()); // json 파일 읽게 해주는 설정
+  credentials: true
+})); 
+// json 파일 파싱
+app.use(express.json()); 
 
 // 쿠키 사용
 app.use(cookieParser());
@@ -30,6 +40,13 @@ app.use("/api/recommend", recommendRouter);
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
 app.get('/favicon.ico', (_, res) => res.status(204)); // 파비콘 무시
+
+// Swagger UI 설정
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 // local 실행
 app.listen(port, () => {
