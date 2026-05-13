@@ -10,6 +10,7 @@ import Transfer from '@/pages/transfer/TransferPage';
 import History from '@/pages/history/HistoryPage';
 import Products from '@/pages/products/ProductsPage';
 import Deposit from '@/pages/deposit/DepositPage';
+import Admin from './pages/admin/AdminPage';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="products" element={<Products />} />
           <Route index element={<Deposit />} />
           <Route path="deposit" element={<Deposit />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
