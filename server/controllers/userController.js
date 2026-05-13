@@ -5,17 +5,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // 회원가입
 exports.signup = async(req, res) => {
   try {
-    const { email, user_id, password_hash, role, birth_date } = req.body
+    const { email, user_id, password_hash, name, role, birth_date } = req.body
 
     // 필수값 누락 에러
-    if(!email || !user_id || !password_hash || !role || !birth_date) {
+    if(!email || !user_id || !password_hash || !name || !role || !birth_date) {
       return res.status(400).json({
         success: false,
         message: "필수값 누락"
       }); 
     }
 
-    const result = await userService.signup(email, user_id, password_hash, role, birth_date);
+    const result = await userService.signup(email, user_id, password_hash, name, role, birth_date);
 
     // 중복회원 에러
     if(!result.success) {
@@ -25,8 +25,8 @@ exports.signup = async(req, res) => {
     // 성공
     return res.status(201).json(result); 
  
-  } catch (err) {
-    console.error("error  ", err);
+  } catch (error) {
+    console.error("error  ", error);
     return res.status(500).json({
       success: false,
       message: "controller 회원가입 실패"
@@ -37,8 +37,16 @@ exports.signup = async(req, res) => {
 // 로그인
 exports.login = async(req, res) => {
   try {
-    const {user_id, pwd} = req.body;
-    const result = await userService.login(user_id, pwd);
+    const {user_id, password} = req.body;
+
+    if(!user_id || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "필수값 누락"
+      })
+    }
+
+    const result = await userService.findById(user_id, password);
 
     res.cookie("token", result.token, {
       httpOnly: true,
@@ -48,15 +56,15 @@ exports.login = async(req, res) => {
       maxAge: 60 * 60 * 1000 
     });
 
-    res.json({
+    return res.status(200).json({
       success: true,
-      result: "로그인 성공",
-      user: result.user,
-      token: result.token
+      message: "로그인 성공",
+      user: result.user
     });
-  } catch (err) {
-    console.error("controller 로그인 실패: ", err);
-    res.json({
+
+  } catch (error) {
+    console.error("controller 로그인 실패: ", error);
+    return res.status(500).json({
       success: false,
       message : "controller 로그인 실패"
     })
@@ -69,18 +77,27 @@ exports.verify = (req, res) => {
     const token = req.cookies.token;
 
     if(!token) { 
-      return res.status(401).json({success: false});
+      return res.status(401).json({
+        success: false,
+        message: "토큰 검증 실패"
+      });
     }
 
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) return res.json({ success: false });
-      res.json({ success: true, user: decoded }); 
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return res.status(200).json({
+      success: true,
+      user: {
+        user_id: decoded.user_id,
+        name: decoded.name,
+        role: decoded.role
+      }
     });
-  } catch (err) { 
-    console.error("controller 인증 에러: ", err);
-    res.json({
+
+  } catch (error) { 
+    console.error("controller 토큰 검증 에러: ", error);
+    return res.status(401).json({
       success: false,
-      message: "로그인 실패"
+      message: "토큰 검증 실패"
     });
   }
 } 
