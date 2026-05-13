@@ -4,40 +4,47 @@ const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // 회원가입
-exports.signup = async(name, user_id, pwd) => {
+exports.signup = async(email, user_id, password_hash, role, birth_date) => {
   try {
-    const exist = await userModel.checkId(user_id);
-    if(exist.length > 0) {
+    const existEmail = await userModel.findByEmail(email);
+    const existId = await userModel.findById(user_id);
+
+    // 이메일 중복 체크
+    if(existEmail.length > 0) {
       return {
         success: false,
-        message: "이미 존재하는 아이디입니다."
+        message: "service 1. 이메일 중복"
       }
     }
-    const hash = await bcrypt.hash(pwd, 10);
-    const result = await userModel.signup(name, user_id, hash);
+    // 아이디 중복 체크
+    if(existId.length > 0) {
+      return {
+        success: false,
+        message: "service 2. 아이디 중복"
+      }
+    }
+    
+    const hash = await bcrypt.hash(password_hash, 10);
+    const result = await userModel.signup(email, user_id, password_hash, role, birth_date, hash);
 
     if(result.affectedRows === 1) {
       return {
         success: true,
-        message: "회원 가입 성공"
+        message: "service 회원 가입 성공"
       }
     }
-    return {
-      success: false,
-      message: "service 회원 가입 실패"
-    };
 
   } catch (err) {
-    console.error("회원가입 에러 : ", err);
+    console.error("service 회원가입 에러 : ", err);
     if(err.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
       return {
         success: false,
-        message: "이미 존재하는 아이디"
+        message: "service 4. 중복 회원"
       }
     }
     return {
       success: false,
-      message: "service 회원가입 에러"
+      message: "service 5. service 서버 오류"
     }
   }
 }

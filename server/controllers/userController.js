@@ -5,14 +5,31 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // 회원가입
 exports.signup = async(req, res) => {
   try {
-    const { name, user_id, pwd } = req.body
-    const result = await userService.signup(name, user_id, pwd);
-    res.json(result);
+    const { email, user_id, password_hash, role, birth_date } = req.body
+
+    // 필수값 누락 에러
+    if(!email || !user_id || !password_hash || !role || !birth_date) {
+      return res.status(400).json({
+        success: false,
+        message: "필수값 누락"
+      }); 
+    }
+
+    const result = await userService.signup(email, user_id, password_hash, role, birth_date);
+
+    // 중복회원 에러
+    if(!result.success) {
+      return res.status(409).json(result);
+    }
+    
+    // 성공
+    return res.status(201).json(result); 
+ 
   } catch (err) {
-    console.error("controller 에러: ", err);
-    res.json({
+    console.error("error  ", err);
+    return res.status(500).json({
       success: false,
-      message: "controller 회원가입 에러"
+      message: "controller 회원가입 실패"
     }); 
   }
 }
