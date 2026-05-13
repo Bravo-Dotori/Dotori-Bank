@@ -1,0 +1,15 @@
+.pageHeader {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    color: var(--black-color);
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.description {
+    color: var(--brand-color-secondary);
+    font-size: 15px;
+}

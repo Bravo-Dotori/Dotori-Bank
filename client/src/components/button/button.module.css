@@ -11,10 +11,17 @@
 
 .btn:hover {
     background: var(--surface-color);
-    transform: all 0.2s
+    transition: all 0.2s;
 }
 
 .btn.active {
     background: var(--brand-color-primary);
     color: white;
+}
+
+.big {
+    width: 480px;
+    height: 54px;
+    border-radius: 8px;
+    border-radius: 16px;
 }

@@ -19,6 +19,13 @@ const Snb = () => {
   return (
     <div className={styles.snb}>
       <button
+        className={`${styles.menu} ${activeMenu === 'deposit' ? styles.active : ''}`}
+        onClick={() => handleClick('deposit')}
+      >
+        예금 상품
+      </button>
+      
+      <button
         className={`${styles.menu} ${activeMenu === 'account' ? styles.active : ''}`}
         onClick={() => handleClick('account')}
       >
@@ -44,13 +51,6 @@ const Snb = () => {
         onClick={() => handleClick('products')}
       >
         가입 상품
-      </button>
-
-      <button
-        className={`${styles.menu} ${activeMenu === 'deposit' ? styles.active : ''}`}
-        onClick={() => handleClick('deposit')}
-      >
-        예금 상품
       </button>
     </div>
   );
