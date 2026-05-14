@@ -1,0 +1,48 @@
+.container {
+    margin: 48px auto;
+    max-width: 1188px;
+    padding: 0 64px;
+}
+
+.depositDetail {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.section {
+    display: flex;
+    gap: 32px;
+}
+
+@media screen and (max-width: 1060px) {
+    .section {
+        flex-direction: column;
+    }
+}
+
+.leftSection {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.rightSection {
+    flex: 0.8;
+    width: 420px;
+}
+
+.buttonSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+}
+
+.notice {
+    text-align: center;
+    cursor: pointer;
+    color: var(--brand-color-secondary);
+    transition: all 0.2s;
+}

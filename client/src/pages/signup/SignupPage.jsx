@@ -1,12 +1,18 @@
+import { useState } from "react"
+
 import styles from "./signup.module.css"
+
 import keyVisual from "@/assets/key-visual.png"
 
 import PageHeader from "@/components/pageHeader/PageHeader"
 import Form from "@/components/form/Form"
 import Btn from "@/components/button/Btn"
 import AuthRedirect from "@/components/authRedirect/AuthRedirect"
+import Modal from "@/components/modal/Modal"
 
 const SignupPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className={styles.main}>
       <div className={styles.leftPanel}>
@@ -75,6 +81,7 @@ const SignupPage = () => {
             name="가입하기"
             size="big"
             active
+            onClick={() => setIsModalOpen(true)}
           />
           <AuthRedirect
             text="이미 회원이신가요?"
@@ -83,6 +90,28 @@ const SignupPage = () => {
           />
         </div>
       </div>
+
+
+      {isModalOpen && (
+        <Modal
+          title='환영합니다, 도토리님!'
+          description='회원가입이 완료되었어요'
+          rewardLabel='가입 축하금 도착'
+          reward='+ 300만원'
+          rewardDescription='입출금계좌로 즉시 입금되었어요'
+          buttons={[
+            {
+              name: '설문하고 맞춤 상품 추천받기',
+              value: '/onboarding',
+              active: true,
+            },
+            {
+              name: '전체 상품 둘러보기',
+              value: '/',
+            },
+          ]}
+        />
+      )}
     </div>
   )
 }

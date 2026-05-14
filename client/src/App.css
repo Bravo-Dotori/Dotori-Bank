@@ -7,8 +7,12 @@
   --brand-color-secondary: #6E6453;
   --brand-color-tertiary: #8A7E6A;
   --green-color: #8FA876;
+  --light-green-color: #F4F7EE;
   --surface-color: #F5EDE0;
   --base-color: #FAF7F2;
+  --yellow-color: #F0D372;
+  --border-color: #EBE0CD;
+  --red-color: #C44536;
 }
 
 body {
@@ -16,5 +20,6 @@ body {
 }
 
 .main {
-  margin: 0 auto;
+  width: 100%;
+  background: var(--base-color);
 }

@@ -1,0 +1,29 @@
+.container {
+    margin: 48px auto;
+    width: 720px;
+}
+
+.onboarding {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.buttonSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+}
+
+.skip {
+    text-align: center;
+    cursor: pointer;
+    color: var(--brand-color-secondary);
+    transition: all 0.2s;
+}
+
+.skip:hover {
+    color: var(--black-color);
+}

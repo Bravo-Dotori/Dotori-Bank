@@ -1,0 +1,27 @@
+.infoCard {
+    font-size: 15px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.infoRow {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.infoRow:last-child {
+    border-bottom: none;
+}
+
+.infoLabel {
+    color: var(--brand-color-secondary);
+}
+
+.infoValue {
+    color: var(--black-color);
+}
