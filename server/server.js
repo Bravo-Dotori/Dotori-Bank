@@ -7,6 +7,7 @@ const app = express();
 const port = 5000;
 const userRouter = require('./routes/userRouter');
 const accountRouter = require('./routes/accountRouter');
+const recommendRouter = require('./routes/recommendRouter');
 
 // cors 설정
 app.use(cors({
@@ -23,7 +24,7 @@ app.use(cookieParser());
 // 라우터 설정
 app.use("/api/user", userRouter); 
 app.use("/api/accounts", accountRouter); 
-// app.use("/api/recommend", recommendRouter);
+app.use("/api/recommend", recommendRouter);
 
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
