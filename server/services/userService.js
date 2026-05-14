@@ -34,8 +34,8 @@ exports.signup = async(email, user_id, password_hash, name, birth_date) => {
       }
     }
 
-  } catch (err) {
-    console.error("service 회원가입 에러 : ", err);
+  } catch (error) {
+    console.error("service 회원가입 에러 : ", error);
     if(err.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
       return {
         success: false,
@@ -70,11 +70,12 @@ exports.login = async(user_id, password) => {
       }
     }
     if(user && pwd) {
-      const token = jwt.sign({user_id: user.user_id, name: user.name, role: user.role }, JWT_SECRET, {expiresIn: '12h'});
+      const token = jwt.sign({id: user.id, user_id: user.user_id, name: user.name, role: user.role }, JWT_SECRET, {expiresIn: '12h'});
       return {
         success: true,
         token,
         user: { 
+          id: user.id,
           user_id: user.user_id,
           name: user.name,
           role: user.role
@@ -82,8 +83,8 @@ exports.login = async(user_id, password) => {
       }
     }
 
-  } catch (err) {
-    console.error("service error: ", err);
+  } catch (error) {
+    console.error("service error: ", error);
     return {
       success: false,
       message: "service 로그인 에러"

@@ -133,8 +133,8 @@ exports.logout = (req, res) => {
       message: "로그아웃 성공"
     });
 
-  } catch (err) {
-    console.error("controller 로그아웃 에러:", err);
+  } catch (error) {
+    console.error("controller 로그아웃 에러:", error);
 
     return res.status(500).json({
       success: false,

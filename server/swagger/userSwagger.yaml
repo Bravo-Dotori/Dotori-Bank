@@ -1,0 +1,224 @@
+openapi: 3.0.0
+
+info:
+  title: Dotori Bank API
+  version: 1.0.0
+  description: 인증 API 문서
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+
+  /api/user/signup:
+
+    post:
+      summary: 회원가입
+
+      tags:
+        - User
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+
+            schema:
+              type: object
+
+              properties:
+
+                email:
+                  type: string
+                  example: test@test.com
+
+                user_id:
+                  type: string
+                  example: testuser
+
+                password:
+                  type: string
+                  example: 1234
+
+                name:
+                  type: string
+                  example: 홍길동
+
+                birth_date:
+                  type: string
+                  format: date
+                  example: 2000-01-01
+
+              required:
+                - email
+                - user_id
+                - password
+                - name
+                - birth_date
+
+      responses:
+
+        '201':
+          description: 회원가입 성공
+
+        '400':
+          description: 필수값 누락
+
+        '409':
+          description: 중복 회원
+
+        '500':
+          description: 서버 오류
+
+  /api/user/login:
+
+    post:
+      summary: 로그인
+
+      tags:
+        - User
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+
+            schema:
+              type: object
+
+              properties:
+
+                user_id:
+                  type: string
+                  example: testuser
+
+                password:
+                  type: string
+                  example: 1234
+
+              required:
+                - user_id
+                - password
+
+      responses:
+
+        '200':
+          description: 로그인 성공
+
+        '401':
+          description: 로그인 실패
+
+        '500':
+          description: 서버 오류
+
+  /api/user/verify:
+
+    get:
+      summary: JWT 토큰 검증
+
+      tags:
+        - User
+
+      responses:
+
+        '200':
+          description: 토큰 검증 성공
+
+          content:
+            application/json:
+
+              schema:
+                type: object
+
+                properties:
+
+                  success:
+                    type: boolean
+                    example: true
+
+                  user:
+                    type: object
+
+                    properties:
+
+                      id:
+                        type: integer
+                        example: 1
+
+                      user_id:
+                        type: string
+                        example: testuser
+
+                      role:
+                        type: string
+                        example: admin
+
+                      name:
+                        type: string
+                        example: 홍길동
+
+        '401':
+          description: 인증 실패
+
+          content:
+            application/json:
+
+              schema:
+                type: object
+
+                properties:
+
+                  success:
+                    type: boolean
+                    example: false
+
+                  errorCode:
+                    type: string
+                    example: TOKEN_REQUIRED
+
+                  message:
+                    type: string
+                    example: 로그인 필요
+
+              examples:
+
+                tokenRequired:
+                  summary: 토큰 없음
+
+                  value:
+                    success: false
+                    errorCode: TOKEN_REQUIRED
+                    message: 로그인 필요
+
+                invalidToken:
+                  summary: 토큰 검증 실패
+
+                  value:
+                    success: false
+                    errorCode: INVALID_TOKEN
+                    message: 토큰 인증 실패
+
+        '500':
+          description: 서버 오류
+
+  /api/user/logout:
+
+    post:
+      summary: 로그아웃
+
+      tags:
+        - User
+
+      responses:
+
+        '200':
+          description: 로그아웃 성공
+
+        '401':
+          description: 인증되지 않은 사용자
+
+        '500':
+          description: 서버 오류
+    
