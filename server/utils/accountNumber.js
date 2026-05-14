@@ -1,4 +1,4 @@
-exports.const createAccountNumber = async () => {
+exports.createAccountNumber = () => {
   const bankCode = "100";
 
   const middle = Math.floor(
