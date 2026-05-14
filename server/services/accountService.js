@@ -3,7 +3,7 @@ const productModel = require("../models/productModel");
 const {createAccountNumber} = require("../utils/accountNumber");
 
 // 내 계좌 조회
-exports.getAccounts = async(user_id) => {
+exports.getAccounts = async (user_id) => {
   try {
     const result = await accountModel.getAccounts(user_id);
 
