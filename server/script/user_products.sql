@@ -1,33 +1,30 @@
 CREATE TABLE user_products (
-    id INT AUTO_INCREMENT PRIMARY KEY COMMENT '내부 식별용 PK',
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    product_id INT NOT NULL COMMENT '상품 ID',
-    user_id INT NOT NULL COMMENT '사용자 ID',
-    account_id INT NOT NULL COMMENT '계좌 ID',
+    product_id BIGINT NOT NULL,
+    user_id INT NOT NULL,
+    account_id INT NOT NULL,
 
-    target_amount INT NOT NULL COMMENT '전체 납입 금액(예금 최초 예치금)',
-    target_period_months INT NOT NULL COMMENT '전체 개월 수',
+    target_amount BIGINT NOT NULL,
 
-    interest_rate DECIMAL(3,2) NOT NULL COMMENT '가입 당시 확정 금리',
+    target_period_months INT NOT NULL,
 
-    join_date DATE NOT NULL COMMENT '상품 가입 시작일',
-    maturity_date DATE NOT NULL COMMENT '상품 종료 예정일',
+    interest_rate DECIMAL(3,2) NOT NULL,
+
+    join_date DATE NOT NULL,
+
+    maturity_date DATE NOT NULL,
 
     status ENUM('ACTIVE', 'MATURED', 'CANCELLED')
         NOT NULL
-        DEFAULT 'ACTIVE'
-        COMMENT '가입중, 만기, 해지',
+        DEFAULT 'ACTIVE',
 
     created_at TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        COMMENT '최초 등록 시 자동 저장',
+        DEFAULT CURRENT_TIMESTAMP,
 
     updated_at TIMESTAMP
-        NOT NULL
         DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
-        COMMENT '수정 시 자동 갱신',
+        ON UPDATE CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_user_products_product
         FOREIGN KEY (product_id)

@@ -33,3 +33,22 @@ exports.getAccounts = async(req, res) => {
     });
   }
 }
+
+// 입출금 계좌 생성
+exports.createAccount = async(req, res) => {
+  try {
+    const { user_id } = req.user.user_id
+
+    const result = await accountService.createAccount(user_id);
+    return res.status(201).json(result);
+
+  } catch(err) {
+    console.error("입출금 생성 에러 : ", err);
+
+    return res.status(500).json({
+      success: false,
+      errorCode: 'ACCOUNT_SERVER_ERROR',
+      message: '계좌 조회 서버 에러'
+    });
+  }
+}
