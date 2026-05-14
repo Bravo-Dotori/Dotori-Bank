@@ -1,0 +1,22 @@
+.card {
+    width: 100%;
+    background: var(--base-color);
+    border: 1px solid var(--surface-color);
+    border-radius: 24px;
+    padding: 28px 20px;
+    box-sizing: border-box;
+    background: white;
+}
+
+.title {
+    color: var(--black-color);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.optionWrapper {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}

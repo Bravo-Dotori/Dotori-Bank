@@ -44,6 +44,7 @@ const LoginPage = () => {
           <Btn
             name="로그인"
             size="big"
+            value="/"
             active
           />
           <AuthRedirect

@@ -4,12 +4,17 @@ import styles from './snb.module.css'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useMenuStore from '@/store/useMenuStore';
+import useStore from '@/store/useStore';
 
 const Snb = () => {
   const navigate = useNavigate();
 
-  const { activeMenu, setActiveMenu } = useMenuStore();
+  const { activeMenu, setActiveMenu } = useStore();
+
+  const depositMenus = [
+    'deposit',
+    'depositDetail',
+  ];
 
   const handleClick = (menu) => {
     setActiveMenu(menu);
@@ -19,12 +24,17 @@ const Snb = () => {
   return (
     <div className={styles.snb}>
       <button
-        className={`${styles.menu} ${activeMenu === 'deposit' ? styles.active : ''}`}
+        className={`
+          ${styles.menu}
+          ${depositMenus.includes(activeMenu)
+                    ? styles.active
+                    : ''}
+        `}
         onClick={() => handleClick('deposit')}
       >
         예금 상품
       </button>
-      
+
       <button
         className={`${styles.menu} ${activeMenu === 'account' ? styles.active : ''}`}
         onClick={() => handleClick('account')}
