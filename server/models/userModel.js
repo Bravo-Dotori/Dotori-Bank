@@ -1,12 +1,12 @@
 const pool = require("../db");
 
 // 회원가입
-exports.signup = async (email, user_id, password_hash, name, role, birth_date) => {
+exports.signup = async (email, user_id, password_hash, name, birth_date) => {
   const sql = `
-    insert into users (email, user_id, password_hash, role, birth_date)
+    insert into users (email, user_id, password_hash, name, birth_date)
     values (?,?,?,?,?)
   `
-  const [rows] = await pool.query(sql, [email, user_id, password_hash, name, role, birth_date]);
+  const [rows] = await pool.query(sql, [email, user_id, password_hash, name, birth_date]);
   return rows;
 }
 
@@ -24,7 +24,8 @@ exports.findById = async (user_id) => {
   const sql = `
     select 
       id,
-      user_id 
+      user_id,
+      password_hash
     from users 
     where user_id=?
   `

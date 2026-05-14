@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // 회원가입
-exports.signup = async(email, user_id, password_hash, name, role, birth_date) => {
+exports.signup = async(email, user_id, password_hash, name, birth_date) => {
   try {
     const existEmail = await userModel.findByEmail(email);
     const existId = await userModel.findById(user_id);
@@ -25,7 +25,7 @@ exports.signup = async(email, user_id, password_hash, name, role, birth_date) =>
     }
     
     const hash = await bcrypt.hash(password_hash, 10);
-    const result = await userModel.signup(email, user_id, password_hash, name, role, birth_date, hash);
+    const result = await userModel.signup(email, user_id, hash, name, birth_date);
 
     if(result.affectedRows === 1) {
       return {

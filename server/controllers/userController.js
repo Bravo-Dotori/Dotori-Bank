@@ -5,17 +5,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // 회원가입
 exports.signup = async(req, res) => {
   try {
-    const { email, user_id, password_hash, name, role, birth_date } = req.body
+    const { email, user_id, password, name, birth_date } = req.body
 
     // 필수값 누락 에러
-    if(!email || !user_id || !password_hash || !name || !role || !birth_date) {
+    if(!email || !user_id || !password || !name || !birth_date) {
       return res.status(400).json({
         success: false,
         message: "필수값 누락"
       }); 
     }
 
-    const result = await userService.signup(email, user_id, password_hash, name, role, birth_date);
+    const result = await userService.signup(email, user_id, password, name, birth_date);
 
     // 중복회원 에러
     if(!result.success) {
@@ -46,7 +46,14 @@ exports.login = async(req, res) => {
       })
     }
 
-    const result = await userService.findById(user_id, password);
+    const result = await userService.login(user_id, password);
+    
+    if (!result.success) {
+      return res.status(401).json({
+        success: false,
+        message: result.message
+      });
+    }
 
     res.cookie("token", result.token, {
       httpOnly: true,
@@ -63,10 +70,10 @@ exports.login = async(req, res) => {
     });
 
   } catch (error) {
-    console.error("controller 로그인 실패: ", error);
+    console.error("1. controller 로그인 실패: ", error);
     return res.status(500).json({
       success: false,
-      message : "controller 로그인 실패"
+      message : "2. controller 로그인 실패"
     })
   }
 } 
@@ -105,13 +112,23 @@ exports.verify = (req, res) => {
 // 로그아웃
 exports.logout = (req, res) => {
   try {
+
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "인증되지 않은 사용자"
+      });
+    }
+
     res.clearCookie("token", { 
       httpOnly: true, 
       sameSite: "lax", 
       path: "/" 
     });
 
-    res.json({
+    return res.status(200).json({
       success: true,
       message: "로그아웃 성공"
     });
@@ -119,7 +136,7 @@ exports.logout = (req, res) => {
   } catch (err) {
     console.error("controller 로그아웃 에러:", err);
 
-    res.json({
+    return res.status(500).json({
       success: false,
       message: "로그아웃 실패"
     });
