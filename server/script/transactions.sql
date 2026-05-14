@@ -54,3 +54,12 @@ CREATE TABLE transactions (
         FOREIGN KEY (to_account_id)
         REFERENCES accounts(id)
 );
+
+CREATE INDEX idx_transactions_from_account
+ON transactions(from_account_id);
+
+CREATE INDEX idx_transactions_to_account
+ON transactions(to_account_id);
+
+CREATE INDEX idx_transactions_date
+ON transactions(transaction_at);
