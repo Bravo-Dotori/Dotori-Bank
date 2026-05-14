@@ -9,12 +9,14 @@ const authToken = (req, res, next) => {
     if(!token) {
       return res.status(401).json({
         success: false,
+        errorCode: 'TOKEN_REQUIRED',
         message: "로그인 필요"
       });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = {
+      id: decoded.id,
       user_id: decoded.user_id,
       role: decoded.role,
       name: decoded.name
@@ -26,6 +28,7 @@ const authToken = (req, res, next) => {
     
     return res.status(401).json({
       success: false,
+      errorCode: 'INVALID_TOKEN',
       message: "토큰 인증 실패"
     })
   }
