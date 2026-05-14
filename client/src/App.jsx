@@ -18,6 +18,7 @@ import DepositApply from '@/pages/deposit/DepositApplyPage';
 
 import Onboarding from '@/pages/onboarding/OnboardingPage';
 import Recommend from '@/pages/recommend/RecommendPage';
+import Admin from './pages/admin/AdminPage';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
 
           <Route path='onboarding' element={<Onboarding />} />
           <Route path='recommend' element={<Recommend />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>

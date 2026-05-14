@@ -1,29 +1,34 @@
-// userModels.js : 사용자 모델 정의
-
-const pool = require("../db"); // db 연결 객체
+const pool = require("../db");
 
 // 회원가입
-exports.signup = async (name, user_id, pwd) => {
-  // 실행할 sql문
-  // user 테이블에 입력값(valuse (?)부분) 삽입(insert)
+exports.signup = async (email, user_id, password_hash, name, birth_date) => {
   const sql = `
-    insert into users (name, user_id, pwd)
-    values (?,?,?)
+    insert into users (email, user_id, password_hash, name, birth_date)
+    values (?,?,?,?,?)
   `
-
-  // pool에서 커넥션 하나 가져와서 해당 sql 실행  
-  const [rows] = await pool.query(sql, [name, user_id, pwd]);
-
+  const [rows] = await pool.query(sql, [email, user_id, password_hash, name, birth_date]);
   return rows;
 }
 
-// 로그인, 아이디 중복 체크
-exports.checkId = async(user_id) => {
+// 회원가입 - 이메일 중복확인
+exports.findByEmail = async (email) => {
   const sql = `
-    select * from users where user_id=?
+    select * from users where email=?
   `
-  
+  const [rows] = await pool.query(sql, [email]);
+  return rows;
+}
+
+// 로그인, 회원가입 - 아이디 중복확인
+exports.findById = async (user_id) => {
+  const sql = `
+    select 
+      id,
+      user_id,
+      password_hash
+    from users 
+    where user_id=?
+  `
   const [rows] = await pool.query(sql, [user_id]);
-  
   return rows;
 }
