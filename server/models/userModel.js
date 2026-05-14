@@ -1,12 +1,12 @@
 const pool = require("../db");
 
 // 회원가입
-exports.signup = async (email, user_id, password_hash, role, birth_date) => {
+exports.signup = async (email, user_id, password_hash, name, birth_date) => {
   const sql = `
-    insert into users (email, user_id, password_hash, role, birth_date)
+    insert into users (email, user_id, password_hash, name, birth_date)
     values (?,?,?,?,?)
   `
-  const [rows] = await pool.query(sql, [email, user_id, password_hash, role, birth_date]);
+  const [rows] = await pool.query(sql, [email, user_id, password_hash, name, birth_date]);
   return rows;
 }
 
@@ -19,22 +19,16 @@ exports.findByEmail = async (email) => {
   return rows;
 }
 
-// 회원가입 - 아이디 중복확인
+// 로그인, 회원가입 - 아이디 중복확인
 exports.findById = async (user_id) => {
   const sql = `
-    select * from users where user_id=?
+    select 
+      id,
+      user_id,
+      password_hash
+    from users 
+    where user_id=?
   `
   const [rows] = await pool.query(sql, [user_id]);
-  return rows;
-}
-
-
-// 로그인
-exports.login = async(user_id) => {
-  const sql = `
-    select * from users where user_id=?
-  `
-  const [rows] = await pool.query(sql, [user_id]);
-  
   return rows;
 }
