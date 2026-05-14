@@ -1,5 +1,5 @@
 -- 데이터베이스 생성
-CREATE DATABASE bank_db
+CREATE DATABASE testdb;
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_unicode_ci;
 
