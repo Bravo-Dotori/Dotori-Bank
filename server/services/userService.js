@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // 회원가입
-exports.signup = async(email, user_id, password_hash, name, birth_date) => {
+exports.signup = async(email, user_id, password, name, birth_date) => {
   try {
     const existEmail = await userModel.findByEmail(email);
     const existId = await userModel.findById(user_id);
@@ -24,7 +24,7 @@ exports.signup = async(email, user_id, password_hash, name, birth_date) => {
       }
     }
     
-    const hash = await bcrypt.hash(password_hash, 10);
+    const hash = await bcrypt.hash(password, 10);
     const result = await userModel.signup(email, user_id, hash, name, birth_date);
 
     if(result.affectedRows === 1) {
@@ -36,7 +36,7 @@ exports.signup = async(email, user_id, password_hash, name, birth_date) => {
 
   } catch (error) {
     console.error("service 회원가입 에러 : ", error);
-    if(err.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
+    if(error.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
       return {
         success: false,
         message: "service 4. 중복 회원"
