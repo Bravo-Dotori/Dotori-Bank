@@ -5,24 +5,13 @@ const cookieParser = require("cookie-parser");
 const app = express(); 
 const port = 5000;
 const userRouter = require('./routes/userRouter');
+const recommendRouter = require('./routes/recommendRouter');
 const cors = require('cors');
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger/swagger");
 
-// 모듈 설정
-require('dotenv').config(); // .env 파일 읽기 (JWT_SECRET 랜덤키 설정)
-const express = require("express"); // express 모듈
-const path = require("path"); // path 모듈
-const cookieParser = require("cookie-parser"); // 쿠키를 사용하기 위한 모듈
-const app = express(); // express 사용을 위한 객체 생성
-const port = 5000; // 서버 포트 설정
-const userRouter = require('./routes/userRouter'); // userRoute.js 불러오기
-const recommendRouter = require('./routes/recommendRouter'); // recommendationRouter.js 불러오기
-
-
 // Express 미들웨어 설정 - api 요청 들어오기 전에 실행되는 전처리 단계 (모든 서버에서 적용)
 // cors : 리액트 개발 서버에서 해당 서버로 api 요청 들어올 때 cors 허용 (로컬 개발용)
-const cors = require('cors'); // CORS 모듈 (다른 도메인 내에서 내 서버에 요청할 수 있게 허용해주는 설정용 미들웨어)
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
