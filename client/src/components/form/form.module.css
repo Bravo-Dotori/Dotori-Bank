@@ -1,23 +1,29 @@
 .form {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+}
+
+.inputWrapper {
+    position: relative;
+    width: fit-content;
 }
 
 label {
     color: var(--black-color);
     font-size: 13px;
-    font-weight: 500
+    font-weight: 500;
 }
 
 input {
     width: 480px;
     height: 47px;
+    padding: 0 44px 0 10px;
     border: 1px solid var(--surface-color);
     border-radius: 8px;
     background-color: white;
     outline: none;
     transition: border-color 0.2s ease;
-    padding: 0 10px;
 }
 
 input:focus {
@@ -27,4 +33,20 @@ input:focus {
 
 input::placeholder {
     color: var(--brand-color-tertiary);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.unit {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: var(--brand-color-tertiary);
+    pointer-events: none;
 }

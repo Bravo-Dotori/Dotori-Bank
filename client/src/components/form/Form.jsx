@@ -1,12 +1,32 @@
 import '@/App.css'
 import styles from './form.module.css'
 
-const Form = ({ name, type, placeholder }) => {
+const Form = ({
+    name,
+    type,
+    placeholder,
+    onChange,
+    unit,
+}) => {
 
     return (
         <div className={styles.form}>
             <label>{name}</label>
-            <input name={name} type={type} placeholder={placeholder}></input>
+
+            <div className={styles.inputWrapper}>
+                <input
+                    name={name}
+                    type={type}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                />
+
+                {unit && (
+                    <div className={styles.unit}>
+                        {unit}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

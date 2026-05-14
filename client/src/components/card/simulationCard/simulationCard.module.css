@@ -1,0 +1,91 @@
+.simulationCard {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow:
+        0 10px 30px rgba(92, 58, 30, 0.06);
+}
+
+.simulationTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--black-color);
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.inputWrapper input {
+    width: 100%;
+}
+
+.inputLabel {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black-color);
+}
+
+.inputBox {
+    height: 47px;
+    border-radius: 16px;
+    border: 1px solid #E7D9C8;
+    background: var(--base-color);
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 15px;
+    color: var(--black-color);
+    width: 100%;
+}
+
+.resultCard {
+    font-size: 13px;
+    background: var(--light-green-color);
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.resultRow {
+    display: flex;
+    justify-content: space-between;
+    color: var(--black-color);
+}
+
+.resultDivider {
+    height: 1px;
+    background: #D9DFC9;
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.totalAmount {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--brand-color);
+}
+
+.protectText {
+    text-align: center;
+    font-size: 12px;
+    color: var(--brand-color-tertiary);
+}

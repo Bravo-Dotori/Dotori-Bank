@@ -1,9 +1,16 @@
+import { useNavigate } from 'react-router-dom';
+
 import '@/App.css'
 import styles from './button.module.css'
 
-import { useNavigate } from 'react-router-dom';
-
-const Btn = ({ name, value, active, onClick, size }) => {
+const Btn = ({
+  name,
+  value,
+  active,
+  onClick,
+  size,
+  type,
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -14,12 +21,33 @@ const Btn = ({ name, value, active, onClick, size }) => {
     }
   };
 
+  if (type === 'radio') {
+    return (
+      <label
+        className={`
+          ${styles.radioBtn}
+          ${active ? styles.active : ''}
+        `}
+      >
+        <input
+          type="radio"
+          checked={active}
+          onChange={onClick}
+          className={styles.radioInput}
+        />
+
+        {name}
+      </label>
+    );
+  }
+
   return (
     <button
       className={`
         ${styles.btn}
         ${active ? styles.active : ''}
         ${size === 'big' ? styles.big : ''}
+        ${size === 'middle' ? styles.middle : ''}
       `}
       onClick={handleClick}
     >

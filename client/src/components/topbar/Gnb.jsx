@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import logo from "@/assets/logo.png"
 import Btn from '@/components/button/Btn'
 
-import useMenuStore from '@/store/useMenuStore';
+import useStore from '@/store/useStore';
 
 const Gnb = () => {
   const navigate = useNavigate();
 
-  const { activeMenu, setActiveMenu } = useMenuStore();
+  const { activeMenu, setActiveMenu } = useStore();
 
   const handleClick = (menu) => {
     setActiveMenu(menu);
