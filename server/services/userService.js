@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // 회원가입
-exports.signup = async(email, user_id, password_hash, role, birth_date) => {
+exports.signup = async(email, user_id, password_hash, name, birth_date) => {
   try {
     const existEmail = await userModel.findByEmail(email);
     const existId = await userModel.findById(user_id);
@@ -25,7 +25,7 @@ exports.signup = async(email, user_id, password_hash, role, birth_date) => {
     }
     
     const hash = await bcrypt.hash(password_hash, 10);
-    const result = await userModel.signup(email, user_id, password_hash, role, birth_date, hash);
+    const result = await userModel.signup(email, user_id, hash, name, birth_date);
 
     if(result.affectedRows === 1) {
       return {
@@ -34,8 +34,8 @@ exports.signup = async(email, user_id, password_hash, role, birth_date) => {
       }
     }
 
-  } catch (err) {
-    console.error("service 회원가입 에러 : ", err);
+  } catch (error) {
+    console.error("service 회원가입 에러 : ", error);
     if(err.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
       return {
         success: false,
@@ -50,36 +50,41 @@ exports.signup = async(email, user_id, password_hash, role, birth_date) => {
 }
 
 // 로그인
-exports.login = async(user_id, pwd) => {
-  const result = await userModel.login(user_id);
+exports.login = async(user_id, password) => {
+  const result = await userModel.findById(user_id);
   const user = result[0];
   try { 
     if(!user) {
       return {
         success: false,
-        message: "service : 아이디가 존재하지 않습니다."
+        message: "1. 아이디 없음"
       }
     }
-    if(!(await bcrypt.compare(pwd, user.pwd))) {
+
+    const pwd = await bcrypt.compare(password, user.password_hash);
+
+    if(!pwd) {
       return {
         success: false,
-        message: "service : 비밀번호가 틀렸습니다."
+        message: "2. 비번 틀림"
       }
     }
-    if(user && await bcrypt.compare(pwd, user.pwd)) {
-      const token = jwt.sign({user_id: user.user_id, name: user.name }, JWT_SECRET, {expiresIn: '12h'});
+    if(user && pwd) {
+      const token = jwt.sign({id: user.id, user_id: user.user_id, name: user.name, role: user.role }, JWT_SECRET, {expiresIn: '12h'});
       return {
         success: true,
         token,
         user: { 
+          id: user.id,
           user_id: user.user_id,
-          name: user.name
+          name: user.name,
+          role: user.role
         }
       }
     }
 
-  } catch (err) {
-    console.error("service error: ", err);
+  } catch (error) {
+    console.error("service error: ", error);
     return {
       success: false,
       message: "service 로그인 에러"
