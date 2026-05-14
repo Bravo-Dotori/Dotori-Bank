@@ -9,6 +9,10 @@ const userRouter = require('./routes/userRouter');
 const accountRouter = require('./routes/accountRouter');
 const recommendRouter = require('./routes/recommendRouter');
 
+// swagger
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger/swagger");
+
 // cors 설정
 app.use(cors({
   origin: "http://localhost:5173",
@@ -29,6 +33,13 @@ app.use("/api/recommend", recommendRouter);
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
 app.get('/favicon.ico', (_, res) => res.status(204)); // 파비콘 무시
+
+// Swagger UI 설정
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 // local 실행
 app.listen(port, () => {
