@@ -63,3 +63,15 @@
 .radioInput {
     display: none;
 }
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #969696;
+    color: white;
+    border: none;
+}
+
+.disabled:hover {
+    background: #969696;
+}

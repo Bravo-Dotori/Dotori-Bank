@@ -50,3 +50,9 @@ input::-webkit-inner-spin-button {
     color: var(--brand-color-tertiary);
     pointer-events: none;
 }
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin: 2px 0 0 2px;
+}
