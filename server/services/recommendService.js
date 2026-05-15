@@ -233,6 +233,10 @@ exports.recommendDepositProducts = async function (answers) {
 
             return {
                 ...product,
+                interest_rate: (Number(product.interest_rate).toFixed(1)),
+                early_termination_rate: product.early_termination_rate === null
+                    ? null
+                    : (Number(product.early_termination_rate).toFixed(1)),
                 score: score
             };
         });

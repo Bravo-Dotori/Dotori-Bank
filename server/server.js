@@ -8,6 +8,7 @@ const port = 5000;
 const userRouter = require('./routes/userRouter');
 const accountRouter = require('./routes/accountRouter');
 const recommendRouter = require('./routes/recommendRouter');
+const productRouter = require("./routes/productRouter");
 const transferRouter = require('./routes/transferRouter');
 
 // swagger
@@ -30,6 +31,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter); 
 app.use("/api/accounts", accountRouter); 
 app.use("/api/recommend", recommendRouter);
+app.use("/api/products", productRouter);
 app.use("/api/transfer", transferRouter);
 
 // 빌드 설정용
