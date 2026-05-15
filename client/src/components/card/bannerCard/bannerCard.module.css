@@ -1,0 +1,66 @@
+.bannerCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 64px 32px 48px;
+    border-radius: 28px;
+    background-color: var(--brand-color-primary);
+}
+.bannerCard:first-child {
+    margin-bottom: 32px;
+}
+.bannerInfo button {
+    margin-top: 16px;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    padding: 12px 24px;
+    color: var(--brand-color);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+}
+.badge {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 140%;
+    padding: 4px 12px;
+    background-color: #E6C45A;
+    border-radius: 999px;
+    display: inline-block;
+    margin: 0 0 16px;
+}
+.title {
+    color: var(--base-color);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 130%;
+    word-break: keep-all;
+}
+.desc {
+    color: var(--base-color);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 150%;
+    margin-top: 16px;
+    word-break: keep-all;
+}
+.img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    background-color: var(--green-color);
+}
+.bannerImg img {
+    width: 130px;
+    height: auto;
+}
+
+@media screen and (max-width: 1024px) {
+    .bannerImg {
+        display: none;
+    }
+}

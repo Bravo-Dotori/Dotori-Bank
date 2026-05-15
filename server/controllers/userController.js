@@ -94,6 +94,7 @@ exports.verify = (req, res) => {
     return res.status(200).json({
       success: true,
       user: {
+        id: decoded.id,
         user_id: decoded.user_id,
         name: decoded.name,
         role: decoded.role
