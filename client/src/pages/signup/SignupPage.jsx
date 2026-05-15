@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import styles from "./signup.module.css"
 
@@ -12,6 +12,107 @@ import Modal from "@/components/modal/Modal"
 
 const SignupPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    userId: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    birthDate: ""
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    confirmPassword: '',
+  });
+
+  const validateEmail = () => {
+    const isValidEmail =
+      form.email.includes('@') &&
+      form.email.includes('.');
+
+    if (!isValidEmail) {
+      setErrors({
+        ...errors,
+        email: '올바른 이메일 형식이 아니에요',
+      });
+
+      return false;
+    }
+
+    setErrors({
+      ...errors,
+      email: '',
+    });
+
+    return true;
+  };
+
+  const validatePassword = () => {
+    if (form.password !== form.confirmPassword) {
+      setErrors({
+        ...errors,
+        confirmPassword: '비밀번호가 일치하지 않습니다',
+      });
+
+      return false;
+    }
+
+    setErrors({
+      ...errors,
+      confirmPassword: '',
+    });
+
+    return true;
+  };
+
+  const handleBirthDateChange = (e) => {
+    let value = e.target.value;
+
+    value = value.replace(/\D/g, '');
+
+    value = value.slice(0, 8);
+
+    if (value.length >= 5 && value.length <= 6) {
+      value = `${value.slice(0, 4)}-${value.slice(4)}`;
+    } else if (value.length >= 7) {
+      value = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6)}`;
+    }
+
+    setForm({
+      ...form,
+      birthDate: value,
+    });
+  };
+
+  const handleSubmitClick = async () => {
+    try {
+      // 유효성 검사
+      const isValidEmail = validateEmail();
+      const isValidPassword = validatePassword();
+      if (!isValidEmail || !isValidPassword) return;
+
+      const response = await fetch('/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: form.email,
+          user_id: form.userId,
+          password: form.password,
+          name: form.name,
+          birth_date: form.birthDate,
+        }),
+      });
+      const data = await response.json();
+
+      console.log(data);
+
+      setIsModalOpen(true)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className={styles.main}>
@@ -45,43 +146,90 @@ const SignupPage = () => {
             title="회원가입"
             description="이메일과 휴대폰 번호로 가입하세요"
           />
+
           <div className={styles.formArea}>
             <Form
               name="이메일"
-              type="text"
+              type="email"
               placeholder="name@example.com"
+              value={form.email}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  email: e.target.value,
+                })
+              }
+              error={errors.email}
             />
             <Form
               name="아이디"
               type="text"
-              placeholder="4~16자 영문/숫자"
+              placeholder="영문/숫자 가능"
+              value={form.userId}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  userId: e.target.value,
+                })
+              }
             />
             <Form
               name="비밀번호"
               type="password"
-              placeholder="8자 이상 입력"
+              placeholder="영문/숫자 가능"
+              value={form.password}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                })
+              }
             />
             <Form
               name="비밀번호 확인"
               type="password"
-              placeholder="8자 이상 입력"
+              placeholder="영문/숫자 가능"
+              value={form.confirmPassword}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  confirmPassword: e.target.value,
+                })
+              }
+              error={errors.confirmPassword}
             />
             <Form
               name="이름"
               type="text"
-              placeholder="예) 홍길동"
+              placeholder="홍길동"
+              value={form.name}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name: e.target.value,
+                })
+              }
             />
             <Form
               name="생년월일"
               type="text"
               placeholder="YYYY-MM-DD"
+              value={form.birthDate}
+              onChange={handleBirthDateChange}
             />
           </div>
           <Btn
             name="가입하기"
             size="big"
             active
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => handleSubmitClick()}
+            disabled={
+              !form.email.includes('@') ||
+              !form.email.includes('.') ||
+              !form.userId ||
+              form.password !== form.confirmPassword ||
+              form.birthDate.length !== 10
+            }
           />
           <AuthRedirect
             text="이미 회원이신가요?"

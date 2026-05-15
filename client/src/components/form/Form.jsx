@@ -7,27 +7,36 @@ const Form = ({
     placeholder,
     onChange,
     unit,
+    value,
+    error
 }) => {
 
     return (
-        <div className={styles.form}>
-            <label>{name}</label>
+        <>
+            <div className={styles.form}>
+                <label>{name}</label>
 
-            <div className={styles.inputWrapper}>
-                <input
-                    name={name}
-                    type={type}
-                    placeholder={placeholder}
-                    onChange={onChange}
-                />
+                <div className={styles.inputWrapper}>
+                    <input
+                        name={name}
+                        type={type}
+                        placeholder={placeholder}
+                        onChange={onChange}
+                        value={value}
+                    />
 
-                {unit && (
-                    <div className={styles.unit}>
-                        {unit}
+                    {unit && (
+                        <div className={styles.unit}>
+                            {unit}
+                        </div>
+                    )}
+
+                    <div className={styles.error}>
+                        {error}
                     </div>
-                )}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

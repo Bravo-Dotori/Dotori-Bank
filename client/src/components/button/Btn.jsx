@@ -7,6 +7,7 @@ const Btn = ({
   name,
   value,
   active,
+  disabled,
   onClick,
   size,
   type,
@@ -44,12 +45,14 @@ const Btn = ({
   return (
     <button
       className={`
-        ${styles.btn}
-        ${active ? styles.active : ''}
-        ${size === 'big' ? styles.big : ''}
-        ${size === 'middle' ? styles.middle : ''}
-      `}
+    ${styles.btn}
+    ${active && !disabled ? styles.active : ''}
+    ${disabled ? styles.disabled : ''}
+    ${size === 'big' ? styles.big : ''}
+    ${size === 'middle' ? styles.middle : ''}
+  `}
       onClick={handleClick}
+      disabled={disabled}
     >
       {name}
     </button>
