@@ -1,6 +1,7 @@
 .pageHeader {
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .title {
@@ -12,4 +13,16 @@
 .description {
     color: var(--brand-color-secondary);
     font-size: 15px;
+}
+
+.big .title {
+    font-size: 32px;
+}
+
+.big .description {
+    font-size: 17px;
+}
+
+.left {
+    text-align: left;
 }

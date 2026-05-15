@@ -7,6 +7,7 @@
     border: 1px solid var(--brand-color-primary);
     color: var(--brand-color-primary);
     cursor: pointer;
+    background: white;
 }
 
 .btn:hover {
@@ -20,8 +21,45 @@
 }
 
 .big {
-    width: 480px;
+    width: 100%;
     height: 54px;
-    border-radius: 8px;
     border-radius: 16px;
+}
+
+.middle {
+    width: 100%;
+    height: 41px;
+    border-radius: 12px;
+}
+
+.radioBtn {
+    height: 41px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--surface-color);
+    background: transparent;
+    color: var(--black-color);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 41px;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radioBtn:hover {
+    background: rgba(139, 94, 60, 0.05);
+}
+
+.radioBtn.active {
+    background: var(--brand-color-primary);
+    border-color: var(--brand-color-primary);
+    color: white;
+}
+
+.radioInput {
+    display: none;
 }

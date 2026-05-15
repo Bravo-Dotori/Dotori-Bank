@@ -8,6 +8,7 @@ const port = 5000;
 const userRouter = require('./routes/userRouter');
 const accountRouter = require('./routes/accountRouter');
 const recommendRouter = require('./routes/recommendRouter');
+const transferRouter = require('./routes/transferRouter');
 
 // swagger
 const swaggerUi = require("swagger-ui-express");
@@ -29,10 +30,20 @@ app.use(cookieParser());
 app.use("/api/user", userRouter); 
 app.use("/api/accounts", accountRouter); 
 app.use("/api/recommend", recommendRouter);
+app.use("/api/transfer", transferRouter);
 
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
 app.get('/favicon.ico', (_, res) => res.status(204)); // 파비콘 무시
+
+// React 라우팅 대응
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
+
+app.get('/*rest', function (req, res) {
+  res.sendFile(path.join(__dirname, 'static', 'index.html'));
+});
 
 // Swagger UI 설정
 app.use(
