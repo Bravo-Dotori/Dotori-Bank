@@ -1,3 +1,4 @@
+-- 회원정보 테이블
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(100) NOT NULL UNIQUE,
