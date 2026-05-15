@@ -119,3 +119,72 @@
  *               success: false
  *               message: 상품 상세 조회 중 오류가 발생했습니다.
  */
+
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: 상품 목록 조회
+ *     description: 가입 가능한 전체 상품 목록을 조회합니다.
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: 상품 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 상품 목록 조회에 성공했습니다.
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       product_name:
+ *                         type: string
+ *                         example: 도토리 자유예금
+ *                       interest_rate:
+ *                         type: number
+ *                         format: float
+ *                         example: 3.5
+ *                       max_period_months:
+ *                         type: integer
+ *                         example: 24
+ *                       product_desc:
+ *                         type: string
+ *                         example: 자유롭게 예치 가능한 예금 상품
+ *             example:
+ *               success: true
+ *               message: 상품 목록 조회에 성공했습니다.
+ *               products:
+ *                 - product_name: 도토리 자유예금
+ *                   interest_rate: 3.5
+ *                   max_period_months: 24
+ *                   product_desc: 자유롭게 예치 가능한 예금 상품
+ *                 - product_name: 도토리 목돈예금
+ *                   interest_rate: 4.0
+ *                   max_period_months: 36
+ *                   product_desc: 목돈 마련을 위한 고금리 상품
+ *
+ *       404:
+ *         description: 상품이 존재하지 않음
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 상품이 없습니다.
+ *
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 상품 목록 조회를 다시 시도해주세요.
+ */
