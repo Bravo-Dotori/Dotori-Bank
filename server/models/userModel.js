@@ -25,9 +25,7 @@ exports.findById = async (user_id) => {
     select 
       id,
       user_id,
-      password_hash,
-      name,
-      role
+      password_hash
     from users 
     where user_id=?
   `

@@ -6,7 +6,7 @@ exports.createAccountNumber = () => {
   );
 
   const last = Math.floor(
-    10000 + Math.random() * 900000
+    100000 + Math.random() * 900000
   );
 
   return `${bankCode}-${middle}-${last}`;

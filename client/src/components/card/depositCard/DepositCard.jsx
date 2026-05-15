@@ -7,21 +7,10 @@ const DepositCard = ({
     title,
     rate,
     period,
-    maxPeriod,
     description,
     onClick,
-    value,
-    btnText,
-    isLoading,
-    isError
+    value
 }) => {
-    if (isLoading) {
-        return  <div>로딩 발생</div>;
-    }
-
-    if (isError) {
-        return <div>에러 발생</div>;
-    }
     return (
         <div className={styles.card}>
             {rank && (
@@ -39,7 +28,7 @@ const DepositCard = ({
             </div>
 
             <div className={styles.period}>
-                {maxPeriod ? `최대 ${maxPeriod}개월 가입` : `${period}개월 가입`}
+                {period} 가입
             </div>
 
             <div className={styles.description}>
@@ -47,7 +36,7 @@ const DepositCard = ({
             </div>
 
             <Btn
-                name={btnText || "자세히 보기"}
+                name="자세히 보기"
                 size="big"
                 value={value}
             />

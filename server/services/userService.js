@@ -13,14 +13,14 @@ exports.signup = async(email, user_id, password, name, birth_date) => {
     if(existEmail.length > 0) {
       return {
         success: false,
-        message: "이미 사용 중인 이메일입니다."
+        message: "service 1. 이메일 중복"
       }
     }
     // 아이디 중복 체크
     if(existId.length > 0) {
       return {
         success: false,
-        message: "이미 사용 중인 아이디입니다."
+        message: "service 2. 아이디 중복"
       }
     }
     
@@ -30,7 +30,7 @@ exports.signup = async(email, user_id, password, name, birth_date) => {
     if(result.affectedRows === 1) {
       return {
         success: true,
-        message: "회원가입 성공하였습니다."
+        message: "service 회원 가입 성공"
       }
     }
 
@@ -39,12 +39,12 @@ exports.signup = async(email, user_id, password, name, birth_date) => {
     if(error.code === "ER_DUP_ENTRY") { // 동일 아이디 존재
       return {
         success: false,
-        message: "이미 존재하는 회원입니다."
+        message: "service 4. 중복 회원"
       }
     }
     return {
       success: false,
-      message: "회원가입을 다시 시도해주세요."
+      message: "service 5. service 서버 오류"
     }
   }
 }
@@ -57,7 +57,7 @@ exports.login = async(user_id, password) => {
     if(!user) {
       return {
         success: false,
-        message: "존재하지 않는 아이디입니다."
+        message: "1. 아이디 없음"
       }
     }
 
@@ -66,7 +66,7 @@ exports.login = async(user_id, password) => {
     if(!pwd) {
       return {
         success: false,
-        message: "비밀번호가 틀렸습니다."
+        message: "2. 비번 틀림"
       }
     }
     if(user && pwd) {
@@ -87,7 +87,7 @@ exports.login = async(user_id, password) => {
     console.error("service error: ", error);
     return {
       success: false,
-      message: "로그인을 다시 시도해주세요."
+      message: "service 로그인 에러"
     }
   }
 }
