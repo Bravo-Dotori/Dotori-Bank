@@ -82,7 +82,7 @@ exports.transfer = async (
     await transferModel.deposit(conn, to_account_number, toBalanceAfter);
 
     // 6. 거래내역 저장
-    await transferModel.createTransaction(conn, from_account_id, toAccount.id, amount, fromBalanceAfter, memo);
+    await transferModel.createTransaction(conn, from_account_id, toAccount.id, "TRANSFER", amount, fromBalanceAfter, memo);
 
     // 커밋
     await conn.commit();

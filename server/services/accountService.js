@@ -67,7 +67,7 @@ exports.createAccount = async (user_id) => {
     if(!product) {
       return {
         success: false,
-        message: "가입 상품 없음"
+        message: "해당 상품 없음"
       };
     }
 
@@ -77,7 +77,7 @@ exports.createAccount = async (user_id) => {
     if(!product_id || interest_rate === undefined || interest_rate === null) {
       return {
         success: false,
-        message: "가입 상품 정보 오류"
+        message: "해당 상품 정보 오류"
       };
     }
 

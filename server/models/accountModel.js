@@ -20,6 +20,27 @@ exports.getAccountDetail = async(user_id, account_id) => {
   return rows[0];
 }
 
+// 입출금 계좌 조회(트랜잭션 용)
+exports.getDemandAccountForUpdate = async (conn, user_id) => {
+  const sql = `
+    select
+      id,
+      user_id,
+      account_number,
+      balance,
+      account_type,
+      is_active
+    from accounts
+    where user_id = ?
+      and account_type = 'demand'
+      and is_active = true
+    limit 1
+    for update
+  `
+  const [rows] = await conn.query(sql, [user_id]);
+  return rows[0];
+}
+
 // 입출금 계좌 생성
 exports.createAccount = async (conn, user_id, account_number, account_type, balance) => {
   const sql = `

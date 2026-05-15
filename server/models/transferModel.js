@@ -70,11 +70,11 @@ exports.deposit = async (conn, to_account_number,toBalanceAfter) => {
 }
 
 // 5. 거래내역 저장
-exports.createTransaction = async (conn, from_account_id, to_account_id, amount, balance_after, memo) => {
+exports.createTransaction = async (conn, from_account_id, to_account_id, type, amount, balance_after, memo) => {
   const sql=`
-    insert into transactions(from_account_id, to_account_id, type, amount, balance_after, description) values (?, ?, 'TRANSFER', ?, ?, ?)
+    insert into transactions(from_account_id, to_account_id, type, amount, balance_after, description) values (?, ?, ?, ?, ?, ?)
   `
 
-  const [rows] = await conn.query(sql, [from_account_id, to_account_id, amount, balance_after, memo]);
+  const [rows] = await conn.query(sql, [from_account_id, to_account_id, type, amount, balance_after, memo]);
   return rows; 
 }
