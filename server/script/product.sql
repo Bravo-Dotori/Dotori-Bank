@@ -3,6 +3,7 @@ CREATE TABLE products (
     product_name VARCHAR(50) NOT NULL,
     product_code VARCHAR(100) NOT NULL UNIQUE,
     product_type ENUM('demand', 'deposit', 'savings') NOT NULL,
+    product_desc TEXT DEFAULT NULL,
     min_period_months INT DEFAULT NULL,
     max_period_months INT DEFAULT NULL,
     min_amount BIGINT DEFAULT NULL,
