@@ -1,64 +1,83 @@
 import '@/App.css'
 import styles from './snb.module.css'
 
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import useStore from '@/store/useStore';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Snb = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { activeMenu, setActiveMenu } = useStore();
+  const pathname = location.pathname;
 
   const depositMenus = [
-    'deposit',
-    'depositDetail',
+    '/',
+    '/deposit',
+    '/depositDetail',
+    '/depositApply',
   ];
-
-  const handleClick = (menu) => {
-    setActiveMenu(menu);
-    navigate(`/${menu}`);
-  };
+  const productsMenus = [
+    '/products',
+    '/productsDetail',
+  ];
 
   return (
     <div className={styles.snb}>
       <button
         className={`
           ${styles.menu}
-          ${depositMenus.includes(activeMenu)
-                    ? styles.active
-                    : ''}
+          ${depositMenus.includes(pathname)
+            ? styles.active
+            : ''}
         `}
-        onClick={() => handleClick('deposit')}
+        onClick={() => navigate('/deposit')}
       >
         예금 상품
       </button>
 
       <button
-        className={`${styles.menu} ${activeMenu === 'account' ? styles.active : ''}`}
-        onClick={() => handleClick('account')}
+        className={`
+          ${styles.menu}
+          ${pathname === '/account'
+            ? styles.active
+            : ''}
+        `}
+        onClick={() => navigate('/account')}
       >
         내 계좌
       </button>
 
       <button
-        className={`${styles.menu} ${activeMenu === 'transfer' ? styles.active : ''}`}
-        onClick={() => handleClick('transfer')}
+        className={`
+          ${styles.menu}
+          ${pathname === '/transfer'
+            ? styles.active
+            : ''}
+        `}
+        onClick={() => navigate('/transfer')}
       >
         이체하기
       </button>
 
       <button
-        className={`${styles.menu} ${activeMenu === 'history' ? styles.active : ''}`}
-        onClick={() => handleClick('history')}
+        className={`
+          ${styles.menu}
+          ${pathname === '/history'
+            ? styles.active
+            : ''}
+        `}
+        onClick={() => navigate('/history')}
       >
         거래 내역
       </button>
 
       <button
-        className={`${styles.menu} ${activeMenu === 'products' ? styles.active : ''}`}
-        onClick={() => handleClick('products')}
+        className={`
+          ${styles.menu}
+          ${productsMenus.includes(pathname)
+            ? styles.active
+            : ''}
+        `}
+        onClick={() => navigate('/products')}
       >
         가입 상품
       </button>

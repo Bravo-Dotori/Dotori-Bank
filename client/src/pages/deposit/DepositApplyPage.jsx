@@ -99,6 +99,7 @@ const DepositApplyPage = () => {
 
             {isModalOpen && (
                 <Modal
+                    showLogo
                     title='가입이 완료되었어요!'
                     description='도토리 정기예금에 가입하셨습니다'
                     rewardLabel='24개월 후 받을 이자'

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import MainLayout from '@/layout/MainLayout';
 
 import Login from '@/pages/login/LoginPage';
@@ -20,7 +21,34 @@ import Onboarding from '@/pages/onboarding/OnboardingPage';
 import Recommend from '@/pages/recommend/RecommendPage';
 import Admin from './pages/admin/AdminPage';
 
+import useStore from '@/store/useStore';
+
 const App = () => {
+  const { setLogin, logout } = useStore();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const response = await fetch('/api/user/verify', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        const data = await response.json();
+
+        setLogin(data.user);
+      } catch (error) {
+        logout();
+      }
+    };
+
+    verifyUser();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

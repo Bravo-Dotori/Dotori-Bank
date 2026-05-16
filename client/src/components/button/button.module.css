@@ -37,21 +37,20 @@
     padding: 0 16px;
     border-radius: 999px;
     border: 1px solid var(--surface-color);
-    background: transparent;
+    background: white;
     color: var(--black-color);
     font-size: 13px;
     font-weight: 500;
     line-height: 41px;
     cursor: pointer;
     transition: 0.2s ease;
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .radioBtn:hover {
-    background: rgba(139, 94, 60, 0.05);
+    background: var(--surface-color);
 }
 
 .radioBtn.active {

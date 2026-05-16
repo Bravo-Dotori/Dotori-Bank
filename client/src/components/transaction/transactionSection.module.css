@@ -1,0 +1,99 @@
+.transactionSection {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 28px;
+    overflow: hidden;
+}
+
+.transactionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transactionTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--black-color);
+}
+
+.more {
+    font-size: 15px;
+    color: var(--brand-color-tertiary);
+    cursor: pointer;
+}
+
+.transactionList {
+    display: flex;
+    flex-direction: column;
+}
+
+.transactionItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transactionItem:last-child {
+    border-bottom: none;
+}
+
+.transactionLeft {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 40px;
+}
+
+.deposit {
+    background-color: var(--green-color);
+    color: var(--black-color);
+}
+
+.withdraw {
+    background-color: var(--surface-color);
+    color: var(--brand-color-secondary);
+}
+
+.transactionInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.transactionName {
+    font-size: 15px;
+    color: var(--black-color);
+}
+
+.transactionDescription {
+    font-size: 13px;
+    color: var(--brand-color-tertiary);
+}
+
+.amount {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.plus {
+    color: var(--green-color);
+}
+
+.minus {
+    color: var(--black-color);
+}

@@ -29,3 +29,25 @@
     display: flex;
     gap: 16px;
 }
+
+.userSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.userName {
+    font-size: 15px;
+    color: var(--black-color);
+    white-space: nowrap;
+}
+
+.logout {
+    font-size: 15px;
+    color: var(--brand-color-secondary);
+    cursor: pointer;
+}
+
+.logout:hover {
+    color: var(--brand-color);
+}
