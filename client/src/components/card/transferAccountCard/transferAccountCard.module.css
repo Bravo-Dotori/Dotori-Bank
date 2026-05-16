@@ -1,0 +1,104 @@
+.card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.sendCard {
+    background-color: var(--surface-color);
+    border: none;
+}
+
+.title {
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.accountInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.accountName {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black-color);
+    margin-bottom: 12px;
+}
+
+.accountNumber {
+    font-size: 24px;
+    color: var(--brand-color-tertiary);
+}
+
+.balanceWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.balanceLabel {
+    font-size: 12px;
+    color: var(--brand-color-tertiary);
+}
+
+.balance {
+    font-weight: 500;
+    color: var(--black-color);
+}
+
+.inputWrapper {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.bankInput,
+.accountInput {
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    background-color: var(--base-color);
+    padding: 0 18px;
+    outline: none;
+    font-size: 16px;
+    color: var(--black-color);
+}
+
+.bankInput {
+    width: 160px;
+}
+
+.accountInput {
+    flex: 1;
+}
+
+.userCard {
+    background-color: var(--light-green-color);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.userCircle {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: var(--green-color);
+}
+
+.userCheck {
+    font-weight: 700;
+    color: var(--black-color);
+    margin-bottom: 4px;
+}
+
+.userName {
+    color: var(--brand-color-tertiary);
+}

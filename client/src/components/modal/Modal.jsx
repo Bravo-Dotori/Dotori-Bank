@@ -10,13 +10,16 @@ import Btn from "@/components/button/Btn"
 
 const Modal = ({
     onClose,
+    showLogo,
     title,
+    amount,
     description,
     rewardLabel,
     reward,
     rewardDescription,
     buttons = [],
     type = 'default',
+    transferInfo,
 }) => {
 
     useEffect(() => {
@@ -36,15 +39,18 @@ const Modal = ({
                 className={styles.modal}
                 onClick={(e) => e.stopPropagation()}
             >
-                <img
-                    src={
-                        type === 'danger'
-                            ? logoSad
-                            : logo
-                    }
-                    alt='logo'
-                    className={styles.logo}
-                />
+
+                {showLogo && (
+                    <img
+                        src={
+                            type === 'danger'
+                                ? logoSad
+                                : logo
+                        }
+                        alt='logo'
+                        className={styles.logo}
+                    />
+                )}
 
                 <h2 className={styles.title}>
                     {title}
@@ -52,6 +58,11 @@ const Modal = ({
 
                 {description && (
                     <p className={styles.description}>
+                        {amount && (
+                            <p className={styles.amount}>
+                                {amount.toLocaleString()}원
+                            </p>
+                        )}
                         {description}
                     </p>
                 )}
@@ -65,20 +76,52 @@ const Modal = ({
                         {reward}
                     </div>
 
-                    <span
-                        className={styles.rewardDescription}
-                    >
-                        {rewardDescription}
-                    </span>
+                    {rewardDescription && (
+                        <span className={styles.rewardDescription}>
+                            {rewardDescription}
+                        </span>
+                    )}
+
+                    {type === 'transfer' && (
+                        <div className={styles.transferInfoBox}>
+                            <div className={styles.transferRow}>
+                                <span className={styles.label}>출금 계좌</span>
+                                <span className={styles.value}>
+                                    {transferInfo?.senderAccount}
+                                </span>
+                            </div>
+
+                            <div className={styles.transferRow}>
+                                <span className={styles.label}>입금 계좌</span>
+                                <span className={styles.value}>
+                                    {transferInfo?.receiverAccount}
+                                </span>
+                            </div>
+
+                            <div className={styles.transferRow}>
+                                <span className={styles.label}>이체 후 잔액</span>
+                                <span className={styles.value}>
+                                    {transferInfo?.afterBalance.toLocaleString()}원
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.notice}>
                     {type === 'danger'
                         ? '해지 후에는 기존 금리를 복구할 수 없어요'
-                        : '꾸준히 모은 도토리가 태산이 되는 그날까지'}
+                        : type === 'transfer'
+                            ? ''
+                            : '꾸준히 모은 도토리가 태산이 되는 그날까지'}
                 </div>
 
-                <div className={styles.buttonWrapper}>
+                <div
+                    className={`
+                        ${styles.buttonWrapper}
+                        ${type === 'transfer' ? styles.transferButtons : ''}
+                    `}
+                >
                     {buttons.map((button, index) => (
                         <Btn
                             key={index}

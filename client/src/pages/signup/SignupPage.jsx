@@ -242,6 +242,7 @@ const SignupPage = () => {
 
       {isModalOpen && (
         <Modal
+          showLogo
           title='환영합니다, 도토리님!'
           description='회원가입이 완료되었어요'
           rewardLabel='가입 축하금 도착'

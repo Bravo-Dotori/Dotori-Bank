@@ -1,0 +1,74 @@
+.amountCard {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.amountWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.amount {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--black-color);
+}
+
+.won {
+    font-size: 24px;
+    color: var(--brand-color-tertiary);
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 24px 0;
+}
+
+.buttonWrapper {
+    display: flex;
+    gap: 8px;
+    width: 448px;
+    margin-bottom: 28px;
+}
+
+.amountButton {
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--black-color);
+    cursor: pointer;
+}
+
+.bottomInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.balanceText,
+.limit {
+    font-size: 15px;
+    color: var(--brand-color-secondary);
+}
+
+.amountInput {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--black-color);
+    text-align: right;
+    width: 100%;
+    padding: 0;
+}

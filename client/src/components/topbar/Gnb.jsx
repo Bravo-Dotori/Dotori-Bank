@@ -11,37 +11,71 @@ import useStore from '@/store/useStore';
 const Gnb = () => {
   const navigate = useNavigate();
 
-  const { activeMenu, setActiveMenu } = useStore();
+  const {
+    activeMenu,
+    setActiveMenu,
+    isLogin,
+    user,
+    logout,
+  } = useStore();
 
   const handleClick = (menu) => {
     setActiveMenu(menu);
     navigate(`/`);
-  }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <header className={styles.gnb}>
-      <div className={styles.logo} onClick={() => handleClick('deposit')}>
-        <img src={logo} className={styles.logoImg} alt='로고 이미지' />
-        <div className={styles.logoName}>Dotori Bank</div>
-      </div>
-
-      <div className={styles.authBtns}>
-        <Btn
-          name="로그인"
-          value="/login"
-          active={activeMenu === 'login'}
-          onClick={() => setActiveMenu('login')}
+      <div
+        className={styles.logo}
+        onClick={() => handleClick('deposit')}
+      >
+        <img
+          src={logo}
+          className={styles.logoImg}
+          alt='로고 이미지'
         />
 
-        <Btn
-          name="회원가입"
-          value="/signup"
-          active={activeMenu === 'signup'}
-          onClick={() => setActiveMenu('signup')}
-        />
+        <div className={styles.logoName}>
+          Dotori Bank
+        </div>
       </div>
+
+      {isLogin ? (
+        <div className={styles.userSection}>
+          <div className={styles.userName}>
+            {user?.name}님
+          </div>
+
+          <div className={styles.logout} onClick={handleLogout}>
+            로그아웃
+          </div>
+
+        </div>
+      ) : (
+        <div className={styles.authBtns}>
+          <Btn
+            name="로그인"
+            value="/login"
+            active={activeMenu === 'login'}
+            onClick={() => setActiveMenu('login')}
+          />
+
+          <Btn
+            name="회원가입"
+            value="/signup"
+            active={activeMenu === 'signup'}
+            onClick={() => setActiveMenu('signup')}
+          />
+        </div>
+      )}
     </header>
   );
-}
+};
 
 export default Gnb;

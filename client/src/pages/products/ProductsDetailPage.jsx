@@ -99,6 +99,7 @@ const ProductsDetailPage = () => {
 
             {modalType === 'terminate' && (
                 <Modal
+                    showLogo
                     type="danger"
                     title='정말로 해지하시겠습니까?'
                     rewardLabel='예상 수령 금액'
@@ -122,6 +123,7 @@ const ProductsDetailPage = () => {
 
             {modalType === 'complete' && (
                 <Modal
+                    showLogo
                     title='해지가 완료되었어요'
                     rewardLabel='수령액'
                     reward='2,950,000원'

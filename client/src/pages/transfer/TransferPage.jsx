@@ -1,76 +1,173 @@
-import { useState } from 'react'
+import { use, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from "./transfer.module.css"
 
 import PageHeader from "@/components/pageHeader/PageHeader"
-import DepositCard from "@/components/card/depositCard/DepositCard"
+import Btn from "@/components/button/Btn"
+import TransferAccountCard from "@/components/card/transferAccountCard/TransferAccountCard"
+import TransferAmountCard from "@/components/card/transferAmountCard/TransferAmountCard"
+import Modal from "@/components/modal/Modal"
 
 const TransferPage = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      title: "안심 정기예금",
-      rate: 3.5,
-      period: "12개월 가입",
-      description: "안정적인 첫 예금 — 매월 이자 지급",
-    },
-    {
-      id: 2,
-      title: "도토리 정기예금",
-      rate: 4.0,
-      period: "24개월 가입",
-      description: "긴 호흡으로 더 큰 이자를 받으세요",
-    },
-    {
-      id: 3,
-      title: "꾸준 정기예금",
-      rate: 4.5,
-      period: "36개월 가입",
-      description: "오래 묶을수록 커지는 우대 금리",
-    },
-    {
-      id: 4,
-      title: "태산 우대예금",
-      rate: 5.0,
-      period: "12개월 한정",
-      description: "신규 가입자를 위한 특별 우대",
-    },
-    {
-      id: 5,
-      title: "청년 도약예금",
-      rate: 5.5,
-      period: "24개월 청년",
-      description: "만 19~34세 청년을 위한 고금리 예금",
-    },
-    {
-      id: 6,
-      title: "안심 시니어예금",
-      rate: 4.2,
-      period: "12개월 시니어",
-      description: "만 60세 이상 안정 예금",
-    },
-    {
-      id: 7,
-      title: "맘대로 예금",
-      rate: 3.0,
-      period: "6개월 가입",
-      description: "짧게 굴리고 싶은 분께",
-    },
-  ]);
+  const navigate = useNavigate();
+
+  const [sender, setSender] = useState({
+    accountName: '도토리뱅크 입출금계좌',
+    accountNumber: '123-4567-89101',
+    balance: 3000000
+  });
+  const [receiver, setReceiver] = useState({
+    bank: '도토리뱅크',
+    accountNumber: '',
+    userName: ''
+  });
+  const [amount, setAmount] = useState(0);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+
+  const handleAmount = (value) => {
+    setAmount((prev) => prev + value);
+  };
+
+  const handleReceiverAccount = (value) => {
+    const onlyNumber = value.replace(/\D/g, '').slice(0, 12);
+
+    let formatted = onlyNumber;
+
+    if (onlyNumber.length > 3 && onlyNumber.length <= 7) {
+      formatted = `${onlyNumber.slice(0, 3)}-${onlyNumber.slice(3)}`;
+    }
+
+    if (onlyNumber.length > 7) {
+      formatted = `${onlyNumber.slice(0, 3)}-${onlyNumber.slice(3, 7)}-${onlyNumber.slice(7)}`;
+    }
+
+    setReceiver((prev) => ({
+      ...prev,
+      accountNumber: formatted
+    }));
+
+    if (formatted === '987-6590-43219') {
+      setReceiver((prev) => ({
+        ...prev,
+        accountNumber: formatted,
+        userName: '김아람'
+      }));
+    } else {
+      setReceiver((prev) => ({
+        ...prev,
+        accountNumber: formatted,
+        userName: ''
+      }));
+    }
+  };
+
+  const handleClose = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleTransfer = () => {
+    setIsConfirmModalOpen(false);
+    setIsCompleteModalOpen(true);
+  };
 
   return (
     <div className='main'>
       <div className={styles.container}>
         <div className={styles.transfer}>
           <PageHeader
-            title="이체"
+            title="이체하기"
             description="받는 분 정보를 입력하고 금액을 확인해주세요"
             big
             left
           />
+
+          <TransferAccountCard
+            type="send"
+            accountName={sender.accountName}
+            accountNumber={sender.accountNumber}
+            balance={sender.balance}
+          />
+
+          <TransferAccountCard
+            type="receive"
+            bank={receiver.bank}
+            accountNumber={receiver.accountNumber}
+            userName={receiver.userName}
+            onChange={handleReceiverAccount}
+          />
+
+          <TransferAmountCard
+            amount={amount}
+            setAmount={setAmount}
+            handleAmount={handleAmount}
+            userAmount={sender.balance}
+          />
+
+          <Btn
+            name="다음"
+            size="big"
+            active={
+              amount > 0 &&
+              amount <= sender.balance &&
+              receiver.userName
+            }
+            disabled={
+              amount <= 0 ||
+              amount > sender.balance ||
+              !receiver.userName
+            }
+            onClick={() => setIsConfirmModalOpen(true)}
+          />
         </div>
       </div>
+
+      {isConfirmModalOpen && (
+        <Modal
+          type="transfer"
+          title="이체하시겠어요?"
+          amount={amount.toLocaleString()}
+          description={`${receiver.userName}님께 이체합니다`}
+          transferInfo={{
+            userName: receiver.userName,
+            senderAccount: sender.accountNumber,
+            receiverAccount: receiver.accountNumber,
+            afterBalance: sender.balance - amount,
+          }}
+          buttons={[
+            {
+              name: "취소",
+              onClick: handleClose,
+              active: false,
+            },
+            {
+              name: "이체하기",
+              onClick: handleTransfer,
+              active: true,
+            }
+          ]}
+        />
+      )}
+
+      {isCompleteModalOpen && (
+        <Modal
+          showLogo
+          title="이체가 완료되었어요"
+          amount={amount.toLocaleString()}
+          description={`${receiver.userName}님께 보냈어요`}
+          rewardLabel="갱신된 잔액"
+          reward={`${(sender.balance - amount).toLocaleString()}원`}
+          rewardDescription="도토리뱅크 1234-56-789012"
+          buttons={[
+            {
+              name: '확인',
+              active: true,
+              onClick: () => navigate('/'),
+            },
+          ]}
+        />
+      )}
     </div>
   )
 }
