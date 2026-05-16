@@ -1,6 +1,6 @@
 CREATE TABLE user_products (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    product_id BIGINT NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
     user_id INT NOT NULL,
     account_id INT NOT NULL,
     target_amount BIGINT NOT NULL,
