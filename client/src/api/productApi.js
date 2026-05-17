@@ -1,6 +1,6 @@
 // 전체 상품 조회 api
 export const getProducts = async () => {
-    const response = await fetch('http://localhost:5000/api/products');
+    const response = await fetch('/api/products');
 
     if(!response.ok) {
         const errorData = await response.json();
