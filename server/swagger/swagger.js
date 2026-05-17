@@ -11,7 +11,7 @@ const options = {
 
     servers: [
       {
-        url: "http://localhost:5000",
+        url: "http://localhost:5000"
       },
     ],
 
@@ -20,7 +20,7 @@ const options = {
         cookieAuth: {
           type: "apiKey",
           in: "cookie",
-          name: "accessToken",
+          name: "token",
         },
       },
     },

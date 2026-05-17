@@ -1,9 +1,9 @@
 CREATE TABLE interests
 (
-  id BIGINT
+  id INT
   AUTO_INCREMENT PRIMARY KEY COMMENT '금리 ID',
 
-    product_id BIGINT
+    product_id INT
         NOT NULL
         COMMENT '상품 ID',
 
