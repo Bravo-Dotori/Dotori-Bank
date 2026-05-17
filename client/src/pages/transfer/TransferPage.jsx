@@ -1,4 +1,4 @@
-import { use, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from "./transfer.module.css"
@@ -14,17 +14,56 @@ const TransferPage = () => {
 
   const [sender, setSender] = useState({
     accountName: '도토리뱅크 입출금계좌',
-    accountNumber: '123-4567-89101',
-    balance: 3000000
+    accountNumber: '',
+    balance: 0
   });
+
   const [receiver, setReceiver] = useState({
     bank: '도토리뱅크',
     accountNumber: '',
     userName: ''
   });
+
   const [amount, setAmount] = useState(0);
+
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      try {
+        const response = await fetch('/api/accounts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (!response.ok || !data.success) {
+          return;
+        }
+
+        const account = data.data[0];
+
+        setSender({
+          accountName: '도토리뱅크 입출금계좌',
+          accountNumber: account.account_number,
+          balance: account.balance,
+        });
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchAccount();
+  }, []);
 
   const handleAmount = (value) => {
     setAmount((prev) => prev + value);
@@ -158,7 +197,7 @@ const TransferPage = () => {
           description={`${receiver.userName}님께 보냈어요`}
           rewardLabel="갱신된 잔액"
           reward={`${(sender.balance - amount).toLocaleString()}원`}
-          rewardDescription="도토리뱅크 1234-56-789012"
+          rewardDescription={sender.accountNumber}
           buttons={[
             {
               name: '확인',

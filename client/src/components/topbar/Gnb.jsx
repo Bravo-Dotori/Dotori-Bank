@@ -24,9 +24,30 @@ const Gnb = () => {
     navigate(`/`);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/user/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        return;
+      }
+
+      logout();
+
+      setActiveMenu('deposit');
+
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
