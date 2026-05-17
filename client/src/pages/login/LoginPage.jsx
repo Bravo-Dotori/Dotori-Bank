@@ -5,8 +5,28 @@ import PageHeader from "@/components/pageHeader/PageHeader"
 import Form from "@/components/form/Form"
 import Btn from "@/components/button/Btn"
 import AuthRedirect from "@/components/authRedirect/AuthRedirect"
+import { useState } from "react"
+import useStore from "@/store/useStore";
+import { login } from "../../api/loginApi"
+import { useNavigate } from "react-router-dom"
+
 
 const LoginPage = () => {
+  const navigator = useNavigate();
+  const setLogin = useStore((state) => state.setLogin);
+  
+  const [user_id, setUser_id] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginEvent = async () => {
+      try {
+          const data = await login(user_id, password);
+          setLogin(data.user);
+          navigator("/account")
+      } catch (err) {
+          alert(err.message);
+      }
+  }
   return (
     <div className={styles.main}>
       <div className={styles.leftPanel}>
@@ -34,11 +54,13 @@ const LoginPage = () => {
               name="아이디"
               type="text"
               placeholder="아이디를 입력하세요"
+              onChange={(e) => setUser_id(e.target.value)}
             />
             <Form
               name="비밀번호"
               type="password"
               placeholder="비밀번호를 입력하세요"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <Btn
@@ -46,6 +68,7 @@ const LoginPage = () => {
             size="big"
             value="/"
             active
+            onClick={loginEvent}
           />
           <AuthRedirect
             text="아직 회원이 아니신가요?"

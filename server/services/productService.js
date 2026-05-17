@@ -71,3 +71,75 @@ exports.products = async () => {
         }
     }
 }
+
+// 내 상품 목록 조회
+exports.myProducts = async (user_id) => {
+    try {
+        const result = await productModel.myProducts(user_id);
+        
+        if (result.length === 0) {
+            return {
+                success: false,
+                message: "상품을 찾을 수 없습니다."
+            };
+        }
+        
+        return {
+            success: true,
+            products: result
+        };
+    } catch (err) {
+        console.error("service 상품 상세 조회 에러:", err);
+        return {
+            success: false,
+            message: "상품 목록 조회를 다시 시도해주세요."
+        }
+    }
+}
+
+// 내 상품 상세 조회
+exports.myProductDetail = async (user_product_id, user_id) => {
+    try {
+        const result = await productModel.myProductDetail(user_product_id, user_id);
+
+        if (result.length === 0) {
+            return {
+                success: false,
+                message: "상품을 찾을 수 없습니다."
+            };
+        }
+
+        return {
+            success: true,
+            product: result
+        };
+
+    } catch (err) {
+        console.error("service 내 상품 상세 조회 에러:", err);
+
+        return {
+            success: false,
+            message: "상품 상세 조회를 다시 시도해주세요."
+        };
+    }
+}
+
+// 내 상품 해지
+exports.productCancel = async (productId, user_id) => {
+    try {
+        await productModel.productCancel(productId, user_id);
+
+        return {
+            success: true,
+            message: "상품 해지가 완료되었습니다."
+        };
+
+    } catch (err) {
+        console.error("service 내 상품 상세 조회 에러:", err);
+
+        return {
+            success: false,
+            message: "상품 해지가 실패되었습니다."
+        };
+    }
+}

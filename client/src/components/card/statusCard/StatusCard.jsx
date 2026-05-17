@@ -9,7 +9,6 @@ const StatusCard = ({
     desc,
     children
 }) => {
-    console.log(styles);
   return (
     <div className={styles.card}>
         <div className={styles.img}>
