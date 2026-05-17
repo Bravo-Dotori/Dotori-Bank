@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import styles from "./products.module.css"
 
@@ -7,93 +8,107 @@ import PageHeader from "@/components/pageHeader/PageHeader"
 
 import RateCard from "@/components/card/rateCard/RateCard"
 import InfoCard from "../../components/card/infoCard/InfoCard"
-import NoticeCard from "../../components/card/noticeCard/NoticeCard"
+import StatusCard from "@/components/card/StatusCard/StatusCard";
 
 import Modal from "@/components/modal/Modal"
 
+import { useMyProductDetailQuery, useProductCancelMutation } from '../../hooks/useProductsQuery';
+
 const ProductsDetailPage = () => {
+    const { productId } = useParams();
     const [modalType, setModalType] = useState(null);
-    const [interestRate, setInterestRate] = useState(4.0);
-    const [infoType, setInfoType] = useState('warning');
-    const [noticeTitle, setNoticeTitle] = useState('주의사항');
-    const [noticeText, setNoticeText] = useState([
-        '중도 해지 시 우대 금리가 적용되지 않으며 기본 금리 절반만 지급됩니다',
-        '만기 전 인출 불가 (해지만 가능)',
-        '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다'
-    ]);
+    const {data, isLoading, isError, error} = useMyProductDetailQuery(productId);
+    const productCancelMutation =useProductCancelMutation();
+
+    const product = data?.product?.[0];
+    console.log(product)
+    console.log(productId)
+    console.log(data)
+    
+    const productCancel = async () => {
+      try {
+          await productCancelMutation.mutateAsync(productId);
+          setModalType('complete');
+      } catch (err) {
+          alert(err.message);
+      }
+    }
 
     return (
         <div className='main'>
             <div className={styles.container}>
                 <div className={styles.productsDetail}>
-                    <Breadcrumb
-                        items={[
-                            {
-                                label: '가입 상품',
-                                path: '/products',
-                            },
-                            {
-                                label: '도토리 정기예금',
-                                path: '/products/1',
-                            },
-                        ]}
-                    />
-
-                    <div className={styles.section}>
-                        <div className={styles.leftSection}>
-                            <PageHeader
-                                title="도토리 정기예금"
-                                description="안정적인 24개월 정기 예금 — 매월 일정 금액으로 도토리를 모아보세요"
-                                big
-                                left
-                            />
-
-                            <RateCard
-                                baseRate={interestRate}
-                            />
-
-                            <InfoCard
+                  {isLoading ? (
+                        <StatusCard title="상품을 불러오고 있어요" />
+                    ) : isError ? (
+                        <StatusCard title={error.message} isError />
+                    ) : (
+                        <>
+                            <Breadcrumb
                                 items={[
                                     {
-                                        label: '가입 금액',
-                                        value: '월 10만원 ~ 1,000만원',
+                                        label: '가입 상품',
+                                        path: '/products',
                                     },
                                     {
-                                        label: '가입 개월',
-                                        value: '6개월 ~ 24개월',
-                                    },
-                                    {
-                                        label: '이자 지급',
-                                        value: '만기 일시 지급',
+                                        label: product?.product_name,
+                                        path: `/products/${productId}`,
                                     },
                                 ]}
                             />
 
-                            <NoticeCard
-                                infoType={infoType}
-                                noticeTitle={noticeTitle}
-                                noticeText={noticeText}
-                            />
-                        </div>
+                            <div className={styles.section}>
+                                <div className={styles.leftSection}>
 
-                        <div className={styles.rightSection}>
-                            <div className={styles.rightCard}>
-                                <div
-                                    className={styles.terminate}
-                                    onClick={() =>
-                                        setModalType('terminate')
-                                    }
-                                >
-                                    해지하기
+                                    <PageHeader
+                                        title={product?.product_name}
+                                        description={product?.product_desc}
+                                        big
+                                        left
+                                    />
+
+                                    <RateCard
+                                        baseRate={Number(product?.interest_rate || 0)}
+                                    />
+
+                                    <InfoCard
+                                        items={[
+                                            {
+                                                label: '가입 개월',
+                                                value: product?.target_period_months
+                                                    ? `${product.target_period_months}개월`
+                                                    : '자유입출금',
+                                            },
+                                            {
+                                                label: '상품 종류',
+                                                value: product?.product_type,
+                                            },
+                                        ]}
+                                    />
+
                                 </div>
 
-                                <div className={styles.protectText}>
-                                    예금자 보호법에 따라
-                                    1인당 5천만원까지 보호
+                                <div className={styles.rightSection}>
+                                    <div className={styles.rightCard}>
+                                        <div
+                                            className={styles.terminate}
+                                            onClick={() =>
+                                                setModalType('terminate')
+                                            }
+                                        >
+                                            해지하기
+                                        </div>
+
+                                        <div className={styles.protectText}>
+                                            예금자 보호법에 따라
+                                            1인당 5천만원까지 보호
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    )
+                  }
                 </div>
             </div>
 
@@ -114,8 +129,7 @@ const ProductsDetailPage = () => {
                         },
                         {
                             name: '해지하기',
-                            onClick: () =>
-                                setModalType('complete'),
+                            onClick: productCancel,
                         },
                     ]}
                 />

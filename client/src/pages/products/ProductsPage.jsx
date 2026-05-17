@@ -1,63 +1,16 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 import styles from "./products.module.css"
 
 import PageHeader from "@/components/pageHeader/PageHeader"
 import DepositCard from "@/components/card/depositCard/DepositCard"
+import StatusCard from "@/components/card/StatusCard/StatusCard";
+
+import { useMyProductsQuery } from '../../hooks/useProductsQuery'
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      title: "안심 정기예금",
-      rate: 3.5,
-      period: "12",
-      description: "안정적인 첫 예금 — 매월 이자 지급",
-    },
-    {
-      id: 2,
-      title: "도토리 정기예금",
-      rate: 4.0,
-      period: "24",
-      description: "긴 호흡으로 더 큰 이자를 받으세요",
-    },
-    {
-      id: 3,
-      title: "꾸준 정기예금",
-      rate: 4.5,
-      period: "36",
-      description: "오래 묶을수록 커지는 우대 금리",
-    },
-    {
-      id: 4,
-      title: "태산 우대예금",
-      rate: 5.0,
-      period: "12",
-      description: "신규 가입자를 위한 특별 우대",
-    },
-    {
-      id: 5,
-      title: "청년 도약예금",
-      rate: 5.5,
-      period: "24",
-      description: "만 19~34세 청년을 위한 고금리 예금",
-    },
-    {
-      id: 6,
-      title: "안심 시니어예금",
-      rate: 4.2,
-      period: "12",
-      description: "만 60세 이상 안정 예금",
-    },
-    {
-      id: 7,
-      title: "맘대로 예금",
-      rate: 3.0,
-      period: "6",
-      description: "짧게 굴리고 싶은 분께",
-    },
-  ]);
+  
+  const { data, isLoading, isError, error } = useMyProductsQuery();
+  const products = data?.products || [];
+  console.log(products)
 
   return (
     <div className='main'>
@@ -71,16 +24,32 @@ const ProductsPage = () => {
           />
 
           <div className={styles.cardGrid}>
-            {products.map((product) => (
-              <DepositCard
-                key={product.id}
-                title={product.title}
-                rate={product.rate}
-                period={product.period}
-                description={product.description}
-                value={'/productsDetail'}
-              />
-            ))}
+            {isLoading ? (
+                  <StatusCard title="상품을 불러오고 있어요" />
+              ) : isError ? (
+                  <StatusCard title={error.message} isError />
+
+              ) : products.length === 0 ? (
+                  <StatusCard title="가입한 상품이 없습니다." />
+
+              ) : (
+                  products.map((product,index) => (
+                    <DepositCard
+                      key={index}
+                      title={product.product_name}
+                      type={product.product_type}
+                      rate={product.interest_rate}
+                      maxPeriod={
+                        product.product_type === "deposit"
+                          ? product.target_period_months
+                          : undefined
+                      }
+                      description={product.product_desc}
+                      value={`/products/${product.id}`}
+                    />
+                  ))
+              )
+            }
           </div>
 
         </div>

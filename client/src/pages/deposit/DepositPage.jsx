@@ -65,34 +65,35 @@ const ProductsPage = () => {
                 )}
                 <div className={styles.products}>
                     <PageHeader
-                    title="가입 상품"
-                    description="가입한 예금 상품을 확인하세요"
+                    title="예금 상품"
+                    description="나에게 맞는 예금 상품을 살펴보세요"
                     big
                     left
                     />
 
                     <div className={styles.cardGrid}>
-                    {isLoading ? (
-                        <StatusCard title="상품을 불러오고 있어요" />
-                    ) : isError ? (
-                        <StatusCard title={error.message} isError />
+                      {isLoading ? (
+                          <StatusCard title="상품을 불러오고 있어요" />
+                      ) : isError ? (
+                          <StatusCard title={error.message} isError />
 
-                    ) : products.length === 0 ? (
-                        <StatusCard desc="가입 가능한 상품이 없습니다." />
+                      ) : products.length === 0 ? (
+                          <StatusCard title="가입 가능한 상품이 없습니다." />
 
-                    ) : (
-                        products.map((product, index) => (
-                            <DepositCard
-                                key={index}
-                                title={product.product_name}
-                                rate={product.interest_rate}
-                                maxPeriod={product.max_period_months}
-                                description={product.product_desc}
-                                btnText="가입하기"
-                                onClick={signupClickEvent}
-                            />
-                        ))
-                    )}
+                      ) : (
+                          products.map((product, index) => (
+                              <DepositCard
+                                  key={index}
+                                  title={product.product_name}
+                                  type={product.product_type}
+                                  rate={product.interest_rate}
+                                  maxPeriod={product.max_period_months}
+                                  description={product.product_desc}
+                                  btnText="가입하기"
+                                  onClick={signupClickEvent}
+                              />
+                          ))
+                      )}
                     </div>
 
                 </div>

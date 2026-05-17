@@ -55,6 +55,7 @@ exports.products = async () => {
     const sql = `
         select 
             p.product_name,
+            p.product_type,
             p.max_period_months,
             i.interest_rate,
             p.product_desc
@@ -62,5 +63,57 @@ exports.products = async () => {
     `
 
     const [rows] = await pool.query(sql);
+    return rows;
+}
+
+// 내 상품 목록 조회
+exports.myProducts = async (user_id) => {
+    const sql = `
+        select 
+            u.id,
+            p.product_name,
+            p.product_type,
+            u.target_period_months,
+            u.interest_rate,
+            p.product_desc
+        from user_products u join products p on u.product_id = p.id
+        where u.user_id = ? and u.status = "ACTIVE"
+        order by u.created_at desc
+    `
+
+    const [rows] = await pool.query(sql, [user_id]);
+    return rows;
+}
+
+// 내 상품 상세 조회
+exports.myProductDetail = async (user_product_id, user_id) => {
+    const sql = `
+        select
+            u.id,
+            p.product_name,
+            p.product_type,
+            u.target_period_months,
+            u.interest_rate,
+            p.product_desc
+        from user_products u
+        join products p
+            on u.product_id = p.id
+        where u.id = ?
+            AND u.user_id = ?
+    `;
+
+    const [rows] = await pool.query(sql, [user_product_id, user_id]);
+    return rows;
+}
+
+// 내 상품 해지
+exports.productCancel = async (productId, user_id) => {
+    const sql = `
+        update user_products
+        set status = 'CANCELLED'
+        where id = ? and user_id = ?
+    `;
+
+    const [rows] = await pool.query(sql, [productId, user_id]);
     return rows;
 }

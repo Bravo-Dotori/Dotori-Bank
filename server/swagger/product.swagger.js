@@ -187,4 +187,98 @@
  *             example:
  *               success: false
  *               message: 상품 목록 조회를 다시 시도해주세요.
+ * 
+ */
+/**
+ * @swagger
+ * /api/products/myProducts:
+ *   get:
+ *     summary: 내 상품 목록 조회
+ *     description: 로그인한 사용자의 가입 상품 목록을 조회합니다.
+ *     tags: [Products]
+ *     
+ *     security:
+ *       - cookieAuth: []
+ *
+ *     responses:
+ *       200:
+ *         description: 내 상품 목록 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 상품 목록 조회에 성공했습니다.
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       product_name:
+ *                         type: string
+ *                         example: 도토리 정기예금 12개월
+ *                       product_type:
+ *                         type: string
+ *                         example: deposit
+ *                       target_period_months:
+ *                         type: integer
+ *                         example: 12
+ *                       interest_rate:
+ *                         type: number
+ *                         format: float
+ *                         example: 3.8
+ *                       product_desc:
+ *                         type: string
+ *                         example: 안정적으로 목돈을 모을 수 있는 예금 상품입니다.
+ *
+ *             example:
+ *               success: true
+ *               message: 상품 목록 조회에 성공했습니다.
+ *               products:
+ *                 - id: 1
+ *                   product_name: 도토리 정기예금 12개월
+ *                   product_type: deposit
+ *                   target_period_months: 12
+ *                   interest_rate: 3.8
+ *                   product_desc: 안정적으로 목돈을 모을 수 있는 예금 상품입니다.
+ *
+ *                 - id: 2
+ *                   product_name: 도토리 자유적금
+ *                   product_type: savings
+ *                   target_period_months: 24
+ *                   interest_rate: 4.2
+ *                   product_desc: 자유롭게 납입 가능한 적금 상품입니다.
+ *
+ *       401:
+ *         description: 로그인 필요
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errorCode: TOKEN_REQUIRED
+ *               message: 로그인 필요
+ *
+ *       404:
+ *         description: 가입한 상품 없음
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 상품을 찾을 수 없습니다.
+ *
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 상품 목록 조회를 다시 시도해주세요.
  */

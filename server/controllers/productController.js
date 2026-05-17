@@ -53,3 +53,92 @@ exports.products = async (req, res) => {
         })
     }
 }
+
+// 내 상품 목록 조회
+exports.myProducts = async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const result = await productService.myProducts(user_id);
+        
+        if (!result.success) {
+            return res.status(404).json({
+                success: false,
+                message: result.message
+            });
+        } 
+            
+        return res.status(200).json({
+            success: true,
+            message: "상품 목록 조회에 성공했습니다.",
+            products: result.products
+        });
+    } catch (err) {
+        console.error("상품목록 조회 에러 : ", err);
+        return res.status(500).json({
+            success: false, 
+            message: "상품 목록 조회를 다시 시도해주세요."
+        })
+    }
+}
+
+// 내 상품 상세 조회
+exports.myProductDetail = async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const { productId } = req.params;
+
+        const result = await productService.myProductDetail(productId, user_id);
+
+        if (!result.success) {
+            return res.status(404).json({
+                success: false,
+                message: result.message
+            });
+        } 
+
+        return res.status(200).json({
+            success: true,
+            message: "내 상품 목록 조회에 성공했습니다.",
+            product: result.product
+        });
+
+    } catch (err) {
+        console.error("내 상품 상세 조회 에러:", err);
+
+        return res.status(500).json({
+            success: false,
+            message: "상품 상세 조회 서버 에러"
+        });
+    }
+}
+
+// 내 상품 해지
+exports.productCancel = async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const { productId } = req.params;
+
+        const result = await productService.productCancel(productId, user_id);
+
+        if (!result.success) {
+            return res.status(404).json({
+                success: false,
+                message: result.message
+            });
+        } 
+
+        return res.status(200).json({
+            success: true,
+            message: "상품 해지 성공했습니다.",
+            products: result.products
+        });
+
+    } catch (err) {
+        console.error("내 상품 해지 에러:", err);
+
+        return res.status(500).json({
+            success: false,
+            message: "상품 해지를 실패했습니다."
+        });
+    }
+}
