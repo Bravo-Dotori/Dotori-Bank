@@ -50,6 +50,7 @@ const DepositCard = ({
                 name={btnText || "자세히 보기"}
                 size="big"
                 value={value}
+                onClick={onClick}
             />
         </div>
     )
