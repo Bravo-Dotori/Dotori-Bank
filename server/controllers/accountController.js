@@ -34,17 +34,17 @@ exports.getAccounts = async(req, res) => {
 // 받는 계좌 조회
 exports.getToAccounts = async(req, res) => {
   try {
-    const { account_number, name } = req.body;
+    const { account_number } = req.body;
 
     // 필수값 검사
-    if (!account_number || !name) {
+    if (!account_number) {
       return res.status(400).json({
         success: false,
         message: "필수값 누락"
       });
     }
     
-    const result = await accountService.getToAccount(account_number, name);
+    const result = await accountService.getToAccount(account_number);
 
     if(!result.success) {
       return res.status(404).json({

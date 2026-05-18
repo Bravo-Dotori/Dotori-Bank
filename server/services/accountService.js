@@ -30,9 +30,9 @@ exports.getAccounts = async (user_id) => {
 }
 
 // 받는 계좌 조회
-exports.getToAccount = async (account_number, name) => {
+exports.getToAccount = async (account_number) => {
   try {
-    const result = await accountModel.getToAccount(account_number, name);
+    const result = await accountModel.getToAccount(account_number);
 
     if(result.length === 0) {
       return {
