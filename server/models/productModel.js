@@ -54,7 +54,7 @@ exports.findProductDetailById = async (product_id) => {
 exports.products = async () => {
     const sql = `
         select 
-            p.product_id,
+            p.id,
             p.product_name,
             p.product_type,
             p.max_period_months,
