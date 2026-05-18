@@ -81,7 +81,11 @@ const ProductsDetailPage = () => {
                                             },
                                             {
                                                 label: '상품 종류',
-                                                value: product?.product_type,
+                                                value:  product?.product_type === "demand"
+                                                    ? "입출금"
+                                                    : product?.product_type === "deposit"
+                                                    ? "예금"
+                                                    : ""
                                             },
                                         ]}
                                     />
@@ -117,8 +121,6 @@ const ProductsDetailPage = () => {
                     showLogo
                     type="danger"
                     title='정말로 해지하시겠습니까?'
-                    rewardLabel='예상 수령 금액'
-                    reward='2,950,000원'
                     rewardDescription='도토리뱅크 1234-56-789012'
                     buttons={[
                         {

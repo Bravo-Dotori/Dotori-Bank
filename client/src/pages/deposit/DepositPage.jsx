@@ -19,6 +19,7 @@ const ProductsPage = () => {
     const navigate = useNavigate();
 
     const isLogin = useStore((state) => state.isLogin);
+    const isAuthChecked = useStore((state) => state.isAuthChecked);
     console.log(isLogin);
 
     const { data, isLoading, isError, error } = useProductsQuery();
@@ -49,6 +50,10 @@ const ProductsPage = () => {
         };
     }, [isLogin]);
 
+    if (!isAuthChecked) {
+        return null;
+    }
+
     return (
         <div className='main'>
             
@@ -72,7 +77,7 @@ const ProductsPage = () => {
                     />
 
                     <div className={styles.cardGrid}>
-                      {isLoading ? (
+                      {isAuthChecked == false && isLoading ? (
                           <StatusCard title="상품을 불러오고 있어요" />
                       ) : isError ? (
                           <StatusCard title={error.message} isError />
