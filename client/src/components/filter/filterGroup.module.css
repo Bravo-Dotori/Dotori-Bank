@@ -1,0 +1,15 @@
+.filterWrap {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.filterWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filterGroup {
+    display: flex;
+    gap: 12px;
+}

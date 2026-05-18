@@ -1,64 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import styles from "./history.module.css"
+import styles from "./history.module.css";
 
-import PageHeader from "@/components/pageHeader/PageHeader"
-import TransactionSection from "@/components/transaction/TransactionSection"
-import Btn from "@/components/button/Btn"
+import PageHeader from "@/components/pageHeader/PageHeader";
+import TransactionSection from "@/components/transaction/TransactionSection";
+import Btn from "@/components/button/Btn";
+import Pagination from "@/components/pagination/Pagination";
+import { useTransactionsQuery } from "./../../hooks/useTransactionsQuery";
+import StatusCard from "@/components/card/StatusCard/StatusCard";
 
 const HistoryPage = () => {
-  const transactions = [
-    {
-      id: 1,
-      type: "withdraw",
-      title: "도토리 정기예금",
-      description: "예금 가입",
-      date: "2026.05.09 14:32",
-      amount: "- 3,000,000원",
-      period: "3개월",
-    },
-    {
-      id: 2,
-      type: "deposit",
-      title: "가입 축하금",
-      description: "입금",
-      date: "2026.05.09 14:30",
-      amount: "+ 3,000,000원",
-      period: "1개월",
-    },
-    {
-      id: 3,
-      type: "deposit",
-      title: "김아람님으로부터",
-      description: "이체 받음",
-      date: "2026.03.08 09:15",
-      amount: "+ 50,000원",
-      period: "6개월",
-    },
-    {
-      id: 4,
-      type: "withdraw",
-      title: "박민수님께",
-      description: "이체",
-      date: "2026.02.07 18:42",
-      amount: "- 120,000원",
-      period: "1년",
-    },
-    {
-      id: 5,
-      type: "withdraw",
-      title: "도토리 카페",
-      description: "결제",
-      date: "2026.01.07 12:08",
-      amount: "- 4,500원",
-      period: "3개월",
-    },
-  ];
+  const [page, setPage] = useState(1);
 
-  const [selectedPeriod, setSelectedPeriod] = useState("1개월");
-  const [selectedType, setSelectedType] = useState("전체");
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useTransactionsQuery();
+
+  const transactionData = data?.data;
+
+  const transactions =
+    transactionData?.transactions || [];
+
+  const [selectedPeriod, setSelectedPeriod] =
+    useState("1개월");
+
+  const [selectedType, setSelectedType] =
+    useState("전체");
 
   const periodOptions = [
+    "전체",
     "1개월",
     "3개월",
     "6개월",
@@ -69,41 +42,95 @@ const HistoryPage = () => {
     "전체",
     "입금",
     "출금",
+    "이체",
   ];
 
-  const filteredTransactions = transactions.filter((item) => {
-    const transactionDate = new Date(item.date.replace(/\./g, '-'));
-    const currentDate = new Date();
+  // 필터 처리
+  const filteredTransactions =
+    transactions.filter((item) => {
+      const transactionDate = new Date(
+        item.transaction_at
+      );
 
-    const diffTime = currentDate - transactionDate;
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      const currentDate = new Date();
 
-    let maxDays = 30;
+      const diffTime =
+        currentDate.getTime() -
+        transactionDate.getTime();
 
-    if (selectedPeriod === "3개월") {
-      maxDays = 90;
-    }
+      const diffDays = Math.floor(
+        diffTime / (1000 * 60 * 60 * 24)
+      );
 
-    if (selectedPeriod === "6개월") {
-      maxDays = 180;
-    }
+      let maxDays = 30;
 
-    if (selectedPeriod === "1년") {
-      maxDays = 365;
-    }
+      if (selectedPeriod === "전체") {
+        maxDays = Infinity;
+      }
 
-    const periodMatch = diffDays <= maxDays;
+      if (selectedPeriod === "3개월") {
+        maxDays = 90;
+      }
 
-    const typeMatch =
-      selectedType === "전체" ||
-      (selectedType === "입금" && item.type === "deposit") ||
-      (selectedType === "출금" && item.type === "withdraw");
+      if (selectedPeriod === "6개월") {
+        maxDays = 180;
+      }
 
-    return periodMatch && typeMatch;
-  });
+      if (selectedPeriod === "1년") {
+        maxDays = 365;
+      }
+
+      const periodMatch =
+        diffDays <= maxDays;
+
+      const typeMatch =
+        selectedType === "전체" ||
+        (selectedType === "입금" &&
+          (item.type === "DEPOSIT" ||
+            item.to_account_id ===
+              transactionData?.account_id)) ||
+        (selectedType === "출금" &&
+          item.type === "WITHDRAWAL") ||
+        (selectedType === "이체" &&
+          item.type === "TRANSFER");
+
+      return periodMatch && typeMatch;
+    });
+
+  const ITEMS_PER_PAGE = 10; // 10개씩 보여지게 하기
+  
+  // 필터 바뀌면 1페이지로
+  useEffect(() => {
+  if (page !== 1) {
+    setPage(1);
+  }
+}, [selectedPeriod, selectedType]);
+
+  // 페이지네이션
+  const totalCount =
+    filteredTransactions.length;
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      totalCount / ITEMS_PER_PAGE
+    )
+  );
+
+  const startIndex =
+    (page - 1) * ITEMS_PER_PAGE;
+
+  const endIndex =
+    startIndex + ITEMS_PER_PAGE;
+
+  const paginatedTransactions =
+    filteredTransactions.slice(
+      startIndex,
+      endIndex
+    );
 
   return (
-    <div className='main'>
+    <div className="main">
       <div className={styles.container}>
         <div className={styles.history}>
           <PageHeader
@@ -120,8 +147,12 @@ const HistoryPage = () => {
                   key={option}
                   type="radio"
                   name={option}
-                  active={selectedPeriod === option}
-                  onClick={() => setSelectedPeriod(option)}
+                  active={
+                    selectedPeriod === option
+                  }
+                  onClick={() =>
+                    setSelectedPeriod(option)
+                  }
                 />
               ))}
             </div>
@@ -132,22 +163,57 @@ const HistoryPage = () => {
                   key={option}
                   type="radio"
                   name={option}
-                  active={selectedType === option}
-                  onClick={() => setSelectedType(option)}
+                  active={
+                    selectedType === option
+                  }
+                  onClick={() =>
+                    setSelectedType(option)
+                  }
                 />
               ))}
             </div>
           </div>
 
-          <TransactionSection
-            title="전체 거래내역"
-            transactions={filteredTransactions}
-          />
-
+          {isLoading ? (
+            <StatusCard title="거래내역을 불러오고 있어요" />
+          ) : isError ? (
+            <StatusCard
+              title={error.message}
+              isError
+            />
+          ) : (
+            <>
+              <TransactionSection
+                title="전체 거래내역"
+                transactions={
+                  paginatedTransactions
+                }
+                accountId={
+                  transactionData?.account_id
+                }
+                totalCount={totalCount}
+                desc={
+                    <>
+                        선택한 기간 내 거래내역이 없어요<br />
+                        다른 기간을 선택하거나 입출금계좌로 돌아가보세요
+                    </>
+                }
+                btnText="내 계좌로 돌아가기"
+                btnValue="/account"
+              />
+              {totalCount !== 0 && (
+                <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                />
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HistoryPage
+export default HistoryPage;

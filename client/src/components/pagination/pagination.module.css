@@ -1,0 +1,44 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.pageBtn,
+.arrowBtn {
+  width: 54px;
+  height: 54px;
+
+  border: none;
+  border-radius: 16px;
+
+  background-color: #f4efe6;
+
+  font-size: 16px;
+  color: #5b3b1f;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+.arrowBtn {
+    background: none;
+    font-size: 30px;
+}
+
+.pageBtn:hover,
+.arrowBtn:hover {
+  opacity: 0.8;
+}
+
+.active {
+  background-color: #9b6a3c;
+  color: white;
+  font-weight: 600;
+}
+
+.arrowBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import MainLayout from '@/layout/MainLayout';
 
@@ -19,12 +19,12 @@ import DepositApply from '@/pages/deposit/DepositApplyPage';
 
 import Onboarding from '@/pages/onboarding/OnboardingPage';
 import Recommend from '@/pages/recommend/RecommendPage';
-import Admin from './pages/admin/AdminPage';
+import Admin from '@/pages/admin/AdminPage';
 
 import useStore from '@/store/useStore';
 
 const App = () => {
-  const { setLogin, logout, setAuthChecked } = useStore();
+  const { user, setLogin, logout, isAuthChecked, setAuthChecked } = useStore();
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -55,10 +55,20 @@ const App = () => {
 
     verifyUser();
   }, []);
-
+console.log(user);
   return (
     <BrowserRouter>
       <Routes>
+        
+        <Route path="/admin" element={
+            !isAuthChecked ? null : !user ? (
+                <Navigate to="/login" />
+            ) : user.role === "admin" ? (
+                <Admin />
+            ) : (
+                <Navigate to="/" />
+            )}
+        />
         <Route path="/" element={<MainLayout />}>
           <Route path="login" element={<Login />} />
           <Route path='signup' element={<Signup />} />
@@ -77,7 +87,6 @@ const App = () => {
 
           <Route path='onboarding' element={<Onboarding />} />
           <Route path='recommend' element={<Recommend />} />
-          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
