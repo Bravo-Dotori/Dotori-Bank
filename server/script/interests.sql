@@ -1,43 +1,16 @@
-CREATE TABLE interests
-(
-  id BIGINT
-  AUTO_INCREMENT PRIMARY KEY COMMENT '금리 ID',
-
-    product_id BIGINT
-        NOT NULL
-        COMMENT '상품 ID',
-
-    period_months INT
-        NOT NULL
-        COMMENT '3개월/6개월/12개월/24개월',
-
-    interest_rate DECIMAL
-  (5,3)
-        NOT NULL
-        COMMENT '기본 금리',
-
-    early_termination_rate DECIMAL
-  (5,3)
-        NULL
-        COMMENT '중도해지 시 적용 금리 / NULL이면 이자 없음',
-
-    created_at TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        COMMENT '최초 등록 시 자동 저장',
-
-    updated_at TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        ON
-  UPDATE CURRENT_TIMESTAMP
-        COMMENT '수정 시 자동 갱신',
+CREATE TABLE interests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    period_months INT NOT NULL,
+    interest_rate DECIMAL(5,3) NOT NULL,
+    early_termination_rate DECIMAL(5,3) NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_interests_product
-  FOREIGN KEY
-  (product_id)
-        REFERENCES products
-  (id)
+        FOREIGN KEY (product_id)
+        REFERENCES products(id)
+        ON DELETE CASCADE
 );
 
 INSERT INTO interests
@@ -56,5 +29,10 @@ VALUES
 (7, 12, 3.900, 1.950),
 (7, 24, 4.100, 2.050),
 (8, 24, 4.500, 2.250),
-(9, NULL, 0.100, NULL);
-
+(9, 6, 2.000, 1.000),
+(9, 12, 2.300, 1.150),
+(9, 24, 2.600, 1.300),
+(10, 12, 3.000, 1.500),
+(10, 24, 3.300, 1.650),
+(10, 36, 3.600, 1.800),
+(11, 0, 0.100, NULL);

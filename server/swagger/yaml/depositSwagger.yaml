@@ -1,0 +1,120 @@
+openapi: 3.0.0
+
+info:
+  title: Dotori Bank API
+  version: 1.0.0
+  description: 예금 가입 API 문서
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /api/deposits:
+    post:
+      summary: 예금 상품 가입
+      description: 선택한 예금 상품에 가입하고 예금 계좌를 생성합니다.
+      tags:
+        - Deposits
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_id
+                - target_period_months
+                - target_amount
+              properties:
+                product_id:
+                  type: integer
+                  description: 가입할 예금 상품 ID
+                  example: 1
+                target_period_months:
+                  type: integer
+                  description: 가입 기간(개월)
+                  example: 6
+                target_amount:
+                  type: integer
+                  description: 예치 금액
+                  example: 100000
+
+      responses:
+        '201':
+          description: 예금 가입 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 예금 가입 성공
+                  data:
+                    type: object
+                    properties:
+                      depositAccountId:
+                        type: integer
+                        example: 6
+                      depositAccountNumber:
+                        type: string
+                        example: 100-7445-734254
+                      targetAmount:
+                        type: integer
+                        example: 100000
+                      targetPeriodMonths:
+                        type: integer
+                        example: 6
+                      interestRate:
+                        type: number
+                        example: 3.1
+                      maturityDate:
+                        type: string
+                        format: date
+                        example: 2026-11-15
+
+        '400':
+          description: 요청값 오류 또는 가입 조건 불일치
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 필수값 누락
+
+        '404':
+          description: 상품 또는 금리 정보 없음
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 해당 상품 없음
+
+        '500':
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 예금 가입 서버 에러

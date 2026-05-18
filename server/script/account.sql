@@ -10,10 +10,17 @@ CREATE TABLE accounts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_accounts_user
-    FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE CASCADE
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 CREATE INDEX idx_accounts_user_id
 ON accounts(user_id);
+
+INSERT INTO accounts
+(id, user_id, account_number, account_type, balance, transfer_limit, is_admin, is_active)
+VALUES
+(1, 1, '100-1111-111111', 'demand', 3000000, 3000000, FALSE, TRUE),
+(2, 2, '100-2222-222222', 'demand', 5000000, 3000000, FALSE, TRUE),
+(3, 3, '100-0000-000000', 'demand', 100000000, 100000000, TRUE, TRUE);

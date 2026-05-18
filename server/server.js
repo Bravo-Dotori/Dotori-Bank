@@ -11,6 +11,7 @@ const recommendRouter = require('./routes/recommendRouter');
 const productRouter = require("./routes/productRouter");
 const transferRouter = require('./routes/transferRouter');
 const depositRouter = require('./routes/depositRouter');
+const transactionRouter = require('./routes/transactionRouter');
 
 // swagger
 const swaggerUi = require("swagger-ui-express");
@@ -18,7 +19,7 @@ const swaggerSpec = require("./swagger/swagger");
 
 // cors 설정
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: true,
   credentials: true
 })); 
 
@@ -35,10 +36,11 @@ app.use("/api/recommend", recommendRouter);
 app.use("/api/products", productRouter);
 app.use("/api/transfer", transferRouter);
 app.use("/api/deposits", depositRouter);
+app.use("/api/transactions", transactionRouter);
 
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
-app.get('/favicon.ico', (_, res) => res.status(204)); // 파비콘 무시
+app.get('/favicon.ico', (_, res) => res.status(204)); // 파비콘 무시  
 
 // Swagger UI 설정
 app.use(
