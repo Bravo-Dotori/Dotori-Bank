@@ -5,7 +5,7 @@ const authorize = (roles) => {
       if (!roles.includes(req.user.role)) {
         return res.status(403).json({ 
           success: false, 
-          message: '관리자만 가능' 
+          message: "관리자만 가능"
         });
       }
       
