@@ -7,6 +7,7 @@ const TransactionSection = ({
   transactions,
   accountId,
   more,
+  totalCount
 }) => {
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const TransactionSection = ({
     <div className={styles.transactionSection}>
       <div className={styles.transactionHeader}>
         <div className={styles.transactionTitle}>
-          {title} · {transactions.length}건
+          {title} · {totalCount}건
         </div>
 
         {more && (
@@ -30,7 +31,7 @@ const TransactionSection = ({
       <div className={styles.transactionList}>
         {transactions.map((item) => {
           const isDeposit =
-            accountId === item.from_account_id;
+            accountId === item.to_account_id;
 
           return (
             <div

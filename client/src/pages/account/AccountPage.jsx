@@ -23,10 +23,8 @@ const AccountPage = () => {
 
   const transactionData = log?.data;
 
-  const transactions =
-    transactionData?.transactions?.slice(0, 5) || [];
+  const transactions = transactionData?.transactions?.slice(0, 5) || [];
 
-    console.log(transactions);
 
   return (
     <div className="main">
@@ -63,6 +61,7 @@ const AccountPage = () => {
               transactions={transactions}
               accountId={transactionData?.account_id}
               more
+              totalCount={transactions.length}
             />
           )}
         </div>
