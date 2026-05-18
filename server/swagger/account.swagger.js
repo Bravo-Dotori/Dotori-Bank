@@ -307,10 +307,6 @@
  *                 type: string
  *                 example: 100-5958-120061
  *
- *               name:
- *                 type: string
- *                 example: 홍길동
- *
  *     responses:
  *       200:
  *         description: 계좌 조회 성공
