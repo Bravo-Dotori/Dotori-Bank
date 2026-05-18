@@ -136,6 +136,12 @@
  *
  *       401:
  *         description: 인증 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errorCode: TOKEN_REQUIRED
+ *               message: 로그인 필요
  *
  *       500:
  *         description: 서버 오류

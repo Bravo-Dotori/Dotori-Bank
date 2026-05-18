@@ -81,12 +81,33 @@
  *
  *       400:
  *         description: 관리자 거래 내역 조회 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자 거래 내역 조회 실패
  *       401:
  *         description: 인증 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errorCode: TOKEN_REQUIRED
+ *               message: 로그인 필요
  *       403:
  *         description: 관리자 권한 없음
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자만 가능
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자 거래 내역 조회 서버 에러
  */
 
 /**
@@ -165,12 +186,33 @@
  *
  *       400:
  *         description: 관리자 고객 계좌 내역 조회 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자 고객내역 조회 실패
  *       401:
  *         description: 인증 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errorCode: TOKEN_REQUIRED
+ *               message: 로그인 필요
  *       403:
  *         description: 관리자 권한 없음
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자만 가능
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자 고객내역 조회 서버 에러
  */
 
 /**
@@ -232,10 +274,37 @@
  *
  *       400:
  *         description: 요청값 오류 또는 계좌 없음
+ *         content:
+ *           application/json:
+ *             examples:
+ *               invalidBoolean:
+ *                 value:
+ *                   success: false
+ *                   message: is_active 값은 boolean이어야 합니다.
+ *               notFound:
+ *                 value:
+ *                   success: false
+ *                   message: 계좌를 찾을 수 없습니다.
  *       401:
  *         description: 인증 실패
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               errorCode: TOKEN_REQUIRED
+ *               message: 로그인 필요
  *       403:
  *         description: 관리자 권한 없음
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 관리자만 가능
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 계좌 활성화 여부 변경 서버 에러
  */

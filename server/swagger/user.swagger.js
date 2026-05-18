@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @swagger
  * tags:
  *   name: User
@@ -17,6 +17,7 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [email, user_id, password, name, birth_date]
  *             properties:
  *               email:
  *                 type: string
@@ -26,7 +27,7 @@
  *                 example: testuser
  *               password:
  *                 type: string
- *                 example: 1234
+ *                 example: "1234"
  *               name:
  *                 type: string
  *                 example: 홍길동
@@ -34,21 +35,46 @@
  *                 type: string
  *                 format: date
  *                 example: 2000-01-01
- *             required:
- *               - email
- *               - user_id
- *               - password
- *               - name
- *               - birth_date
  *     responses:
  *       201:
  *         description: 회원가입 성공
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               message: 로그인 성공
+ *               user:
+ *                 id: 9
+ *                 user_id: testuser
+ *                 name: 홍길동
+ *                 role: user
  *       400:
  *         description: 필수값 누락
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 필수값 누락
  *       409:
  *         description: 중복 회원
+ *         content:
+ *           application/json:
+ *             examples:
+ *               duplicateEmail:
+ *                 value:
+ *                   success: false
+ *                   message: 이미 사용 중인 이메일입니다.
+ *               duplicateUserId:
+ *                 value:
+ *                   success: false
+ *                   message: 이미 사용 중인 아이디입니다.
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: controller 회원가입 실패
  */
 
 /**
@@ -63,23 +89,54 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [user_id, password]
  *             properties:
  *               user_id:
  *                 type: string
- *                 example: testuser
+ *                 example: admin
  *               password:
  *                 type: string
- *                 example: 1234
- *             required:
- *               - user_id
- *               - password
+ *                 example: "1234"
  *     responses:
  *       200:
  *         description: 로그인 성공
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               message: 로그인 성공
+ *               user:
+ *                 id: 1
+ *                 user_id: admin
+ *                 name: 관리자
+ *                 role: admin
+ *       400:
+ *         description: 필수값 누락
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 필수값 누락
  *       401:
  *         description: 로그인 실패
+ *         content:
+ *           application/json:
+ *             examples:
+ *               notFound:
+ *                 value:
+ *                   success: false
+ *                   message: 존재하지 않는 아이디입니다.
+ *               invalidPassword:
+ *                 value:
+ *                   success: false
+ *                   message: 비밀번호가 틀렸습니다.
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: controller 로그인 실패
  */
 
 /**
@@ -89,67 +146,39 @@
  *     summary: JWT 쿠키 인증
  *     tags: [User]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
- *         description: JWT 쿠키 인증
+ *         description: JWT 쿠키 인증 결과
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                       example: 1
- *                     user_id:
- *                       type: string
- *                       example: testuser
- *                     role:
- *                       type: string
- *                       example: admin
- *                     name:
- *                       type: string
- *                       example: 홍길동
- *
+ *             examples:
+ *               success:
+ *                 value:
+ *                   success: true
+ *                   user:
+ *                     id: 1
+ *                     user_id: admin
+ *                     name: 관리자
+ *                     role: admin
+ *               failed:
+ *                 value:
+ *                   success: false
+ *                   message: 토큰 검증 실패
  *       401:
  *         description: 인증 실패
  *         content:
  *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: false
- *                 errorCode:
- *                   type: string
- *                   example: TOKEN_REQUIRED
- *                 message:
- *                   type: string
- *                   example: 로그인 필요
- *             examples:
- *               tokenRequired:
- *                 summary: 토큰 없음
- *                 value:
- *                   success: false
- *                   errorCode: TOKEN_REQUIRED
- *                   message: 로그인 필요
- *
- *               invalidToken:
- *                 summary: 토큰 검증 실패
- *                 value:
- *                   success: false
- *                   errorCode: INVALID_TOKEN
- *                   message: 토큰 인증 실패
- *
+ *             example:
+ *               success: false
+ *               message: 토큰 검증 실패
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 토큰 검증 실패
  */
 
 /**
@@ -159,12 +188,27 @@
  *     summary: 로그아웃
  *     tags: [User]
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: 로그아웃 성공
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               message: 로그아웃 성공
  *       401:
  *         description: 인증되지 않은 사용자
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 인증되지 않은 사용자
  *       500:
  *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: 로그아웃 실패
  */
