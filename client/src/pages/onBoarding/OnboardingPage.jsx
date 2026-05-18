@@ -73,6 +73,80 @@ const OnboardingPage = () => {
         },
     ]
 
+    const handleRecommendClick = async () => {
+        try {
+            const goalTypeMap = {
+                '단기 비상금': 'emergency',
+                '투자금': 'investment',
+                '목돈 마련': 'lump_sum',
+                '여행 자금': 'travel',
+                '주거 자금': 'housing',
+            };
+
+            const amountRangeMap = {
+                '100만원 미만': 'under_100',
+                '100~400만원': '100_400',
+                '400~700만원': '400_700',
+                '700~1000만원': '700_1000',
+                '1000만원 이상': 'over_1000',
+            };
+
+            const incomeRangeMap = {
+                '100만원 미만': 'under_100',
+                '100~200만원': '100_200',
+                '200~300만원': '200_300',
+                '300만원 이상': 'over_300',
+            };
+
+            const periodMap = {
+                '3개월': 3,
+                '6개월': 6,
+                '1년': 12,
+                '2년': 24,
+            };
+
+            const preferenceTypeMap = {
+                '안정형': 'stable',
+                '균형형': 'balanced',
+                '수익형': 'profit',
+            };
+
+            const requestBody = {
+                goalType: goalTypeMap[selected[2]],
+                amountRange: amountRangeMap[selected[5]],
+                periodMonths: periodMap[selected[3]],
+                incomeRange: incomeRangeMap[selected[1]],
+                preferenceType: preferenceTypeMap[selected[4]],
+            };
+
+            const response = await fetch('/api/recommend/deposits', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requestBody),
+            });
+
+            const data = await response.json();
+
+            console.log(data);
+
+            if (!response.ok || !data.success) {
+                return;
+            }
+
+            navigate('/recommend', {
+                state: {
+                    recommendations: data.recommendations,
+                },
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className='main'>
             <div className={styles.container}>
@@ -104,9 +178,22 @@ const OnboardingPage = () => {
                             name="추천 결과 보기"
                             size="big"
                             active
-                            value="/recommend"
+                            onClick={handleRecommendClick}
+                            disabled={
+                                !selected[1] ||
+                                !selected[2] ||
+                                !selected[3] ||
+                                !selected[4] ||
+                                !selected[5]
+                            }
                         />
-                        <div className={styles.skip} onClick={() => navigate('/')}>건너뛰고 전체 상품 둘러보기</div>
+
+                        <div
+                            className={styles.skip}
+                            onClick={() => navigate('/')}
+                        >
+                            건너뛰고 전체 상품 둘러보기
+                        </div>
                     </div>
                 </div>
             </div>
