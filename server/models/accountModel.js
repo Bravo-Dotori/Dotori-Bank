@@ -11,6 +11,17 @@ exports.getAccounts = async (user_id) => {
   return rows;
 }
 
+// 받는 계좌 조회
+exports.getToAccount = async (account_number, name) => {
+  const sql = `
+    select *
+    from accounts a join users u on a.user_id = u.id
+    where a.account_number = ? and u.name = ?
+  `
+  const [rows] = await pool.query(sql, [account_number, name]);
+  return rows;
+}
+
 // 계좌 상세 조회
 exports.getAccountDetail = async(user_id, account_id) => {
   const sql = `
@@ -52,7 +63,6 @@ exports.createAccount = async (conn, user_id, account_number, account_type, bala
   return rows;
 }
 
-// 상품 가입시 내 상품에 등록
 // 상품 가입시 내 상품에 등록
 exports.createMyProduct = async (
   conn,

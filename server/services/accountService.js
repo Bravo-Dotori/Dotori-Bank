@@ -29,6 +29,32 @@ exports.getAccounts = async (user_id) => {
   }
 }
 
+// 받는 계좌 조회
+exports.getToAccount = async (account_number, name) => {
+  try {
+    const result = await accountModel.getToAccount(account_number, name);
+
+    if(result.length === 0) {
+      return {
+        success: false,
+        message: "계좌 정보 없음"
+      }
+    }
+    
+    return {
+      success: true,
+      accounts: result
+    }
+  } catch (err) {
+    console.error("service 계좌 조회 에러 : ", err);
+
+    return {
+      success: false,
+      message: "service 계좌 서버 에러"
+    }
+  }
+}
+
 // 계좌 상세 조회
 exports.getAccountDetail = async (user_id, account_id) => {
   try {

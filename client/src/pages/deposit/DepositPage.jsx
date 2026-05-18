@@ -77,7 +77,7 @@ const ProductsPage = () => {
                     />
 
                     <div className={styles.cardGrid}>
-                      {isAuthChecked == false && isLoading ? (
+                      {isLoading ? (
                           <StatusCard title="상품을 불러오고 있어요" />
                       ) : isError ? (
                           <StatusCard title={error.message} isError />
