@@ -12,6 +12,7 @@ const productRouter = require("./routes/productRouter");
 const transferRouter = require('./routes/transferRouter');
 const depositRouter = require('./routes/depositRouter');
 const transactionRouter = require('./routes/transactionRouter');
+const adminRouter = require("./routes/adminRouter");
 
 // swagger
 const swaggerUi = require("swagger-ui-express");
@@ -37,6 +38,7 @@ app.use("/api/products", productRouter);
 app.use("/api/transfer", transferRouter);
 app.use("/api/deposits", depositRouter);
 app.use("/api/transactions", transactionRouter);
+app.use("/api/admin", adminRouter);
 
 // 빌드 설정용
 app.use(express.static(path.join(__dirname, 'static'))); // static 폴더를 정적 파일 제공 폴더로 설정
