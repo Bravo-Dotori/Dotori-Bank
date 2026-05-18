@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import useStore from "@/store/useStore";
-
 import { useProductsQuery } from "@/hooks/useProductsQuery";
 
 import styles from "@/pages/products/products.module.css"
@@ -31,7 +30,7 @@ const DepositPage = () => {
         if (!isLogin) {
             setIsModalOpen(true);
         } else {
-            navigate(`/product/${productId}`);
+            navigate(`/depositDetail/${productId}`);
         }
     };
 

@@ -19,7 +19,7 @@ const Breadcrumb = ({ items }) => {
                                 : styles.item
                         }
                         onClick={() => {
-                            if (index === 0) {
+                            if (index !== items.length - 1) {
                                 navigate(item.path);
                             }
                         }}

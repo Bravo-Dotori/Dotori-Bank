@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 
 import styles from "./deposit.module.css"
@@ -14,9 +14,10 @@ import SimulationCard from "../../components/card/simulationCard/SimulationCard"
 import Btn from "@/components/button/Btn"
 
 const DepositDetailPage = () => {
-    const { productId } = useParams();
+    const { depositId } = useParams();
 
-    const [interestRate, setInterestRate] = useState(4.0);
+    const [product, setProduct] = useState(null);
+
     const [infoType, setInfoType] = useState('warning');
     const [noticeTitle, setNoticeTitle] = useState('가입 전 꼭 확인하세요');
     const [noticeText, setNoticeText] = useState([
@@ -25,14 +26,37 @@ const DepositDetailPage = () => {
         '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다'
     ]);
 
-    const fetchDepositDetail = async () => {
-        const response = await fetch(`/api/products/${productId}`);
-        const data = await response.json();
+    const fetchDepositDetail = async (depositId) => {
+        try {
+            const response = await fetch(`/api/products/${depositId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            console.log(data);
+
+            if (!response.ok || !data.success) {
+                return;
+            }
+
+            setProduct(data.product);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    // useEffect(() => {
-    //     fetchDepositDetail();
-    // }, []);
+    useEffect(() => {
+        fetchDepositDetail(depositId);
+    }, [depositId]);
+
+    if (!product) {
+        return null;
+    }
 
     return (
         <div className='main'>
@@ -45,33 +69,38 @@ const DepositDetailPage = () => {
                                 path: '/deposit',
                             },
                             {
-                                label: '도토리 정기예금',
-                                path: '/deposit/1',
+                                label: product.product_name,
+                                path: `/deposit/${product.id}`,
                             },
                         ]}
                     />
+
                     <div className={styles.section}>
                         <div className={styles.leftSection}>
                             <PageHeader
-                                title="도토리 정기예금"
-                                description="안정적인 24개월 정기 예금 — 매월 일정 금액으로 도토리를 모아보세요"
+                                title={product.product_name}
+                                description={product.product_desc}
                                 big
                                 left
                             />
 
                             <RateCard
-                                baseRate={interestRate}
+                                baseRate={product.interests?.[0]?.interest_rate || 0}
                             />
 
                             <InfoCard
                                 items={[
                                     {
                                         label: '가입 금액',
-                                        value: '월 10만원 ~ 1,000만원',
+                                        value: `${Number(product.min_amount).toLocaleString()}원 ~ ${Number(product.max_amount).toLocaleString()}원`,
                                     },
                                     {
                                         label: '가입 개월',
-                                        value: '6개월 ~ 24개월',
+                                        value:
+                                            product.min_period_months ===
+                                            product.max_period_months
+                                                ? `${product.min_period_months}개월`
+                                                : `${product.min_period_months}개월 ~ ${product.max_period_months}개월`,
                                     },
                                     {
                                         label: '이자 지급',
@@ -88,7 +117,7 @@ const DepositDetailPage = () => {
                         </div>
 
                         <div className={styles.rightSection}>
-                            <SimulationCard />
+                            <SimulationCard product={product} />
                         </div>
                     </div>
                 </div>

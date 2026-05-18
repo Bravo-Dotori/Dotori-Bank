@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Btn from "@/components/button/Btn"
 
 import styles from "./transferAmountCard.module.css"
@@ -8,12 +10,32 @@ const TransferAmountCard = ({
     handleAmount,
     userAmount,
 }) => {
+    const [amountError, setAmountError] = useState('');
+
     const handleChangeAmount = (e) => {
-        const value = e.target.value.replaceAll(',', '');
+        const value =
+            e.target.value.replaceAll(',', '');
 
         if (!/^\d*$/.test(value)) return;
 
-        setAmount(Number(value));
+        const numberValue = Number(value);
+
+        if (numberValue > userAmount) {
+            setAmountError(
+                '잔액이 부족합니다.'
+            );
+            return;
+        }
+
+        if (numberValue > 10000000) {
+            setAmountError(
+                '일일 이체 한도를 초과했습니다.'
+            );
+            return;
+        }
+
+        setAmountError('');
+        setAmount(numberValue);
     };
 
     return (
@@ -47,7 +69,27 @@ const TransferAmountCard = ({
                     <Btn
                         key={item.value}
                         name={item.label}
-                        onClick={() => handleAmount(item.value)}
+                        onClick={() => {
+                            const nextAmount =
+                                amount + item.value;
+
+                            if (nextAmount > userAmount) {
+                                setAmountError(
+                                    '잔액이 부족합니다.'
+                                );
+                                return;
+                            }
+
+                            if (nextAmount > 10000000) {
+                                setAmountError(
+                                    '일일 이체 한도를 초과했습니다.'
+                                );
+                                return;
+                            }
+
+                            setAmountError('');
+                            handleAmount(item.value);
+                        }}
                     />
                 ))}
 
