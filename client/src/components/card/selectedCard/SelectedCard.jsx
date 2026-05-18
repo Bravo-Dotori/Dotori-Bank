@@ -1,14 +1,19 @@
 import styles from "./selectedCard.module.css";
 
-const SelectedCard = ({ interestRate }) => {
+const SelectedCard = ({
+    title,
+    interestRate,
+    period,
+}) => {
     return (
         <div className={styles.card}>
             <div className={styles.left}>
                 <div className={styles.badge}>
                     선택한 상품
                 </div>
+
                 <div className={styles.title}>
-                    도토리 정기예금
+                    {title}
                 </div>
             </div>
 
@@ -18,7 +23,7 @@ const SelectedCard = ({ interestRate }) => {
                 </div>
 
                 <div className={styles.period}>
-                    24개월 기준
+                    {period}개월 기준
                 </div>
             </div>
         </div>
