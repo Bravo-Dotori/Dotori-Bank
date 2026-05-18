@@ -11,7 +11,7 @@ import DepositCard from "@/components/card/depositCard/DepositCard"
 const RecommendPage = () => {
     const location = useLocation();
 
-    const { user } = useStore();
+    const user = useStore((state) => state.user);
 
     const recommendations =
         location.state?.recommendations || [];
@@ -25,7 +25,7 @@ const RecommendPage = () => {
                 <div className={styles.recommend}>
                     <PageHeader
                         title="도토리님께 딱 맞는 예금 상품"
-                        description="설문 답변을 바탕으로 가장 어울리는 3가지 상품을 추천해드려요"
+                        description={`설문 답변을 바탕으로 가장 어울리는 ${recommendations.length}가지 상품을 추천해드려요`}
                         big
                     />
 
@@ -43,6 +43,7 @@ const RecommendPage = () => {
                                     `최소 ${Number(topProduct.min_amount).toLocaleString()}원부터 가입 가능`,
                                     `연 ${topProduct.interest_rate}% 금리 제공`,
                                 ]}
+                                value={`/depositDetail/${topProduct.id}`}
                             />
                         )}
 
@@ -53,7 +54,7 @@ const RecommendPage = () => {
                                 rate={Number(product.interest_rate)}
                                 period={`${product.period_months}개월`}
                                 description={`${Number(product.min_amount).toLocaleString()}원부터 가입 가능`}
-                                value='/depositDetail'
+                                value={`/depositDetail/${product.id}`}
                             />
                         ))}
                     </div>

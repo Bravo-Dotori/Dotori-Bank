@@ -102,3 +102,20 @@
 .userName {
     color: var(--brand-color-tertiary);
 }
+
+.userCardError {
+    background-color: var(--light-red-color);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.userCircleError {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: var(--red-color);
+}

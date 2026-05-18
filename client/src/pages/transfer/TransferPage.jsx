@@ -18,7 +18,6 @@ const TransferPage = () => {
     accountNumber: '',
     balance: 0
   });
-
   const [receiver, setReceiver] = useState({
     bank: '도토리뱅크',
     accountNumber: '',
@@ -26,9 +25,11 @@ const TransferPage = () => {
   });
 
   const [amount, setAmount] = useState(0); // 이체 금액
+  const [receiverError, setReceiverError] = useState('');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
 
+  // 보내는 분 계좌 조회
   const fetchAccount = async () => {
     try {
       const response = await fetch('/api/accounts', {
@@ -61,6 +62,60 @@ const TransferPage = () => {
     }
   };
 
+  // 받는 분 계좌 조회
+  const fetchReceiverAccount = async (accountNumber) => {
+    try {
+      if (sender.accountNumber === accountNumber) {
+        setReceiver((prev) => ({
+          ...prev,
+          userName: '',
+        }));
+
+        setReceiverError('보내는 분과 받는 분의 계좌가 같을 수 없습니다.');
+
+        return;
+      }
+
+      const response = await fetch('/api/accounts/toAccount', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          account_number: accountNumber,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      // 계좌가 존재하지 않을 때
+      if (!response.ok || !data.success) {
+        setReceiver((prev) => ({
+          ...prev,
+          userName: '',
+        }));
+
+        setReceiverError('존재하지 않는 계좌입니다.');
+
+        return;
+      }
+
+      setReceiver((prev) => ({
+        ...prev,
+        userName: data.data[0].name,
+      }));
+
+      setReceiverError('');
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 이체하기
   const transferAmount = async () => {
     try {
       const response = await fetch('/api/transfer', {
@@ -86,14 +141,12 @@ const TransferPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAccount();
-  }, []);
-
+  // 금액 입력 처리
   const handleAmount = (value) => {
     setAmount((prev) => prev + value);
   };
 
+  // 받는 분 계좌 입력 처리
   const handleReceiverAccount = (value) => {
     const onlyNumber = value.replace(/\D/g, '').slice(0, 13);
 
@@ -109,21 +162,15 @@ const TransferPage = () => {
 
     setReceiver((prev) => ({
       ...prev,
-      accountNumber: formatted
+      accountNumber: formatted,
+      userName: '',
     }));
 
-    if (formatted === '100-3918-390059') {
-      setReceiver((prev) => ({
-        ...prev,
-        accountNumber: formatted,
-        userName: '홍길동'
-      }));
-    } else {
-      setReceiver((prev) => ({
-        ...prev,
-        accountNumber: formatted,
-        userName: ''
-      }));
+    setReceiverError('');
+
+    // 계좌번호를 모두 작성했을 때 조회
+    if (formatted.length === 15) {
+      fetchReceiverAccount(formatted);
     }
   };
 
@@ -136,6 +183,10 @@ const TransferPage = () => {
     setIsConfirmModalOpen(false);
     setIsCompleteModalOpen(true);
   };
+
+  useEffect(() => {
+    fetchAccount();
+  }, []);
 
   return (
     <div className='main'>
@@ -160,6 +211,7 @@ const TransferPage = () => {
             bank={receiver.bank}
             accountNumber={receiver.accountNumber}
             userName={receiver.userName}
+            errorMessage={receiverError}
             onChange={handleReceiverAccount}
           />
 
@@ -228,7 +280,7 @@ const TransferPage = () => {
             {
               name: '확인',
               active: true,
-              onClick: () => navigate('/'),
+              onClick: () => navigate('/history'),
             },
           ]}
         />

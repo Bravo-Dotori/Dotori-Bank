@@ -7,6 +7,7 @@ const TransferAccountCard = ({
     accountName,
     balance,
     userName,
+    errorMessage,
     onChange
 }) => {
     const isSender = type === "send";
@@ -61,7 +62,7 @@ const TransferAccountCard = ({
                         />
                     </div>
 
-                    {userName && (
+                    {userName ? (
                         <div className={styles.userCard}>
                             <div className={styles.userCircle} />
 
@@ -75,6 +76,22 @@ const TransferAccountCard = ({
                                 </div>
                             </div>
                         </div>
+                    ) : (
+                        errorMessage && (
+                            <div className={styles.userCardError}>
+                                <div className={styles.userCircleError} />
+
+                                <div>
+                                    <div className={styles.userCheck}>
+                                        {errorMessage}
+                                    </div>
+
+                                    <div className={styles.userName}>
+                                        다시 시도해주세요.
+                                    </div>
+                                </div>
+                            </div>
+                        )
                     )}
                 </>
             )}

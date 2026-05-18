@@ -1,17 +1,17 @@
 /api/accounts:
   get:
-    summary: 내 계좌 목록 조회
+    summary: ??계좌 목록 조회
 
     tags:
       - Accounts
 
     security:
-      - bearerAuth: []
+      - cookieAuth: []
 
     responses:
 
       '200':
-        description: 계좌 목록 조회 성공
+        description: 계좌 목록 조회 ?�공
 
         content:
           application/json:
@@ -27,7 +27,7 @@
 
                 message:
                   type: string
-                  example: 계좌 목록 조회 성공
+                  example: 계좌 목록 조회 ?�공
 
                 data:
                   type: array
@@ -71,7 +71,7 @@
                         example: 2026-05-14T11:20:30.000Z
 
       '401':
-        description: 인증 실패
+        description: ?�증 ?�패
 
         content:
           application/json:
@@ -91,10 +91,10 @@
 
                 message:
                   type: string
-                  example: 토큰 인증 실패
+                  example: ?�큰 ?�증 ?�패
 
       '404':
-        description: 계좌 정보 없음
+        description: 계좌 ?�보 ?�음
 
         content:
           application/json:
@@ -114,10 +114,10 @@
 
                 message:
                   type: string
-                  example: 계좌 정보 없음
+                  example: 계좌 ?�보 ?�음
 
       '500':
-        description: 서버 오류
+        description: ?�버 ?�류
 
         content:
           application/json:
@@ -137,22 +137,22 @@
 
                 message:
                   type: string
-                  example: 계좌 조회 서버 에러
+                  example: 계좌 조회 ?�버 ?�러
 
 
   post:
-    summary: 입출금 계좌 생성
+    summary: ?�출�?계좌 ?�성
 
     tags:
       - Accounts
 
     security:
-      - bearerAuth: []
+      - cookieAuth: []
 
     responses:
 
       '201':
-        description: 입출금 계좌 생성 성공
+        description: ?�출�?계좌 ?�성 ?�공
 
         content:
           application/json:
@@ -180,7 +180,7 @@
                       example: 100-1234-567890
 
       '400':
-        description: 계좌 생성 실패
+        description: 계좌 ?�성 ?�패
 
         content:
           application/json:
@@ -196,10 +196,10 @@
 
                 message:
                   type: string
-                  example: 계좌 생성 실패
+                  example: 계좌 ?�성 ?�패
 
       '401':
-        description: 인증 실패
+        description: ?�증 ?�패
 
         content:
           application/json:
@@ -219,10 +219,10 @@
 
                 message:
                   type: string
-                  example: 토큰 인증 실패
+                  example: ?�큰 ?�증 ?�패
 
       '500':
-        description: 서버 오류
+        description: ?�버 ?�류
 
         content:
           application/json:
@@ -242,17 +242,17 @@
 
                 message:
                   type: string
-                  example: 계좌 생성 서버 에러
+                  example: 계좌 ?�성 ?�버 ?�러
 
 /api/accounts/{account_id}:
   get:
-    summary: 내 계좌 상세 조회
+    summary: ??계좌 ?�세 조회
 
     tags:
       - Accounts
 
     security:
-      - bearerAuth: []
+      - cookieAuth: []
 
     parameters:
       - in: path
@@ -267,7 +267,7 @@
     responses:
 
       '200':
-        description: 계좌 상세 조회 성공
+        description: 계좌 ?�세 조회 ?�공
 
         content:
           application/json:
@@ -283,7 +283,7 @@
 
                 message:
                   type: string
-                  example: 계좌 조회 성공
+                  example: 계좌 조회 ?�공
 
                 data:
                   type: object
@@ -320,11 +320,11 @@
                       example: 2026-05-14T11:20:30.000Z
 
       '401':
-        description: 인증 실패
+        description: ?�증 ?�패
 
       '404':
-        description: 계좌 정보 없음
+        description: 계좌 ?�보 ?�음
 
       '500':
-        description: 서버 오류
+        description: ?�버 ?�류
 

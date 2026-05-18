@@ -4,7 +4,8 @@
     padding: 0 64px;
 }
 
-.depositDetail {
+.depositDetail,
+.depositApply {
     display: flex;
     flex-direction: column;
     gap: 32px;

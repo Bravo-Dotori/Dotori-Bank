@@ -2,18 +2,24 @@ import { useState } from 'react';
 
 import styles from "./noticeCard.module.css"
 
+import Form from '@/components/form/Form'
+import Btn from '@/components/button/Btn'
+
 const NoticeCard = ({
     infoType,
     noticeTitle,
     noticeText,
+    agreements,
+    setAgreements,
+    selectedPeriod,
+    setSelectedPeriod,
+    joinAmount,
+    setJoinAmount,
+    minPeriod,
+    maxPeriod,
+    minAmount,
+    maxAmount,
 }) => {
-    const [agreements, setAgreements] = useState({
-        product: false,
-        trade: false,
-        description: false,
-        privacy: false,
-    });
-
     const agreementKeys = [
         'product',
         'trade',
@@ -21,10 +27,28 @@ const NoticeCard = ({
         'privacy',
     ];
 
-    const [period, setPeriod] = useState([3, 6, 12, 24]);
+    const periods = [3, 6, 12, 24]
+        .filter(
+            (period) =>
+                period >= minPeriod &&
+                period <= maxPeriod
+        );
 
-    const isAllChecked = Object.values(agreements)
-        .every(Boolean);
+    const isAllChecked =
+        agreements &&
+        Object.values(agreements).every(Boolean);
+
+    const joinAmountNumber =
+        Number(joinAmount);
+
+    const amountError =
+        joinAmount !== '' &&
+            (
+                joinAmountNumber < minAmount ||
+                joinAmountNumber > maxAmount
+            )
+            ? `${Number(minAmount).toLocaleString()}원 ~ ${Number(maxAmount).toLocaleString()}원 사이로 입력해주세요`
+            : '';
 
     const handleAllCheck = (checked) => {
         setAgreements({
@@ -99,21 +123,14 @@ const NoticeCard = ({
 
                     <div className={styles.agreementList}>
                         {noticeText.map((item, index) => {
-                            const key =
-                                agreementKeys[index];
+                            const key = agreementKeys[index];
 
                             return (
                                 <div
-                                    className={
-                                        styles.agreementItem
-                                    }
+                                    className={styles.agreementItem}
                                     key={index}
                                 >
-                                    <div
-                                        className={
-                                            styles.left
-                                        }
-                                    >
+                                    <div className={styles.left}>
                                         <input
                                             className={styles.checkbox}
                                             type="checkbox"
@@ -129,30 +146,13 @@ const NoticeCard = ({
                                             }
                                         />
 
-                                        <div
-                                            className={
-                                                styles.text
-                                            }
-                                        >
-                                            <span
-                                                className={
-                                                    styles.necessary
-                                                }
-                                            >
-                                                [필수]
-                                            </span>
-
+                                        <div className={styles.text}>
+                                            <span className={styles.necessary}>[필수]</span>
                                             {item}
                                         </div>
                                     </div>
 
-                                    <div
-                                        className={
-                                            styles.arrow
-                                        }
-                                    >
-                                        ›
-                                    </div>
+                                    <div className={styles.arrow}>›</div>
                                 </div>
                             );
                         })}
@@ -168,15 +168,21 @@ const NoticeCard = ({
                         </div>
 
                         <div className={styles.periodList}>
-                            {period.map((item, index) => (
-                                <button
-                                    className={
-                                        styles.periodBtn
-                                    }
+                            {periods.map((item, index) => (
+                                <Btn
                                     key={index}
-                                >
-                                    {item}개월
-                                </button>
+                                    type="radio"
+                                    name={`${item}개월`}
+                                    active={
+                                        selectedPeriod ===
+                                        item
+                                    }
+                                    onClick={() =>
+                                        setSelectedPeriod(
+                                            item
+                                        )
+                                    }
+                                />
                             ))}
                         </div>
                     </div>
@@ -186,28 +192,24 @@ const NoticeCard = ({
                             월 가입 금액
                         </div>
 
-                        <div
-                            className={
-                                styles.inputWrapper
-                            }
-                        >
-                            <input
-                                type="text"
-                                value="300,000"
-                                readOnly
+                        <div className={styles.inputWrapper}>
+                            <Form
+                                name=""
+                                type="number"
+                                placeholder="300000"
+                                value={joinAmount}
+                                onChange={(e) =>
+                                    setJoinAmount(
+                                        e.target.value
+                                    )
+                                }
+                                unit="원"
+                                error={amountError}
                             />
-
-                            <span
-                                className={styles.unit}
-                            >
-                                원
-                            </span>
                         </div>
 
-                        <div
-                            className={styles.caption}
-                        >
-                            월 10만원 ~ 1,000만원
+                        <div className={styles.caption}>
+                            월 {Number(minAmount).toLocaleString()}원 ~ {Number(maxAmount).toLocaleString()}원
                             사이로 입력해주세요
                         </div>
                     </div>
