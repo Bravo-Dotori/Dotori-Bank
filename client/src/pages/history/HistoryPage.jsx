@@ -5,8 +5,11 @@ import styles from "./history.module.css"
 import PageHeader from "@/components/pageHeader/PageHeader"
 import TransactionSection from "@/components/transaction/TransactionSection"
 import Btn from "@/components/button/Btn"
+import Pagination from "@/components/pagination/Pagination";
 
 const HistoryPage = () => {
+    
+    const [page, setPage] = useState(1);
   const transactions = [
     {
       id: 1,
@@ -143,6 +146,14 @@ const HistoryPage = () => {
             title="전체 거래내역"
             transactions={filteredTransactions}
           />
+
+          
+            
+            <Pagination
+            currentPage={page}
+            totalPages={5}
+            onPageChange={setPage}
+            />
 
         </div>
       </div>
