@@ -13,7 +13,8 @@ const TransferPage = () => {
   const navigate = useNavigate();
 
   const [sender, setSender] = useState({
-    accountName: '도토리뱅크 입출금계좌',
+    id: null,
+    accountName: '',
     accountNumber: '',
     balance: 0
   });
@@ -24,44 +25,68 @@ const TransferPage = () => {
     userName: ''
   });
 
-  const [amount, setAmount] = useState(0);
-
+  const [amount, setAmount] = useState(0); // 이체 금액
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchAccount = async () => {
-      try {
-        const response = await fetch('/api/accounts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
+  const fetchAccount = async () => {
+    try {
+      const response = await fetch('/api/accounts', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        console.log(data);
+      console.log(data);
 
-        if (!response.ok || !data.success) {
-          return;
-        }
-
-        const account = data.data[0];
-
-        setSender({
-          accountName: '도토리뱅크 입출금계좌',
-          accountNumber: account.account_number,
-          balance: account.balance,
-        });
-
-      } catch (error) {
-        console.log(error);
+      if (!response.ok || !data.success) {
+        return;
       }
-    };
 
+      const sender = data.data[0];
+
+      setSender({
+        id: sender.id,
+        accountName: '도토리뱅크 입출금계좌',
+        accountNumber: sender.account_number,
+        balance: sender.balance,
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const transferAmount = async () => {
+    try {
+      const response = await fetch('/api/transfer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          from_account_id: sender.id,
+          to_account_number: receiver.accountNumber,
+          amount: amount,
+          memo: '테스트 이체',
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     fetchAccount();
   }, []);
 
@@ -70,7 +95,7 @@ const TransferPage = () => {
   };
 
   const handleReceiverAccount = (value) => {
-    const onlyNumber = value.replace(/\D/g, '').slice(0, 12);
+    const onlyNumber = value.replace(/\D/g, '').slice(0, 13);
 
     let formatted = onlyNumber;
 
@@ -87,11 +112,11 @@ const TransferPage = () => {
       accountNumber: formatted
     }));
 
-    if (formatted === '987-6590-43219') {
+    if (formatted === '100-3918-390059') {
       setReceiver((prev) => ({
         ...prev,
         accountNumber: formatted,
-        userName: '김아람'
+        userName: '홍길동'
       }));
     } else {
       setReceiver((prev) => ({
@@ -107,6 +132,7 @@ const TransferPage = () => {
   };
 
   const handleTransfer = () => {
+    transferAmount();
     setIsConfirmModalOpen(false);
     setIsCompleteModalOpen(true);
   };

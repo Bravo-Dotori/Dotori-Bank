@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from "react-router-dom";
 
 import styles from "./deposit.module.css"
 
@@ -13,6 +14,8 @@ import SimulationCard from "../../components/card/simulationCard/SimulationCard"
 import Btn from "@/components/button/Btn"
 
 const DepositDetailPage = () => {
+    const { productId } = useParams();
+
     const [interestRate, setInterestRate] = useState(4.0);
     const [infoType, setInfoType] = useState('warning');
     const [noticeTitle, setNoticeTitle] = useState('가입 전 꼭 확인하세요');
@@ -21,6 +24,15 @@ const DepositDetailPage = () => {
         '만기 전 인출 불가 (해지만 가능)',
         '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다'
     ]);
+
+    const fetchDepositDetail = async () => {
+        const response = await fetch(`/api/products/${productId}`);
+        const data = await response.json();
+    }
+
+    // useEffect(() => {
+    //     fetchDepositDetail();
+    // }, []);
 
     return (
         <div className='main'>
