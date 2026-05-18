@@ -101,8 +101,10 @@ const HistoryPage = () => {
   
   // 필터 바뀌면 1페이지로
   useEffect(() => {
+  if (page !== 1) {
     setPage(1);
-  }, [selectedPeriod, selectedType]);
+  }
+}, [selectedPeriod, selectedType]);
 
   // 페이지네이션
   const totalCount =

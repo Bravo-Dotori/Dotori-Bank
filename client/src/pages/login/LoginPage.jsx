@@ -51,9 +51,11 @@ const LoginPage = () => {
     try {
         const data = await login(form.userId, form.password);
 
-        setLogin(data.user);
-
-        navigator("/account");
+        if (data.user.role === "admin") {
+            navigator("/admin");
+        } else {
+            navigator("/account");
+        }
     } catch (err) {
         if (err.message === "존재하지 않는 아이디입니다.") {
             setErrors((prev) => ({
