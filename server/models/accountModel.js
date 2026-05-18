@@ -12,13 +12,13 @@ exports.getAccounts = async (user_id) => {
 }
 
 // 받는 계좌 조회
-exports.getToAccount = async (account_number, name) => {
+exports.getToAccount = async (account_number) => {
   const sql = `
     select *
     from accounts a join users u on a.user_id = u.id
-    where a.account_number = ? and u.name = ?
+    where a.account_number = ?
   `
-  const [rows] = await pool.query(sql, [account_number, name]);
+  const [rows] = await pool.query(sql, [account_number]);
   return rows;
 }
 
