@@ -33,7 +33,7 @@ exports.signup = async(req, res) => {
     // 성공
     return res.status(201).json({
       success: true,
-      message: "로그인 성공",
+      message: "회원가입 성공",
       user: result.user
     }); 
  
