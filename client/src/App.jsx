@@ -24,26 +24,33 @@ import Admin from './pages/admin/AdminPage';
 import useStore from '@/store/useStore';
 
 const App = () => {
-  const { setLogin, logout } = useStore();
+  const { setLogin, logout, setAuthChecked } = useStore();
 
   useEffect(() => {
     const verifyUser = async () => {
-      try {
-        const response = await fetch('/api/user/verify', {
-          method: 'GET',
-          credentials: 'include',
-        });
+        try {
+            const response = await fetch('/api/user/verify', {
+                method: 'GET',
+                credentials: 'include',
+            });
 
-        if (!response.ok) {
-          throw new Error();
+            if (response.status === 401) {
+                logout();
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error();
+            }
+
+            const data = await response.json();
+
+            setLogin(data.user);
+        } catch (error) {
+            logout();
+        } finally {
+            setAuthChecked(true);
         }
-
-        const data = await response.json();
-
-        setLogin(data.user);
-      } catch (error) {
-        logout();
-      }
     };
 
     verifyUser();

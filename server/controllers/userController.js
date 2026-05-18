@@ -16,14 +16,26 @@ exports.signup = async(req, res) => {
     }
 
     const result = await userService.signup(email, user_id, password, name, birth_date);
-
     // 중복회원 에러
     if(!result.success) {
       return res.status(409).json(result);
     }
+
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: false, 
+      sameSite: "lax", 
+      path: '/',
+      maxAge: 60 * 60 * 1000 
+    });
+
     
     // 성공
-    return res.status(201).json(result); 
+    return res.status(201).json({
+      success: true,
+      message: "로그인 성공",
+      user: result.user
+    }); 
  
   } catch (error) {
     console.error("error  ", error);
@@ -83,8 +95,8 @@ exports.verify = (req, res) => {
   try {
     const token = req.cookies.token;
 
-    if(!token) { 
-      return res.status(401).json({
+    if(!token || token === "undefined") { 
+      return res.status(200).json({
         success: false,
         message: "토큰 검증 실패"
       });
