@@ -127,3 +127,39 @@ exports.deactivateDepositAccount = async (conn, account_id, user_id) => {
   const [rows] = await conn.query(sql, [account_id, user_id]);
   return rows;
 }
+
+// 관리자 전체 계좌 조회
+exports.getAdminAccounts = async () => {
+  const sql = `
+    select
+      a.id,
+      a.created_at,
+      a.account_number,
+      a.account_type,
+      a.balance,
+      a.is_active,
+      a.is_admin,
+      u.id as user_id,
+      u.name as user_name,
+      u.role as user_role
+    from accounts a
+    join users u
+      on a.user_id = u.id
+    order by a.created_at desc
+  `;
+
+  const [rows] = await pool.query(sql);
+  return rows;
+};
+
+// 관리자 계좌 활성화 여부 변경
+exports.updateAccountActiveStatus = async (account_id, is_active) => {
+  const sql = `
+    update accounts
+    set is_active = ?
+    where id = ?
+  `;
+
+  const [rows] = await pool.query(sql, [is_active, account_id]);
+  return rows;
+};

@@ -66,23 +66,32 @@ exports.getTransactions = async (account_id, period, type) => {
 }
 
 // 관리자 거래 내역 조회
-exports.adminTransaction = async (  
+exports.getAdminTransactions = async (  
 ) => {
-  let sql = ` 
+  const sql = ` 
     select 
-      transaction_at,
-      from_account_id,
-      to_account_id,
-      amount,
-      is_suspicious,
-      description
-    from transactions
-    order by transaction_ad desc
+      t.id,
+      t.transaction_at,
+      t.from_account_id,
+      t.to_account_id,
+      t.type,
+      t.amount,
+      t.is_suspicious,
+      t.description,
 
+      from_account.account_number as from_account_number,
+      to_account.account_number as to_account_number
 
+    from transactions t
+
+    left join accounts from_account
+      on t.from_account_id = from_account.id
+    left join accounts to_account
+      on t.to_account_id = to_account.id
+ 
     ORDER BY
-      transaction_at DESC
-
-    LIMIT 20
+      t.transaction_at DESC
   `
+  const [rows] = await pool.query(sql);
+    return rows;
 }

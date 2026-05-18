@@ -133,9 +133,14 @@ ON transactions(transaction_at);
 INSERT INTO users
 (id, email, user_id, password_hash, name, role, birth_date)
 VALUES
-(1, 'yiseul@example.com', 'yiseul', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '김이슬', 'user', '1998-04-12'),
-(2, 'dotorimember@example.com', 'dotori', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '도토리', 'user', '1997-09-20'),
-(3, 'admin@example.com', 'admin', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '관리자', 'admin', '1990-01-01');
+(1, 'admin@example.com', 'admin', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '관리자', 'admin', '1990-01-01'),
+(2, 'yiseul@example.com', 'yiseul', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '김이슬', 'user', '1998-04-12'),
+(3, 'dotorimember@example.com', 'dotori', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '도토리', 'user', '1997-09-20'),
+(4, 'gildong@example.com', 'gildong', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '홍길동', 'user', '1995-03-15'),
+(5, 'minju@example.com', 'minju', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '김민주', 'user', '1996-07-21'),
+(6, 'jo@example.com', 'jo', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '주문국', 'user', '1989-11-02'),
+(7, 'jiwon@example.com', 'jiwon', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '박지원', 'user', '1993-02-10'),
+(8, 'seul@example.com', 'seul', '$2b$10$0djZ8Gb1/LyGkP6YxCGlHOvP990dost3JQxGhhVG4U5zFLaM4lMN6', '김이슬2', 'user', '1999-05-08');
 
 INSERT INTO products
 (id, product_name, product_code, product_type, product_desc, min_period_months, max_period_months, min_amount, max_amount)
@@ -179,19 +184,44 @@ VALUES
 INSERT INTO accounts
 (id, user_id, account_number, account_type, balance, transfer_limit, is_admin, is_active)
 VALUES
-(1, 1, '100-1111-111111', 'demand', 3000000, 3000000, FALSE, TRUE),
-(2, 2, '100-2222-222222', 'demand', 5000000, 3000000, FALSE, TRUE),
-(3, 3, '100-0000-000000', 'demand', 100000000, 100000000, TRUE, TRUE);
+(1, 1, '100-0000-000000', 'demand', 100000000, 100000000, TRUE, TRUE),
+(2, 2, '100-1111-111111', 'demand', 3000000, 3000000, FALSE, TRUE),
+(3, 3, '100-2222-222222', 'demand', 5000000, 3000000, FALSE, TRUE),
+(4, 4, '100-6078-719420', 'demand', 2700000, 3000000, FALSE, TRUE),
+(5, 4, '100-2291-778306', 'deposit', 100000, 3000000, FALSE, TRUE),
+(6, 4, '100-9443-570314', 'deposit', 100000, 3000000, FALSE, TRUE),
+(7, 4, '100-4123-475145', 'deposit', 100000, 3000000, FALSE, TRUE),
+(8, 5, '1234-56-789012', 'demand', 3000000, 3000000, FALSE, TRUE),
+(9, 6, '987-65-432109', 'demand', 50000, 3000000, FALSE, FALSE),
+(10, 7, '555-12-345678', 'demand', 15000000, 3000000, FALSE, TRUE),
+(11, 8, '444-55-667788', 'demand', 9500000, 3000000, FALSE, TRUE),
+(12, 8, '333-22-111000', 'deposit', 9500000, 3000000, FALSE, FALSE);
 
 INSERT INTO user_products
 (product_id, user_id, account_id, target_amount, target_period_months, interest_rate, join_date, maturity_date, status)
 VALUES
-(11, 1, 1, 3000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
-(11, 2, 2, 5000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
-(11, 3, 3, 100000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE');
+(11, 1, 1, 100000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 2, 2, 3000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 3, 3, 5000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 4, 4, 3000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(1, 4, 5, 100000, 6, 3.100, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 6 MONTH), 'ACTIVE'),
+(1, 4, 6, 100000, 6, 3.100, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 6 MONTH), 'ACTIVE'),
+(1, 4, 7, 100000, 6, 3.100, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 6 MONTH), 'ACTIVE'),
+(11, 5, 8, 3000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 6, 9, 50000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 7, 10, 15000000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(11, 8, 11, 9500000, NULL, 0.100, CURDATE(), NULL, 'ACTIVE'),
+(2, 8, 12, 9500000, 12, 3.800, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 12 MONTH), 'ACTIVE');
 
 INSERT INTO transactions
-(from_account_id, to_account_id, type, amount, balance_after, description)
+(from_account_id, to_account_id, type, amount, balance_after, description, is_suspicious)
 VALUES
-(3, 1, 'TRANSFER', 3000000, 97000000, '초기 입출금 계좌 지급'),
-(3, 2, 'TRANSFER', 5000000, 92000000, '초기 입출금 계좌 지급');
+(1, 2, 'TRANSFER', 3000000, 97000000, '초기 입출금 계좌 지급', FALSE),
+(1, 3, 'TRANSFER', 5000000, 92000000, '초기 입출금 계좌 지급', FALSE),
+(1, 8, 'TRANSFER', 3000000, 89000000, '가입 축하금', FALSE),
+(8, 9, 'TRANSFER', 50000, 2950000, '계좌 이체', FALSE),
+(10, 11, 'TRANSFER', 15000000, 0, '고액 이체', TRUE),
+(11, 12, 'DEPOSIT', 9500000, 0, '예금 가입', TRUE),
+(4, 5, 'DEPOSIT', 100000, 2600000, '예금 가입', FALSE),
+(4, 6, 'DEPOSIT', 100000, 2500000, '예금 가입', FALSE),
+(4, 7, 'DEPOSIT', 100000, 2400000, '예금 가입', FALSE);
