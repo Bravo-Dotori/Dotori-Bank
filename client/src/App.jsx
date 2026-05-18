@@ -72,8 +72,8 @@ const App = () => {
 
           <Route index element={<Deposit />} />
           <Route path="deposit" element={<Deposit />} />
-          <Route path="depositDetail" element={<DepositDetail />} />
-          <Route path="depositApply" element={<DepositApply />} />
+          <Route path="depositDetail/:depositId" element={<DepositDetail />} />
+          <Route path="depositApply/:depositId" element={<DepositApply />} />
 
           <Route path='onboarding' element={<Onboarding />} />
           <Route path='recommend' element={<Recommend />} />

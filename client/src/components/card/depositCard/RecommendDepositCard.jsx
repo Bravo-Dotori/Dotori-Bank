@@ -10,6 +10,7 @@ const RecommendDepositCard = ({
     minAmount,
     description,
     reasons = [],
+    value
 }) => {
 
     return (
@@ -83,7 +84,7 @@ const RecommendDepositCard = ({
                 name="가입하기"
                 size="big"
                 active
-                value="/depositDetail"
+                value={value}
             />
         </div>
     )
