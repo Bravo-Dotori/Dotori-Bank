@@ -16,7 +16,7 @@
 
 .label {
     font-size: 12px;
-    color: var(--inverse-color);
+    color: var(--base-color);
 }
 
 .accountNumber {

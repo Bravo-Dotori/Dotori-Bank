@@ -31,6 +31,45 @@ exports.getAccounts = async(req, res) => {
   }
 }
 
+// 받는 계좌 조회
+exports.getToAccounts = async(req, res) => {
+  try {
+    const { account_number, name } = req.body;
+
+    // 필수값 검사
+    if (!account_number || !name) {
+      return res.status(400).json({
+        success: false,
+        message: "필수값 누락"
+      });
+    }
+    
+    const result = await accountService.getToAccount(account_number, name);
+
+    if(!result.success) {
+      return res.status(404).json({
+        success: false,
+        errorCode: 'ACCOUNT_NOT_FOUND',
+        message: '계좌 정보 없음'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "계좌 조회 성공",
+      data: result.accounts
+    });
+  } catch (err) {
+    console.error("계좌 조회 에러 : ", err);
+
+    return res.status(500).json({
+      success: false,
+      errorCode: 'ACCOUNT_SERVER_ERROR',
+      message: '계좌 조회 서버 에러'
+    });
+  }
+}
+
 // 내 계좌 상세 조회 
 exports.getAccountDetail = async (req, res) => {
   try {

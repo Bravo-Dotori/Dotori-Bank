@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import useStore from '@/store/useStore';
 
@@ -9,8 +9,15 @@ import RecommendDepositCard from "@/components/card/depositCard/RecommendDeposit
 import DepositCard from "@/components/card/depositCard/DepositCard"
 
 const RecommendPage = () => {
-    const { userName, setUserName } = useStore();
-    const [interestRate, setInterestRate] = useState(4.0);
+    const location = useLocation();
+
+    const { user } = useStore();
+
+    const recommendations =
+        location.state?.recommendations || [];
+
+    const topProduct = recommendations[0];
+    const otherProducts = recommendations.slice(1);
 
     return (
         <div className='main'>
@@ -23,26 +30,32 @@ const RecommendPage = () => {
                     />
 
                     <div className={styles.cardWrapper}>
-                        <RecommendDepositCard
-                            rate={interestRate}
-                            name={userName}
-                        />
+                        {topProduct && (
+                            <RecommendDepositCard
+                                name={user?.name}
+                                title={topProduct.product_name}
+                                rate={Number(topProduct.interest_rate)}
+                                period={`${topProduct.period_months}개월`}
+                                minAmount={`${Number(topProduct.min_amount).toLocaleString()}원~`}
+                                description="안정적인 고금리 예금 상품"
+                                reasons={[
+                                    `${topProduct.period_months}개월 예치에 적합`,
+                                    `최소 ${Number(topProduct.min_amount).toLocaleString()}원부터 가입 가능`,
+                                    `연 ${topProduct.interest_rate}% 금리 제공`,
+                                ]}
+                            />
+                        )}
 
-                        <DepositCard
-                            title="꾸준 정기예금"
-                            rate={4.5}
-                            period="36개월"
-                            description="오래 둘수록 커지는 우대 금리"
-                            value='/depositDetail'
-                        />
-
-                        <DepositCard
-                            title="청년 도약예금"
-                            rate={5.5}
-                            period="24개월"
-                            description="만 19~34세 청년 고금리 예금"
-                            value='/depositDetail'
-                        />
+                        {otherProducts.map((product) => (
+                            <DepositCard
+                                key={product.id}
+                                title={product.product_name}
+                                rate={Number(product.interest_rate)}
+                                period={`${product.period_months}개월`}
+                                description={`${Number(product.min_amount).toLocaleString()}원부터 가입 가능`}
+                                value='/depositDetail'
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

@@ -30,6 +30,11 @@ const useStore = create((set) => ({
         set({
             isLoading: value,
         }),
+    
+    setAuthChecked: (value) =>
+        set({
+            isAuthChecked: value,
+        }),
 
     // 사용자 이름
     userName: '',

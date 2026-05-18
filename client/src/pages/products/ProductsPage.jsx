@@ -4,14 +4,18 @@ import PageHeader from "@/components/pageHeader/PageHeader"
 import DepositCard from "@/components/card/depositCard/DepositCard"
 import StatusCard from "@/components/card/StatusCard/StatusCard";
 
-import { useMyProductsQuery } from '../../hooks/useProductsQuery'
+import { useMyProductsQuery } from '../../hooks/useProductsQuery';
+import useStore from "@/store/useStore";
 
 const ProductsPage = () => {
-  
+  const isAuthChecked = useStore((state) => state.isAuthChecked);
   const { data, isLoading, isError, error } = useMyProductsQuery();
   const products = data?.products || [];
   console.log(products)
-
+  
+  if (!isAuthChecked) {
+    return null;
+  }
   return (
     <div className='main'>
       <div className={styles.container}>

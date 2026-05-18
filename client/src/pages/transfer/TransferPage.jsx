@@ -1,4 +1,4 @@
-import { use, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import styles from "./transfer.module.css"
@@ -13,25 +13,89 @@ const TransferPage = () => {
   const navigate = useNavigate();
 
   const [sender, setSender] = useState({
-    accountName: '도토리뱅크 입출금계좌',
-    accountNumber: '123-4567-89101',
-    balance: 3000000
+    id: null,
+    accountName: '',
+    accountNumber: '',
+    balance: 0
   });
+
   const [receiver, setReceiver] = useState({
     bank: '도토리뱅크',
     accountNumber: '',
     userName: ''
   });
-  const [amount, setAmount] = useState(0);
+
+  const [amount, setAmount] = useState(0); // 이체 금액
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+
+  const fetchAccount = async () => {
+    try {
+      const response = await fetch('/api/accounts', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (!response.ok || !data.success) {
+        return;
+      }
+
+      const sender = data.data[0];
+
+      setSender({
+        id: sender.id,
+        accountName: '도토리뱅크 입출금계좌',
+        accountNumber: sender.account_number,
+        balance: sender.balance,
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const transferAmount = async () => {
+    try {
+      const response = await fetch('/api/transfer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          from_account_id: sender.id,
+          to_account_number: receiver.accountNumber,
+          amount: amount,
+          memo: '테스트 이체',
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccount();
+  }, []);
 
   const handleAmount = (value) => {
     setAmount((prev) => prev + value);
   };
 
   const handleReceiverAccount = (value) => {
-    const onlyNumber = value.replace(/\D/g, '').slice(0, 12);
+    const onlyNumber = value.replace(/\D/g, '').slice(0, 13);
 
     let formatted = onlyNumber;
 
@@ -48,11 +112,11 @@ const TransferPage = () => {
       accountNumber: formatted
     }));
 
-    if (formatted === '987-6590-43219') {
+    if (formatted === '100-3918-390059') {
       setReceiver((prev) => ({
         ...prev,
         accountNumber: formatted,
-        userName: '김아람'
+        userName: '홍길동'
       }));
     } else {
       setReceiver((prev) => ({
@@ -68,6 +132,7 @@ const TransferPage = () => {
   };
 
   const handleTransfer = () => {
+    transferAmount();
     setIsConfirmModalOpen(false);
     setIsCompleteModalOpen(true);
   };
@@ -158,7 +223,7 @@ const TransferPage = () => {
           description={`${receiver.userName}님께 보냈어요`}
           rewardLabel="갱신된 잔액"
           reward={`${(sender.balance - amount).toLocaleString()}원`}
-          rewardDescription="도토리뱅크 1234-56-789012"
+          rewardDescription={sender.accountNumber}
           buttons={[
             {
               name: '확인',

@@ -11,6 +11,17 @@ exports.getAccounts = async (user_id) => {
   return rows;
 }
 
+// 받는 계좌 조회
+exports.getToAccount = async (account_number, name) => {
+  const sql = `
+    select *
+    from accounts a join users u on a.user_id = u.id
+    where a.account_number = ? and u.name = ?
+  `
+  const [rows] = await pool.query(sql, [account_number, name]);
+  return rows;
+}
+
 // 계좌 상세 조회
 exports.getAccountDetail = async(user_id, account_id) => {
   const sql = `
@@ -53,19 +64,28 @@ exports.createAccount = async (conn, user_id, account_number, account_type, bala
 }
 
 // 상품 가입시 내 상품에 등록
-exports.createMyProduct = async (conn, product_id, user_id, account_id, interest_rate) => {
+exports.createMyProduct = async (
+  conn,
+  product_id,
+  user_id,
+  account_id,
+  interest_rate
+) => {
+
   const sql = `
     insert into user_products
-      (product_id, user_id, account_id, target_amount, target_period_months, interest_rate, join_date, maturity_date)
+    (product_id, user_id, account_id, target_amount, target_period_months, interest_rate, join_date, maturity_date)
     values
-      (?, ?, ?, 3000000, null, ?, now(), null)
-  `
+    (?, ?, ?, 3000000, null, ?, CURDATE(), null)
+  `;
+
   const [rows] = await conn.query(sql, [
     product_id,
     user_id,
     account_id,
     interest_rate
   ]);
+
   return rows;
 }
 
