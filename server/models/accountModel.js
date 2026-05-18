@@ -68,3 +68,42 @@ exports.createMyProduct = async (conn, product_id, user_id, account_id, interest
   ]);
   return rows;
 }
+
+// 예금 계좌 조회
+exports.getDepositAccountForUpdate = async (conn, account_id, user_id) => {
+  const sql = `
+    select
+      id,
+      user_id,
+      account_number,
+      balance,
+      account_type,
+      is_active
+    from accounts
+    where id = ?
+      and user_id = ?
+      and account_type = 'deposit'
+      and is_active = true
+    for update
+  `;
+
+  const [rows] = await conn.query(sql, [account_id, user_id]);
+  return rows[0];
+}
+
+// 예금 계좌 해지 처리
+exports.deactivateDepositAccount = async (conn, account_id, user_id) => {
+  const sql = `
+    update accounts
+    set
+      balance = 0,
+      is_active = false
+    where id = ?
+      and user_id = ?
+      and account_type = 'deposit'
+      and is_active = true
+  `;
+
+  const [rows] = await conn.query(sql, [account_id, user_id]);
+  return rows;
+}

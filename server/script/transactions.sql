@@ -1,50 +1,14 @@
 CREATE TABLE transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY COMMENT '거래 ID',
-
-    from_account_id INT
-        NOT NULL
-        COMMENT '출금 계좌 ID',
-
-    to_account_id INT
-        NULL
-        COMMENT '입금 계좌 ID',
-
-    type ENUM(
-        'DEPOSIT',
-        'WITHDRAWAL',
-        'TRANSFER',
-        'INTEREST',
-        'CANCEL'
-    )
-        NOT NULL
-        COMMENT '거래 유형 (납입 / 출금 / 이체 / 이자지급 / 해지)',
-
-    amount BIGINT
-        NOT NULL
-        COMMENT '거래 금액(원 단위)',
-
-    balance_after BIGINT
-        NOT NULL
-        COMMENT '거래 후 잔액(from_account 기준)',
-
-    description VARCHAR(255)
-        NULL
-        COMMENT '거래 메모',
-
-    is_suspicious BOOLEAN
-        NOT NULL
-        DEFAULT FALSE
-        COMMENT '이상거래 여부',
-
-    transaction_at TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        COMMENT '실제 거래 발생 시각',
-
-    created_at TIMESTAMP
-        NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
-        COMMENT 'DB 등록 시간',
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    from_account_id INT NOT NULL,
+    to_account_id INT NULL,
+    type ENUM('DEPOSIT', 'WITHDRAWAL', 'TRANSFER', 'INTEREST', 'CANCEL') NOT NULL,
+    amount BIGINT NOT NULL,
+    balance_after BIGINT NOT NULL,
+    description VARCHAR(255) NULL,
+    is_suspicious BOOLEAN NOT NULL DEFAULT FALSE,
+    transaction_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_transactions_from_account
         FOREIGN KEY (from_account_id)
@@ -63,3 +27,9 @@ ON transactions(to_account_id);
 
 CREATE INDEX idx_transactions_date
 ON transactions(transaction_at);
+
+INSERT INTO transactions
+(from_account_id, to_account_id, type, amount, balance_after, description)
+VALUES
+(3, 1, 'TRANSFER', 3000000, 97000000, '초기 입출금 계좌 지급'),
+(3, 2, 'TRANSFER', 5000000, 92000000, '초기 입출금 계좌 지급');

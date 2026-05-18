@@ -5,6 +5,23 @@ const userProductModel = require("../models/userProductModel");
 const transferModel = require("../models/transferModel");
 const {createAccountNumber} = require("../utils/accountNumber");
 
+const createServiceError = (message, statusCode = 400) => {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  return error;
+};
+
+const calculateElapsedDays = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+
+  return Math.max(
+    0,
+    Math.floor((end - start) / millisecondsPerDay)
+  );
+};
+
 // 트랜잭션 밖
 // 1. 예금 상품 조회
 // 2. 상품 타입/기간/금액 검증
@@ -198,4 +215,151 @@ exports.joinDeposit = async (user_id, product_id, target_period_months, target_a
     conn.release();
   }
 
+}
+
+exports.cancelDeposit = async (user_id, user_product_id) => {
+  const conn = await pool.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    const userProduct = await userProductModel.findByIdForUpdate(
+      conn,
+      user_product_id,
+      user_id
+    );
+
+    if (!userProduct) {
+      throw createServiceError("해지할 상품을 찾을 수 없습니다.", 404);
+    }
+
+    if (userProduct.status !== "ACTIVE") {
+      throw createServiceError("이미 해지되었거나 만기 처리된 상품입니다.", 400);
+    }
+
+    const productDetails = await productModel.findProductDetailById(userProduct.product_id);
+    const product = productDetails[0];
+
+    if (!product) {
+      throw createServiceError("상품 정보를 찾을 수 없습니다.", 404);
+    }
+
+    if (product.product_type !== "deposit") {
+      throw createServiceError("예금 상품만 해지할 수 있습니다.", 400);
+    }
+
+    const selectedInterest = productDetails.find((row) => {
+      return Number(row.period_months) === Number(userProduct.target_period_months);
+    });
+
+    if (!selectedInterest) {
+      throw createServiceError("해지 금리 정보를 찾을 수 없습니다.", 404);
+    }
+
+    const depositAccount = await accountModel.getDepositAccountForUpdate(
+      conn,
+      userProduct.account_id,
+      user_id
+    );
+
+    if (!depositAccount) {
+      throw createServiceError("예금 계좌를 찾을 수 없습니다.", 404);
+    }
+
+    const demandAccount = await accountModel.getDemandAccountForUpdate(conn, user_id);
+
+    if (!demandAccount) {
+      throw createServiceError("입출금 계좌를 찾을 수 없습니다.", 404);
+    }
+
+    const today = new Date();
+    const maturityDate = new Date(userProduct.maturity_date);
+    const isEarlyCancel = today < maturityDate;
+    const appliedRate = isEarlyCancel
+      ? Number(selectedInterest.early_termination_rate || 0)
+      : Number(userProduct.interest_rate);
+    const elapsedDays = calculateElapsedDays(userProduct.join_date, today);
+    const principal = Number(depositAccount.balance);
+    const interestAmount = Math.floor(
+      principal * (appliedRate / 100) * (elapsedDays / 365)
+    );
+    const refundAmount = principal + interestAmount;
+    const demandBalanceAfter = Number(demandAccount.balance) + refundAmount;
+    const nextStatus = isEarlyCancel ? "CANCELLED" : "MATURED";
+
+    const depositResult = await transferModel.deposit(
+      conn,
+      demandAccount.account_number,
+      demandBalanceAfter
+    );
+
+    if (!depositResult || depositResult.affectedRows !== 1) {
+      throw createServiceError("입출금 계좌 환급 처리에 실패했습니다.", 500);
+    }
+
+    const deactivateResult = await accountModel.deactivateDepositAccount(
+      conn,
+      depositAccount.id,
+      user_id
+    );
+
+    if (!deactivateResult || deactivateResult.affectedRows !== 1) {
+      throw createServiceError("예금 계좌 해지 처리에 실패했습니다.", 500);
+    }
+
+    const statusResult = await userProductModel.updateStatus(
+      conn,
+      user_product_id,
+      user_id,
+      nextStatus
+    );
+
+    if (!statusResult || statusResult.affectedRows !== 1) {
+      throw createServiceError("상품 상태 변경에 실패했습니다.", 500);
+    }
+
+    const transactionResult = await transferModel.createTransaction(
+      conn,
+      depositAccount.id,
+      demandAccount.id,
+      "CANCEL",
+      refundAmount,
+      0,
+      isEarlyCancel ? "예금 중도해지" : "예금 만기해지"
+    );
+
+    if (!transactionResult || transactionResult.affectedRows !== 1) {
+      throw createServiceError("거래내역 저장에 실패했습니다.", 500);
+    }
+
+    await conn.commit();
+
+    return {
+      success: true,
+      message: isEarlyCancel ? "예금 중도해지가 완료되었습니다." : "예금 만기해지가 완료되었습니다.",
+      data: {
+        userProductId: Number(user_product_id),
+        depositAccountId: depositAccount.id,
+        demandAccountId: demandAccount.id,
+        principal,
+        interestAmount,
+        refundAmount,
+        appliedRate,
+        elapsedDays,
+        status: nextStatus
+      }
+    };
+
+  } catch (err) {
+    await conn.rollback();
+
+    console.error("service 예금 해지 에러 : ", err);
+    return {
+      success: false,
+      statusCode: err.statusCode || 500,
+      message: err.message || "예금 해지 서버 에러"
+    };
+  } finally {
+    conn.release();
+  }
 }

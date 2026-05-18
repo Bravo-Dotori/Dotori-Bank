@@ -36,3 +36,39 @@ exports.createDepositSubscription = async (
 
   return rows;
 };
+
+exports.findByIdForUpdate = async (conn, user_product_id, user_id) => {
+  const sql = `
+    select
+      id,
+      product_id,
+      user_id,
+      account_id,
+      target_amount,
+      target_period_months,
+      interest_rate,
+      join_date,
+      maturity_date,
+      status
+    from user_products
+    where id = ?
+      and user_id = ?
+    for update
+  `;
+
+  const [rows] = await conn.query(sql, [user_product_id, user_id]);
+  return rows[0];
+};
+
+exports.updateStatus = async (conn, user_product_id, user_id, status) => {
+  const sql = `
+    update user_products
+    set status = ?
+    where id = ?
+      and user_id = ?
+      and status = 'ACTIVE'
+  `;
+
+  const [rows] = await conn.query(sql, [status, user_product_id, user_id]);
+  return rows;
+};
