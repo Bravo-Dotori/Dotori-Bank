@@ -8,6 +8,11 @@ import PageHeader from "@/components/pageHeader/PageHeader"
 import Form from "@/components/form/Form"
 import Btn from "@/components/button/Btn"
 import AuthRedirect from "@/components/authRedirect/AuthRedirect"
+import { useState } from "react"
+import useStore from "@/store/useStore";
+import { login } from "../../api/loginApi"
+import { useNavigate } from "react-router-dom"
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -90,6 +95,21 @@ const LoginPage = () => {
     }
   };
 
+  const navigator = useNavigate();
+  const setLogin = useStore((state) => state.setLogin);
+  
+  const [user_id, setUser_id] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginEvent = async () => {
+      try {
+          const data = await login(user_id, password);
+          setLogin(data.user);
+          navigator("/account")
+      } catch (err) {
+          alert(err.message);
+      }
+  }
   return (
     <div className={styles.main}>
       <div className={styles.leftPanel}>
@@ -130,6 +150,7 @@ const LoginPage = () => {
                 })
               }
               error={errors.userId}
+              onChange={(e) => setUser_id(e.target.value)}
             />
 
             <Form
@@ -144,6 +165,7 @@ const LoginPage = () => {
                 })
               }
               error={errors.password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -152,6 +174,7 @@ const LoginPage = () => {
             size="big"
             active
             onClick={handleSubmitClick}
+            onClick={loginEvent}
           />
 
           <AuthRedirect

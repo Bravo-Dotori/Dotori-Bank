@@ -7,6 +7,7 @@ import logo from '@/assets/logo.png'
 import logoSad from '@/assets/logo-sad.png'
 
 import Btn from "@/components/button/Btn"
+import { Children } from 'react';
 
 const Modal = ({
     onClose,
@@ -20,6 +21,7 @@ const Modal = ({
     buttons = [],
     type = 'default',
     transferInfo,
+    children
 }) => {
 
     useEffect(() => {
@@ -67,55 +69,59 @@ const Modal = ({
                     </p>
                 )}
 
-                <div className={styles.rewardBox}>
-                    <span className={styles.rewardLabel}>
-                        {rewardLabel}
-                    </span>
-
-                    <div className={styles.reward}>
-                        {reward}
-                    </div>
-
-                    {rewardDescription && (
-                        <span className={styles.rewardDescription}>
-                            {rewardDescription}
+                {type !== 'default' && (
+                    <div className={styles.rewardBox}>
+                        <span className={styles.rewardLabel}>
+                            {rewardLabel}
                         </span>
-                    )}
 
-                    {type === 'transfer' && (
-                        <div className={styles.transferInfoBox}>
-                            <div className={styles.transferRow}>
-                                <span className={styles.label}>출금 계좌</span>
-                                <span className={styles.value}>
-                                    {transferInfo?.senderAccount}
-                                </span>
-                            </div>
-
-                            <div className={styles.transferRow}>
-                                <span className={styles.label}>입금 계좌</span>
-                                <span className={styles.value}>
-                                    {transferInfo?.receiverAccount}
-                                </span>
-                            </div>
-
-                            <div className={styles.transferRow}>
-                                <span className={styles.label}>이체 후 잔액</span>
-                                <span className={styles.value}>
-                                    {transferInfo?.afterBalance.toLocaleString()}원
-                                </span>
-                            </div>
+                        <div className={styles.reward}>
+                            {reward}
                         </div>
-                    )}
-                </div>
 
-                <div className={styles.notice}>
-                    {type === 'danger'
-                        ? '해지 후에는 기존 금리를 복구할 수 없어요'
-                        : type === 'transfer'
-                            ? ''
-                            : '꾸준히 모은 도토리가 태산이 되는 그날까지'}
-                </div>
+                        {rewardDescription && (
+                            <span className={styles.rewardDescription}>
+                                {rewardDescription}
+                            </span>
+                        )}
 
+                        {type === 'transfer' && (
+                            <div className={styles.transferInfoBox}>
+                                <div className={styles.transferRow}>
+                                    <span className={styles.label}>출금 계좌</span>
+                                    <span className={styles.value}>
+                                        {transferInfo?.senderAccount}
+                                    </span>
+                                </div>
+
+                                <div className={styles.transferRow}>
+                                    <span className={styles.label}>입금 계좌</span>
+                                    <span className={styles.value}>
+                                        {transferInfo?.receiverAccount}
+                                    </span>
+                                </div>
+
+                                <div className={styles.transferRow}>
+                                    <span className={styles.label}>이체 후 잔액</span>
+                                    <span className={styles.value}>
+                                        {transferInfo?.afterBalance.toLocaleString()}원
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {type !== 'default' && (
+                    <div className={styles.notice}>
+                        {type === 'danger'
+                            ? '해지 후에는 기존 금리를 복구할 수 없어요'
+                            : type === 'transfer'
+                                ? ''
+                                : '꾸준히 모은 도토리가 태산이 되는 그날까지'}
+                    </div>
+                )}
+                
                 <div
                     className={`
                         ${styles.buttonWrapper}
@@ -133,6 +139,7 @@ const Modal = ({
                         />
                     ))}
                 </div>
+                {children}
             </div>
         </div>
     );

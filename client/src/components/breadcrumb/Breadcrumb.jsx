@@ -9,7 +9,7 @@ const Breadcrumb = ({ items }) => {
         <div className={styles.breadcrumb}>
             {items.map((item, index) => (
                 <div
-                    key={item}
+                    key={index}
                     className={styles.itemWrapper}
                 >
                     <span

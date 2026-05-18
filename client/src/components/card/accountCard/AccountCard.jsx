@@ -12,7 +12,7 @@ const AccountCard = ({ account }) => {
                 </div>
 
                 <div className={styles.accountNumber}>
-                    {account.bank} {account.accountNumber}
+                    {account.bank} {account.account_number}
                 </div>
             </div>
 
@@ -22,7 +22,7 @@ const AccountCard = ({ account }) => {
                 </div>
 
                 <div className={styles.balance}>
-                    {account.amount.toLocaleString()}원
+                    {account.balance.toLocaleString()}원
                 </div>
             </div>
 

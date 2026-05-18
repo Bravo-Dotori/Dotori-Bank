@@ -10,16 +10,16 @@
 
 .modal {
     width: 480px;
-    height: 580px;
+    height: auto;
     background: white;
     border-radius: 32px;
-    padding: 28px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 24px;
+    padding: 72.5px 28px;
 }
 
 .logo {
