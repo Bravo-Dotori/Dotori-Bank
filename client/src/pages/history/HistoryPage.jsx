@@ -190,13 +190,22 @@ const HistoryPage = () => {
                   transactionData?.account_id
                 }
                 totalCount={totalCount}
+                desc={
+                    <>
+                        선택한 기간 내 거래내역이 없어요<br />
+                        다른 기간을 선택하거나 입출금계좌로 돌아가보세요
+                    </>
+                }
+                btnText="내 계좌로 돌아가기"
+                btnValue="/account"
               />
-
-              <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
+              {totalCount !== 0 && (
+                <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                />
+              )}
             </>
           )}
         </div>
