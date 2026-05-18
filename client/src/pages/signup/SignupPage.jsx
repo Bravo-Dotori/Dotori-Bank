@@ -10,7 +10,10 @@ import Btn from "@/components/button/Btn"
 import AuthRedirect from "@/components/authRedirect/AuthRedirect"
 import Modal from "@/components/modal/Modal"
 
+import useStore from "@/store/useStore";
+
 const SignupPage = () => {
+  const setLogin = useStore((state) => state.setLogin);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -106,9 +109,8 @@ const SignupPage = () => {
       });
       const data = await response.json();
 
-      console.log(data);
-
-      setIsModalOpen(true)
+      setLogin(data.user);
+      setIsModalOpen(true);
     } catch (error) {
       console.log(error);
     }

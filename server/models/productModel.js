@@ -57,9 +57,15 @@ exports.products = async () => {
             p.product_name,
             p.product_type,
             p.max_period_months,
-            i.interest_rate,
+            round(max(i.interest_rate), 2) as interest_rate,
             p.product_desc
         from products p join interests i on p.id = i.product_id
+        group by
+            p.id,
+            p.product_name,
+            p.product_type,
+            p.max_period_months,
+            p.product_desc
     `
 
     const [rows] = await pool.query(sql);
