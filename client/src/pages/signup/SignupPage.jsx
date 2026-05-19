@@ -25,7 +25,12 @@ const SignupPage = () => {
   });
   const [errors, setErrors] = useState({
     email: '',
+    userId: '',
+    password: '',
     confirmPassword: '',
+    name: '',
+    birthDate: '',
+    common: '',
   });
 
   const validateEmail = () => {
@@ -89,10 +94,20 @@ const SignupPage = () => {
 
   const handleSubmitClick = async () => {
     try {
-      // 유효성 검사
       const isValidEmail = validateEmail();
       const isValidPassword = validatePassword();
+
       if (!isValidEmail || !isValidPassword) return;
+
+      setErrors({
+        email: '',
+        userId: '',
+        password: '',
+        confirmPassword: '',
+        name: '',
+        birthDate: '',
+        common: '',
+      });
 
       const response = await fetch('/api/user/signup', {
         method: 'POST',
@@ -107,14 +122,57 @@ const SignupPage = () => {
           birth_date: form.birthDate,
         }),
       });
+
       const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 400) {
+          setErrors((prev) => ({
+            ...prev,
+            common: data.message,
+          }));
+
+          return;
+        }
+
+        if (response.status === 409) {
+          if (data.message.includes('이메일')) {
+            setErrors((prev) => ({
+              ...prev,
+              email: data.message,
+            }));
+          }
+
+          if (data.message.includes('아이디')) {
+            setErrors((prev) => ({
+              ...prev,
+              userId: data.message,
+            }));
+          }
+
+          return;
+        }
+
+        if (response.status === 500) {
+          setErrors((prev) => ({
+            ...prev,
+            common: data.message,
+          }));
+
+          return;
+        }
+      }
 
       setLogin(data.user);
       setIsModalOpen(true);
+
     } catch (error) {
-      console.log(error);
+      setErrors((prev) => ({
+        ...prev,
+        common: '서버 연결에 실패했습니다.',
+      }));
     }
-  }
+  };
 
   return (
     <div className={styles.main}>
@@ -174,6 +232,7 @@ const SignupPage = () => {
                   userId: e.target.value,
                 })
               }
+              error={errors.userId}
             />
             <Form
               name="비밀번호"
@@ -220,6 +279,12 @@ const SignupPage = () => {
               onChange={handleBirthDateChange}
             />
           </div>
+
+          {errors.common && (
+            <div className={styles.errorText}>
+              {errors.common}
+            </div>
+          )}
           <Btn
             name="가입하기"
             size="big"
