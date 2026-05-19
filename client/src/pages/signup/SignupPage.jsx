@@ -125,13 +125,23 @@ const SignupPage = () => {
 
       if (!response.ok) {
         if (response.status === 400) {
-          setErrors((prev) => ({
-            ...prev,
-            common: data.message,
-          }));
 
-          return;
+          if (data.message.includes('생년월일')) {
+            setErrors((prev) => ({
+              ...prev,
+              birthDate: data.message,
+            }));
+            return;
+          } else {
+          
+            setErrors((prev) => ({
+                ...prev,
+                common: data.message,
+            }));
+            return;
+          }
         }
+
 
         if (response.status === 409) {
           if (data.message.includes('이메일')) {
@@ -275,6 +285,7 @@ const SignupPage = () => {
               placeholder="YYYY-MM-DD"
               value={form.birthDate}
               onChange={handleBirthDateChange}
+              error={errors.birthDate}
             />
           </div>
 
