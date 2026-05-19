@@ -13,3 +13,17 @@
     display: flex;
     gap: 12px;
 }
+
+@media screen and (max-width: 720px) {
+    .filterWrap {
+        flex-wrap: nowrap;        
+        overflow: auto;
+    }
+    .filterWrap:not(:first-child) {
+        border-top: 1px solid var(--border-color);
+        padding: 10px 0 0;
+    }
+    .filterWrap label {
+        flex-shrink: 0;
+    }
+}

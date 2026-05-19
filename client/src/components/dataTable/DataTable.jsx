@@ -5,36 +5,35 @@ const DataTable = ({title, date, totalCount, columns, data}) => {
     return (
         <div className={styles.tableWrap}>
             <div className={styles.tableTitle}>
-                <h3 className={styles.title}>{title}</h3>
-                <span className={styles.desc}>
-                    {totalCount}건
-                </span>
+                <h3 className={styles.title}>{title} · {totalCount}건</h3>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        {columns.map((col, index) => (
-                            <th key={index}>{col.header}</th>
-                        ))}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {data.map((item, rowIndex) => (
-                        <tr key={rowIndex}>
-                            {columns.map((col, colIndex) => (
-                                <td key={colIndex}>
-                                    {col.render
-                                        ? col.render(item[col.accessor], item)
-                                        : item[col.accessor]
-                                    }
-                                </td>
+            <div className={styles.table}>
+                <table>
+                    <thead>
+                        <tr>
+                            {columns.map((col, index) => (
+                                <th key={index}>{col.header}</th>
                             ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        {data.map((item, rowIndex) => (
+                            <tr key={rowIndex}>
+                                {columns.map((col, colIndex) => (
+                                    <td key={colIndex}>
+                                        {col.render
+                                            ? col.render(item[col.accessor], item)
+                                            : item[col.accessor]
+                                        }
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
