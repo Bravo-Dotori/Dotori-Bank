@@ -108,6 +108,7 @@ exports.myProductDetail = async (user_product_id, user_id) => {
             on u.product_id = p.id
         where u.id = ?
             AND u.user_id = ?
+            AND u.status = "ACTIVE"
     `;
 
     const [rows] = await pool.query(sql, [user_product_id, user_id]);

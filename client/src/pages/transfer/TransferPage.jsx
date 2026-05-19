@@ -28,6 +28,7 @@ const TransferPage = () => {
   const [receiverError, setReceiverError] = useState('');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+  const [transferErrorMessage, setTransferErrorMessage] = useState('');
 
   // 보내는 분 계좌 조회
   const fetchAccount = async () => {
@@ -113,7 +114,6 @@ const TransferPage = () => {
 
   // 이체하기
   const transferAmount = async () => {
-    try {
       const response = await fetch('/api/transfer', {
         method: 'POST',
         headers: {
@@ -130,9 +130,11 @@ const TransferPage = () => {
 
       const data = await response.json();
 
-    } catch (error) {
-        console.error("error:", error);
-    }
+      if (!response.ok || !data.success) {
+        throw new Error(data.message);
+      }
+
+      return data;      
   };
 
   // 금액 입력 처리
@@ -172,10 +174,16 @@ const TransferPage = () => {
     setIsConfirmModalOpen(false);
   };
 
-  const handleTransfer = () => {
-    transferAmount();
-    setIsConfirmModalOpen(false);
-    setIsCompleteModalOpen(true);
+  const handleTransfer = async () => {
+    try{
+      await transferAmount();
+
+      setIsConfirmModalOpen(false);
+      setIsCompleteModalOpen(true);
+    } catch (error) {
+      setIsConfirmModalOpen(false);
+      setTransferErrorMessage(error.message);
+    }
   };
 
   useEffect(() => {
@@ -275,6 +283,22 @@ const TransferPage = () => {
               name: '확인',
               active: true,
               onClick: () => navigate('/history'),
+            },
+          ]}
+        />
+      )}
+
+      {transferErrorMessage && (
+        <Modal
+          showLogo
+          type="fail"
+          title="이체에 실패했어요"
+          description={transferErrorMessage}
+          buttons={[
+            {
+              name: '확인',
+              active: true,
+              onClick: () => setTransferErrorMessage(''),
             },
           ]}
         />
