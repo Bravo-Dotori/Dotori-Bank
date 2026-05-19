@@ -129,7 +129,6 @@
     }
     .inputWrapper {
         flex-direction: column;
-        margin-bottom: 0;
     }
     .inputWrapper input {
         width: 100%;

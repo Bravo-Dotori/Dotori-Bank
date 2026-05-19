@@ -122,4 +122,8 @@
         height: 100%;
         border-radius: 0;
     }
+    .title {
+        word-break: keep-all;
+        text-align: center;
+    }
 }
