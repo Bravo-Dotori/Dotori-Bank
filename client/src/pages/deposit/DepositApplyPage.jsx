@@ -81,7 +81,11 @@ const DepositApplyPage = () => {
                 target_period_months: selectedPeriod,
                 target_amount: Number(joinAmount),
             });
+
+            console.log(data);
+
             setIsModalOpen(true);
+
         } catch (error) {
             console.error("error:", error);
             setDepositErrorMessage(error.message);

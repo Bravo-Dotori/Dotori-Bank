@@ -76,8 +76,7 @@ const SignupPage = () => {
   const handleBirthDateChange = (e) => {
     let value = e.target.value;
 
-    value = value.replace(/\D/g, '');
-    value = value.slice(0, 8);
+    value = e.target.value.replace(/\D/g, '').slice(0, 8);
 
     if (value.length >= 5 && value.length <= 6) {
       value = `${value.slice(0, 4)}-${value.slice(4)}`;
