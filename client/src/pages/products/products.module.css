@@ -3,6 +3,12 @@
     max-width: 1170px;
     padding: 0 64px;
 }
+@media screen and (max-width: 1060px) {
+    .container {
+        margin-top: 20px;
+        padding: 0 20px;
+    }
+}
 
 .products {
     width: 100%;
@@ -120,6 +126,10 @@
 }
 
 @media screen and (max-width: 1060px) {
+    .container {
+        margin-top: 20px;
+        padding: 0 20px;
+    }
     .rightSection {
         margin: 0 auto;
         width: 60%;

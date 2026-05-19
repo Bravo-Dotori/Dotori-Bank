@@ -3,6 +3,12 @@
     max-width: 1188px;
     padding: 0 64px;
 }
+@media screen and (max-width: 1060px) {
+    .container {
+        margin-top: 20px;
+        padding: 0 20px;
+    }
+}
 
 .depositDetail,
 .depositApply {

@@ -2,6 +2,12 @@
     margin: 48px auto;
     width: 720px;
 }
+@media screen and (max-width: 1060px) {
+    .container {
+        margin-top: 20px;
+        padding: 0 20px;
+    }
+}
 
 .recommend {
     width: 100%;
