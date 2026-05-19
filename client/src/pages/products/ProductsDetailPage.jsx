@@ -21,9 +21,6 @@ const ProductsDetailPage = () => {
     const productCancelMutation =useProductCancelMutation();
 
     const product = data?.product?.[0];
-    console.log(product)
-    console.log(productId)
-    console.log(data)
     
     const productCancel = async () => {
       try {

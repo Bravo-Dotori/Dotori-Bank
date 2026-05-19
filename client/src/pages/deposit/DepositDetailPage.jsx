@@ -37,16 +37,13 @@ const DepositDetailPage = () => {
 
             const data = await response.json();
 
-            console.log(data);
-
             if (!response.ok || !data.success) {
                 return;
             }
-
             setProduct(data.product);
 
         } catch (error) {
-            console.log(error);
+            console.error("error:", error);
         }
     }
 

@@ -11,7 +11,6 @@ const ProductsPage = () => {
   const isAuthChecked = useStore((state) => state.isAuthChecked);
   const { data, isLoading, isError, error } = useMyProductsQuery();
   const products = data?.products || [];
-  console.log(products)
   
   if (!isAuthChecked) {
     return null;
