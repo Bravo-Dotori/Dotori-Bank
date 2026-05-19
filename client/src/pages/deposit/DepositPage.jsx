@@ -20,7 +20,6 @@ const DepositPage = () => {
 
     const isLogin = useStore((state) => state.isLogin);
     const isAuthChecked = useStore((state) => state.isAuthChecked);
-    console.log(isLogin);
 
     const { data, isLoading, isError, error } = useProductsQuery();
 

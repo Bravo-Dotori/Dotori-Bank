@@ -130,12 +130,9 @@ const OnboardingPage = () => {
 
             const data = await response.json();
 
-            console.log(data);
-
             if (!response.ok || !data.success) {
                 return;
             }
-
             navigate('/recommend', {
                 state: {
                     recommendations: data.recommendations,
@@ -143,7 +140,7 @@ const OnboardingPage = () => {
             });
 
         } catch (error) {
-            console.log(error);
+            console.error("error:", error);
         }
     };
 
