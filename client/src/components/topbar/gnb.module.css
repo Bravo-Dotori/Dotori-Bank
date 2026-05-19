@@ -51,3 +51,10 @@
 .logout:hover {
     color: var(--brand-color);
 }
+
+
+@media screen and (max-width: 1024px) {
+  .gnb {
+    padding: 0 20px;
+  }
+}
