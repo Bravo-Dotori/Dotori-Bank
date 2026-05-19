@@ -50,7 +50,8 @@ const LoginPage = () => {
 
     try {
         const data = await login(form.userId, form.password);
-
+        setLogin(data.user);
+        
         if (data.user.role === "admin") {
             navigator("/admin");
         } else {

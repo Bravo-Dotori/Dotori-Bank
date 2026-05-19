@@ -33,29 +33,32 @@ const App = () => {
                 method: 'GET',
                 credentials: 'include',
             });
-
             if (response.status === 401) {
                 logout();
                 return;
             }
-
+            console.log(response.status);
             if (!response.ok) {
                 throw new Error();
             }
-
             const data = await response.json();
-
+            if (!data.user) {
+                logout();
+                return;
+            }
             setLogin(data.user);
         } catch (error) {
-            logout();
+            console.error(error);
         } finally {
             setAuthChecked(true);
         }
     };
 
     verifyUser();
+    
+    console.log(user);
+    console.log("2",isAuthChecked, user);
   }, []);
-console.log(user);
   return (
     <BrowserRouter>
       <Routes>

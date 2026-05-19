@@ -42,8 +42,6 @@ const TransferPage = () => {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (!response.ok || !data.success) {
         return;
       }
@@ -58,7 +56,7 @@ const TransferPage = () => {
       });
 
     } catch (error) {
-      console.log(error);
+        console.error("error:", error);
     }
   };
 
@@ -89,8 +87,6 @@ const TransferPage = () => {
 
       const data = await response.json();
 
-      console.log(data);
-
       // 계좌가 존재하지 않을 때
       if (!response.ok || !data.success) {
         setReceiver((prev) => ({
@@ -111,7 +107,7 @@ const TransferPage = () => {
       setReceiverError('');
 
     } catch (error) {
-      console.log(error);
+        console.error("error:", error);
     }
   };
 
@@ -134,10 +130,8 @@ const TransferPage = () => {
 
       const data = await response.json();
 
-      console.log(data);
-
     } catch (error) {
-      console.log(error);
+        console.error("error:", error);
     }
   };
 
