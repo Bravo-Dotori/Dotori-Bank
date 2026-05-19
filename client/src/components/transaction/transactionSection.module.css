@@ -38,6 +38,12 @@
     border-bottom: 1px solid var(--border-color);
 }
 
+@media screen and (max-width: 1024px) {
+    .transactionItem {
+        flex-direction: column;
+    }
+}
+
 .transactionItem:last-child {
     border-bottom: none;
 }
@@ -88,6 +94,12 @@
 .amount {
     font-size: 18px;
     font-weight: 600;
+}
+@media screen and (max-width: 1024px) {
+    .amount {
+        width: 100%;
+        text-align: right;
+    }
 }
 
 .plus {
