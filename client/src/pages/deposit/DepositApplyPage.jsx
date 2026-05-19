@@ -17,6 +17,7 @@ import Modal from "@/components/modal/Modal"
 const DepositApplyPage = () => {
     const location = useLocation();
     const { depositId } = useParams();
+    const [depositErrorMessage, setDepositErrorMessage] = useState('');
 
     const {
         product,
@@ -86,8 +87,8 @@ const DepositApplyPage = () => {
             setIsModalOpen(true);
 
         } catch (error) {
-            console.log(error);
-            alert(error.message);
+            console.error("error:", error);
+            setDepositErrorMessage(error.message);
         }
     };
 
@@ -185,6 +186,21 @@ const DepositApplyPage = () => {
                 />
             )
             }
+            {depositErrorMessage && (
+                <Modal
+                    showLogo
+                    type = 'fail'
+                    title="예금 가입에 실패했어요"
+                    description={depositErrorMessage}
+                    buttons={[
+                        {
+                            name: '확인',
+                            active: true,
+                            onClick: () => setDepositErrorMessage(''),
+                        },
+                    ]}
+                />
+            )}
         </div>
     )
 }
