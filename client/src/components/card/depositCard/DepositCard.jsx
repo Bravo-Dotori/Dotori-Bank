@@ -37,7 +37,7 @@ const DepositCard = ({
                 </div>
 
                 <div className={styles.rate}>
-                    연 {rate}%
+                    {maxPeriod ? `최대 연 ${rate}%` : `연 ${rate}%`}
                 </div>
 
                 {type === "deposit" && (
