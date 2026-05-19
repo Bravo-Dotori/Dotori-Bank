@@ -40,6 +40,13 @@ exports.getToAccount = async (account_number) => {
         message: "계좌 정보 없음"
       }
     }
+
+    if(result[0].is_active == false) {
+      return {
+        success: false,
+        message: "계좌 비활성 상태"
+      }
+    }
     
     return {
       success: true,

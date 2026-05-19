@@ -30,44 +30,37 @@ exports.transfer = async (
     const fromAccount =await transferModel.getFromAccount(conn, from_account_id);
 
     if(!fromAccount) {
-      return {
-        success: false,
-        message: "출금 계좌 없음"
-      };
+      throw new Error("출금 계좌 없음");
+    }
+
+    if(fromAccount.is_active == false) {
+      throw new Error("출금 계좌 비활성");
     }
 
     // 2. 입금계좌 조회
     const toAccount =await transferModel.getToAccount(conn, to_account_number);
 
     if(!toAccount) {
-      return {
-        success: false,
-        message: "입금 계좌 없음"
-      };
+      throw new Error("입금 계좌 없음");
+    }
+
+    if(toAccount.is_active == false) {
+      throw new Error("입금 계좌 비활성");
     }
 
     // 본인 계좌 확인
     if(fromAccount.user_id !== user_id) {
-      return {
-        success: false,
-        message: "본인 계좌만 출금 가능"
-      };
+      throw new Error("본인 계좌만 출금 가능");
     }
 
     // 동일 계좌 이체 불가
     if(fromAccount.account_number === to_account_number) {
-      return {
-        success: false,
-        message: "동일 계좌 이체 불가"
-      };
+      throw new Error("동일 계좌 이체 불가");
     }
 
     // 잔액 부족
     if(fromAccount.balance < amount) {
-      return {
-        success: false,
-        message: "잔액 부족"
-      };
+      throw new Error("잔액 부족");
     }
 
     // 3. 잔액 계산
@@ -100,7 +93,7 @@ exports.transfer = async (
 
     return {
       success: false,
-      message: "service 계좌이체 서버 에러"
+      message: err.message
     };
 
   } finally {

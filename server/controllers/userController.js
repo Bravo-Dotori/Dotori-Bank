@@ -2,6 +2,21 @@ const userService = require("../services/userService");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const isValidDateString = (value) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+};
+
 // 회원가입
 exports.signup = async(req, res) => {
   try {
@@ -13,6 +28,13 @@ exports.signup = async(req, res) => {
         success: false,
         message: "필수값 누락"
       }); 
+    }
+
+    if (!isValidDateString(birth_date)) {
+      return res.status(400).json({
+        success: false,
+        message: "올바른 생년월일을 입력해주세요."
+      });
     }
 
     const result = await userService.signup(email, user_id, password, name, birth_date);
