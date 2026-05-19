@@ -4,6 +4,9 @@ import { getTransactions } from "../api/transactionsApi";
 export const useTransactionsQuery  = () => {
     return useQuery({
         queryKey: ['transactions'],
-        queryFn: getTransactions
+        queryFn: getTransactions,
+        refetchInterval: 5000,
+        staleTime: 0,
+        refetchOnWindowFocus: true,
     });
 }
