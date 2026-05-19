@@ -17,19 +17,19 @@ import { useMyProductDetailQuery, useProductCancelMutation } from '../../hooks/u
 const ProductsDetailPage = () => {
     const { productId } = useParams();
     const [modalType, setModalType] = useState(null);
-    const {data, isLoading, isError, error} = useMyProductDetailQuery(productId);
-    const productCancelMutation =useProductCancelMutation();
+    const { data, isLoading, isError, error } = useMyProductDetailQuery(productId);
+    const productCancelMutation = useProductCancelMutation();
 
     const product = data?.product?.[0];
     console.log(data);
-    
+
     const productCancel = async () => {
-      try {
-          await productCancelMutation.mutateAsync(productId);
-          setModalType('complete');
-      } catch (err) {
-          alert(err.message);
-      }
+        try {
+            await productCancelMutation.mutateAsync(productId);
+            setModalType('complete');
+        } catch (err) {
+            alert(err.message);
+        }
     }
 
     console.log(product)
@@ -37,7 +37,7 @@ const ProductsDetailPage = () => {
         <div className='main'>
             <div className={styles.container}>
                 <div className={styles.productsDetail}>
-                  {isLoading ? (
+                    {isLoading ? (
                         <StatusCard title="상품을 불러오고 있어요" />
                     ) : isError ? (
                         <StatusCard title={error.message} isError />
@@ -74,10 +74,10 @@ const ProductsDetailPage = () => {
                                         items={[
                                             {
                                                 label: product?.product_type === "demand" ? "현재 잔액" : "가입 금액",
-                                                value:  product?.balance !== undefined &&
+                                                value: product?.balance !== undefined &&
                                                     product?.balance !== null
-                                                        ? `${Number(product.balance).toLocaleString()} 원`
-                                                        : '-',
+                                                    ? `${Number(product.balance).toLocaleString()} 원`
+                                                    : '-',
                                             },
                                             {
                                                 label: '가입 개월',
@@ -87,11 +87,11 @@ const ProductsDetailPage = () => {
                                             },
                                             {
                                                 label: '상품 종류',
-                                                value:  product?.product_type === "demand"
+                                                value: product?.product_type === "demand"
                                                     ? "입출금"
                                                     : product?.product_type === "deposit"
-                                                    ? "예금"
-                                                    : ""
+                                                        ? "예금"
+                                                        : ""
                                             },
                                         ]}
                                     />
@@ -100,7 +100,7 @@ const ProductsDetailPage = () => {
 
                                 <div className={styles.rightSection}>
                                     <div className={styles.rightCard}>
-                                        {product?.product_type !== "demand" && ( 
+                                        {product?.product_type !== "demand" && (
                                             <div
                                                 className={styles.terminate}
                                                 onClick={() =>
@@ -120,7 +120,7 @@ const ProductsDetailPage = () => {
                             </div>
                         </>
                     )
-                  }
+                    }
                 </div>
             </div>
 
@@ -129,7 +129,11 @@ const ProductsDetailPage = () => {
                     showLogo
                     type="danger"
                     title='정말로 해지하시겠습니까?'
-                    rewardDescription='도토리뱅크 1234-56-789012'
+                    rewardDescription={
+                        product?.account_number
+                            ? `${product.account_number}`
+                            : `${product?.product_name}`
+                    }
                     buttons={[
                         {
                             name: '뒤로가기',
@@ -150,8 +154,13 @@ const ProductsDetailPage = () => {
                     showLogo
                     title='해지가 완료되었어요'
                     rewardLabel='수령액'
-                    reward='2,950,000원'
-                    rewardDescription='도토리뱅크 1234-56-789012'
+                    reward={
+                        product?.balance !== undefined &&
+                            product?.balance !== null
+                            ? `${Number(product.balance).toLocaleString()}원`
+                            : '-'
+                    }
+                    rewardDescription={`${product?.product_name} 해지 완료`}
                     buttons={[
                         {
                             name: '확인',
