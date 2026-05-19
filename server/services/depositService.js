@@ -112,7 +112,7 @@ exports.joinDeposit = async (user_id, product_id, target_period_months, target_a
 
     // 6. 잔액 부족 확인
     if(Number(demandAccount.balance) < depositAmount){
-        throw new Error("입출금 계좌 잔액 부족");
+        throw createServiceError("입출금 계좌 잔액 부족", 400);
     }
 
     // 7. 예금 계좌 생성(balance 0)

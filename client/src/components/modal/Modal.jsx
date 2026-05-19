@@ -69,7 +69,7 @@ const Modal = ({
                     </p>
                 )}
 
-                {type !== 'default' || type !== 'fail'&& (
+                {type !== 'default' && type !== 'fail'&& (
                     <div className={styles.rewardBox}>
                         <span className={styles.rewardLabel}>
                             {rewardLabel}
@@ -112,7 +112,7 @@ const Modal = ({
                     </div>
                 )}
 
-                {type !== 'default' || type !== 'fail' && (
+                {type !== 'default' && type !== 'fail' && (
                     <div className={styles.notice}>
                         {type === 'danger'
                             ? '해지 후에는 기존 금리를 복구할 수 없어요'

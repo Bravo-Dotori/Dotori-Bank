@@ -230,3 +230,65 @@ VALUES
 (4, 5, 'DEPOSIT', 100000, 2600000, '예금 가입', FALSE),
 (4, 6, 'DEPOSIT', 100000, 2500000, '예금 가입', FALSE),
 (4, 7, 'DEPOSIT', 100000, 2400000, '예금 가입', FALSE);
+
+
+INSERT INTO products
+(id, product_name, product_code, product_type, product_desc, min_period_months, max_period_months, min_amount, max_amount)
+VALUES
+(1, '기본 입출금통장', 'DEMAND_BASIC_001', 'demand', '일상적인 입출금 거래를 위한 기본 계좌 상품', 0, 0, 0, 0),
+
+(2, '스마트 정기예금', 'DEPOSIT_SMART_001', 'deposit', '비대면 가입 고객을 위한 표준 정기예금 상품', 3, 12, 100000, 30000000),
+(3, '프라임 정기예금', 'DEPOSIT_PRIME_001', 'deposit', '안정적인 목돈 운용을 위한 대표 정기예금 상품', 6, 24, 1000000, 100000000),
+(4, '세이프 정기예금', 'DEPOSIT_SAFE_001', 'deposit', '원금 보전을 중시하는 고객을 위한 안정형 정기예금', 3, 18, 500000, 50000000),
+(5, '플러스 정기예금', 'DEPOSIT_PLUS_001', 'deposit', '기간별 금리 혜택을 제공하는 정기예금 상품', 6, 36, 1000000, 200000000),
+(6, '우대금리 정기예금', 'DEPOSIT_PREFERRED_001', 'deposit', '조건 충족 시 우대금리를 기대할 수 있는 정기예금', 12, 36, 1000000, 100000000),
+(7, '목돈관리 정기예금', 'DEPOSIT_LUMP_001', 'deposit', '목돈을 일정 기간 안정적으로 예치하는 상품', 3, 24, 3000000, 300000000),
+(8, '안심 정기예금', 'DEPOSIT_SECURE_001', 'deposit', '예치 기간을 선택해 안정적으로 운용하는 정기예금', 6, 18, 100000, 50000000),
+(9, '프리미엄 정기예금', 'DEPOSIT_PREMIUM_001', 'deposit', '고액 예치 고객을 위한 프리미엄 정기예금', 12, 36, 10000000, 500000000),
+(10, '하이브리드 정기예금', 'DEPOSIT_HYBRID_001', 'deposit', '중단기 운용에 적합한 금리형 정기예금', 3, 15, 500000, 80000000),
+
+(11, '든든 정기예금', 'DEPOSIT_STABLE_001', 'deposit', '생활자금과 여유자금을 안정적으로 분리 운용하는 예금', 6, 24, 1000000, 150000000),
+(12, '미래설계 정기예금', 'DEPOSIT_FUTURE_001', 'deposit', '중장기 자금 계획을 위한 정기예금 상품', 12, 36, 1000000, 200000000),
+(13, '자산관리 정기예금', 'DEPOSIT_ASSET_001', 'deposit', '자산 포트폴리오의 안정성을 높이는 예금 상품', 6, 30, 5000000, 300000000),
+(14, '밸런스 정기예금', 'DEPOSIT_BALANCE_001', 'deposit', '기간과 금리의 균형을 고려한 정기예금', 3, 24, 500000, 100000000),
+(15, '시그니처 정기예금', 'DEPOSIT_SIGNATURE_001', 'deposit', '주요 고객을 위한 대표 정기예금 상품', 12, 36, 5000000, 500000000),
+(16, '온택트 정기예금', 'DEPOSIT_ONTACT_001', 'deposit', '온라인 가입에 최적화된 비대면 정기예금', 3, 18, 100000, 50000000),
+(17, '웰컴 정기예금', 'DEPOSIT_WELCOME_001', 'deposit', '신규 고객의 첫 목돈 운용을 위한 정기예금', 6, 24, 100000, 30000000),
+(18, '더드림 정기예금', 'DEPOSIT_DREAM_001', 'deposit', '목표 자금 마련을 돕는 안정형 정기예금', 6, 36, 500000, 100000000),
+(19, '마이플랜 정기예금', 'DEPOSIT_MYPLAN_001', 'deposit', '고객의 예치 계획에 맞춰 기간을 선택하는 정기예금', 3, 30, 100000, 150000000),
+(20, '골든 정기예금', 'DEPOSIT_GOLDEN_001', 'deposit', '장기 예치 고객에게 적합한 고금리형 정기예금', 12, 36, 1000000, 300000000),
+
+(21, '리워드 정기예금', 'DEPOSIT_REWARD_001', 'deposit', '예치 기간에 따라 금리 혜택을 제공하는 정기예금', 6, 30, 1000000, 200000000),
+(22, '클래식 정기예금', 'DEPOSIT_CLASSIC_001', 'deposit', '기본에 충실한 표준형 정기예금 상품', 3, 12, 100000, 50000000),
+(23, '스텝업 정기예금', 'DEPOSIT_STEPUP_001', 'deposit', '기간이 길수록 금리 매력이 커지는 정기예금', 6, 36, 1000000, 250000000),
+(24, '노블 정기예금', 'DEPOSIT_NOBLE_001', 'deposit', '고액 자산 고객을 위한 안정 운용 정기예금', 12, 36, 20000000, 700000000),
+(25, '이지 정기예금', 'DEPOSIT_EASY_001', 'deposit', '간편하게 가입하고 관리하는 정기예금 상품', 3, 18, 100000, 30000000),
+(26, '세이브 정기예금', 'DEPOSIT_SAVE_001', 'deposit', '여유자금을 안정적으로 보관하는 정기예금', 6, 24, 500000, 100000000),
+(27, '올라운드 정기예금', 'DEPOSIT_ALLROUND_001', 'deposit', '다양한 기간 선택이 가능한 범용 정기예금', 3, 36, 100000, 200000000),
+(28, '베이직 정기예금', 'DEPOSIT_BASIC_001', 'deposit', '누구나 쉽게 가입할 수 있는 기본형 정기예금', 3, 24, 100000, 50000000),
+(29, '챌린지 정기예금', 'DEPOSIT_CHALLENGE_001', 'deposit', '목표 기간 동안 목돈을 유지하는 정기예금 상품', 6, 30, 500000, 150000000),
+(30, '퍼스트 정기예금', 'DEPOSIT_FIRST_001', 'deposit', '첫 예금 가입 고객에게 적합한 정기예금 상품', 3, 12, 100000, 30000000);
+
+INSERT INTO interests
+(product_id, period_months, interest_rate, early_termination_rate)
+WITH RECURSIVE months AS (
+  SELECT 0 AS month_value
+  UNION ALL
+  SELECT month_value + 1
+  FROM months
+  WHERE month_value < 36
+)
+SELECT
+  p.id AS product_id,
+  m.month_value AS period_months,
+  CASE
+    WHEN p.product_type = 'demand' THEN 0.100
+    ELSE ROUND(2.200 + (m.month_value * 0.045) + (p.id * 0.012), 3)
+  END AS interest_rate,
+  CASE
+    WHEN p.product_type = 'demand' THEN NULL
+    ELSE ROUND((2.200 + (m.month_value * 0.045) + (p.id * 0.012)) * 0.5, 3)
+  END AS early_termination_rate
+FROM products p
+JOIN months m
+  ON m.month_value BETWEEN p.min_period_months AND p.max_period_months;
