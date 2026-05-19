@@ -39,5 +39,5 @@ export const fetchDepositDetail = async (depositId) => {
         throw new Error(data.message || "상품 조회 실패");
         
     }
-    return data;
+    return data.product;
 };
