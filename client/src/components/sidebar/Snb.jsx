@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import useStore from '@/store/useStore';
 
-const Snb = () => {
+const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
   const isLogin = useStore((state) => state.isLogin);
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +24,7 @@ const Snb = () => {
   ];
 
   return (
-    <div className={styles.snb}>
+    <div className={`${styles.snb} ${isMenuOpen ? styles.open : ''}`}>
       <button
         className={`
           ${styles.menu}
