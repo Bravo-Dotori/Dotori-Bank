@@ -84,7 +84,8 @@ exports.myProducts = async (user_id) => {
             u.target_period_months,
             u.interest_rate,
             p.product_desc
-        from user_products u join products p on u.product_id = p.id
+        from user_products u 
+            join products p on u.product_id = p.id
         where u.user_id = ? and u.status = "ACTIVE"
         order by u.created_at desc
     `
@@ -102,10 +103,12 @@ exports.myProductDetail = async (user_product_id, user_id) => {
             p.product_type,
             u.target_period_months,
             u.interest_rate,
-            p.product_desc
+            p.product_desc,
+            a.balance
         from user_products u
         join products p
             on u.product_id = p.id
+            join accounts a on u.account_id = a.id
         where u.id = ?
             AND u.user_id = ?
             AND u.status = "ACTIVE"

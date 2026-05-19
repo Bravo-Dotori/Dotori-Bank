@@ -25,30 +25,31 @@ const DepositCard = ({
     }
     return (
         <div className={styles.card}>
-            {rank && (
-                <div className={styles.rank}>
-                    {rank}순위
+            <div>
+                {rank && (
+                    <div className={styles.rank}>
+                        {rank}순위
+                    </div>
+                )}
+
+                <div className={styles.title}>
+                    {title}
                 </div>
-            )}
 
-            <div className={styles.title}>
-                {title}
-            </div>
-
-            <div className={styles.rate}>
-                연 {rate}%
-            </div>
-
-            {type === "deposit" && (
-                <div className={styles.period}>
-                    {maxPeriod
-                        ? `최대 ${maxPeriod}개월 가입`
-                        : `${period}개월 가입`}
+                <div className={styles.rate}>
+                    연 {rate}%
                 </div>
-            )}
 
-            <div className={styles.description}>
-                {description}
+                {type === "deposit" && (
+                    <div className={styles.period}>
+                        {maxPeriod
+                            ? `최대 ${maxPeriod}개월 가입`
+                            : `${period}개월 가입`}
+                    </div>
+                )}
+                <div className={styles.description}>
+                    {description}
+                </div>
             </div>
 
             <Btn

@@ -21,6 +21,7 @@ const ProductsDetailPage = () => {
     const productCancelMutation =useProductCancelMutation();
 
     const product = data?.product?.[0];
+    console.log(data);
     
     const productCancel = async () => {
       try {
@@ -31,6 +32,7 @@ const ProductsDetailPage = () => {
       }
     }
 
+    console.log(product)
     return (
         <div className='main'>
             <div className={styles.container}>
@@ -70,6 +72,13 @@ const ProductsDetailPage = () => {
 
                                     <InfoCard
                                         items={[
+                                            {
+                                                label: product?.product_type === "demand" ? "현재 잔액" : "가입 금액",
+                                                value:  product?.balance !== undefined &&
+                                                    product?.balance !== null
+                                                        ? `${Number(product.balance).toLocaleString()} 원`
+                                                        : '-',
+                                            },
                                             {
                                                 label: '가입 개월',
                                                 value: product?.target_period_months

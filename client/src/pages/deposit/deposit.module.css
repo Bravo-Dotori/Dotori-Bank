@@ -3,6 +3,12 @@
     max-width: 1188px;
     padding: 0 64px;
 }
+@media screen and (max-width: 1060px) {
+    .container {
+        margin-top: 20px;
+        padding: 0 20px;
+    }
+}
 
 .depositDetail,
 .depositApply {
@@ -46,4 +52,10 @@
     cursor: pointer;
     color: var(--brand-color-secondary);
     transition: all 0.2s;
+}
+
+@media screen and (max-width: 1060px) {
+    .rightSection {
+        width: 100%;
+    }
 }
