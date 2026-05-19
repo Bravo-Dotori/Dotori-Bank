@@ -7,8 +7,10 @@ import logo from "@/assets/logo.png"
 import Btn from '@/components/button/Btn'
 
 import useStore from '@/store/useStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Gnb = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const {
@@ -25,6 +27,7 @@ const Gnb = () => {
   };
 
   const handleLogout = async () => {
+
     try {
       const response = await fetch('/api/user/logout', {
         method: 'POST',
@@ -40,7 +43,9 @@ const Gnb = () => {
         return;
       }
 
+      localStorage.removeItem("token");
       logout();
+      queryClient.clear();
 
       setActiveMenu('deposit');
 
