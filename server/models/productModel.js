@@ -50,7 +50,7 @@ exports.findProductDetailById = async (product_id) => {
   return rows;
 };
 
-// 전체 상품 목록 조회
+// 예금 상품 목록 조회
 exports.products = async () => {
     const sql = `
         select 
@@ -61,6 +61,7 @@ exports.products = async () => {
             round(max(i.interest_rate), 2) as interest_rate,
             p.product_desc
         from products p join interests i on p.id = i.product_id
+        where p.product_type = "deposit"
         group by
             p.id,
             p.product_name,

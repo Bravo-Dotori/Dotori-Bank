@@ -23,6 +23,8 @@ import Admin from '@/pages/admin/AdminPage';
 
 import useStore from '@/store/useStore';
 
+import ProtectedRoute from '@/routes/ProtectedRoute';
+
 const App = () => {
   const { user, setLogin, logout, isAuthChecked, setAuthChecked } = useStore();
 
@@ -56,9 +58,8 @@ const App = () => {
 
     verifyUser();
     
-    console.log(user);
-    console.log("2",isAuthChecked, user);
   }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -74,22 +75,53 @@ const App = () => {
         />
         <Route path="/" element={<MainLayout />}>
           <Route path="login" element={<Login />} />
-          <Route path='signup' element={<Signup />} />
+          <Route path="signup" element={<Signup />} />
 
-          <Route path="account" element={<Account />} />
-          <Route path="transfer" element={<Transfer />} />
-          <Route path="history" element={<History />} />
+          <Route
+            path="account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="transfer"
+            element={
+              <ProtectedRoute>
+                <Transfer />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="history"
+            element={
+              <ProtectedRoute>
+                <History />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="products" element={<Products />} />
-          <Route path="/products/:productId" element={<ProductsDetail />}/>
+          <Route path="products/:productId" element={<ProductsDetail />} />
 
           <Route index element={<Deposit />} />
           <Route path="deposit" element={<Deposit />} />
           <Route path="depositDetail/:depositId" element={<DepositDetail />} />
-          <Route path="depositApply/:depositId" element={<DepositApply />} />
 
-          <Route path='onboarding' element={<Onboarding />} />
-          <Route path='recommend' element={<Recommend />} />
+          <Route
+            path="depositApply/:depositId"
+            element={
+              <ProtectedRoute>
+                <DepositApply />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="onboarding" element={<Onboarding />} />
+          <Route path="recommend" element={<Recommend />} />
         </Route>
       </Routes>
     </BrowserRouter>
