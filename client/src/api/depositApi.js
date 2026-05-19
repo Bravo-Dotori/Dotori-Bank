@@ -24,3 +24,20 @@ export const createDeposit = async ({
 
     return data;
 };
+
+export const fetchDepositDetail = async (depositId) => {
+    const response = await fetch(`/api/products/${depositId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+        throw new Error(data.message || "상품 조회 실패");
+        
+    }
+    return data;
+};
