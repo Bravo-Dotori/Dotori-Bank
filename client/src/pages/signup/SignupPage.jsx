@@ -77,7 +77,6 @@ const SignupPage = () => {
     let value = e.target.value;
 
     value = value.replace(/\D/g, '');
-
     value = value.slice(0, 8);
 
     if (value.length >= 5 && value.length <= 6) {

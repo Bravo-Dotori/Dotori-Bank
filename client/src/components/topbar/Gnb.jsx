@@ -1,5 +1,6 @@
 import '@/App.css'
 import styles from './gnb.module.css'
+import { Menu } from "lucide-react";
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ import Btn from '@/components/button/Btn'
 import useStore from '@/store/useStore';
 import { useQueryClient } from '@tanstack/react-query';
 
-const Gnb = () => {
+const Gnb = ({isMenuOpen, setIsMenuOpen}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -100,8 +101,17 @@ const Gnb = () => {
           />
         </div>
       )}
+        <button
+        className={styles.menuBtn}
+        onClick={() =>
+            setIsMenuOpen(!isMenuOpen)
+        }
+        >
+            <Menu size={28} />
+        </button>
     </header>
   );
 };
+
 
 export default Gnb;
