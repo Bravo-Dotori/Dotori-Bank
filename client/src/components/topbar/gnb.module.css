@@ -58,3 +58,24 @@
     padding: 0 20px;
   }
 }
+
+.menuBtn {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .menuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  .authBtns,
+  .userSection {
+    display: none;
+  }
+}
