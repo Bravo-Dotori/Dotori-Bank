@@ -4,7 +4,7 @@ import styles from './layout.module.css'
 
 import Gnb from '@/components/topbar/Gnb';
 import Snb from '@/components/sidebar/Snb';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -13,19 +13,23 @@ const MainLayout = () => {
 
 //   const isHideSnb = hideSnbPaths.includes(location.pathname);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuBtnRef = useRef(null);
 
   return (
     <div className={styles.layout}>
       <header>
-        <Gnb 
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}/>
+            <Gnb
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                menuBtnRef={menuBtnRef}
+            />
       </header>
 
       <main>
-        <Snb
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
+            <Snb
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                menuBtnRef={menuBtnRef}
             />
         <Outlet />
       </main>

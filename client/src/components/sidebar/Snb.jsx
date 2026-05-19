@@ -4,27 +4,63 @@ import styles from './snb.module.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import useStore from '@/store/useStore';
+import { useEffect, useRef } from 'react';
 
-const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
-  const isLogin = useStore((state) => state.isLogin);
-  const navigate = useNavigate();
-  const location = useLocation();
+const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef }) => {
+    const isLogin = useStore((state) => state.isLogin);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const menuRef = useRef(null);
 
-  const pathname = location.pathname;
+    const pathname = location.pathname;
 
-  const depositMenus = [
+    const depositMenus = [
     '/',
     '/deposit',
     '/depositDetail',
     '/depositApply',
-  ];
-  const productsMenus = [
+    ];
+    const productsMenus = [
     '/products',
     '/productsDetail',
-  ];
+    ];
+
+    useEffect(() => {
+
+        const handleClickOutside = (e) => {
+
+            if (
+                isMenuOpen &&
+                menuRef.current &&
+                !menuRef.current.contains(e.target) &&
+                !menuBtnRef.current.contains(e.target)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
+
+        return () => {
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+        };
+
+    }, [isMenuOpen]);
+
+    const movePage = (path) => {
+        navigate(path);
+        setIsMenuOpen(false);
+    };
+
 
   return (
-    <div className={`${styles.snb} ${isMenuOpen ? styles.open : ''}`}>
+    <div ref={menuRef} className={`${styles.snb} ${isMenuOpen ? styles.open : ''}`}>
       <button
         className={`
           ${styles.menu}
@@ -32,7 +68,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
             ? styles.active
             : ''}
         `}
-        onClick={() => navigate('/deposit')}
+        onClick={() => movePage('/deposit')}
       >
         예금 상품
       </button>
@@ -45,7 +81,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
                     ? styles.active
                     : ''}
                 `}
-                onClick={() => navigate('/account')}
+                onClick={() => movePage('/account')}
             >
                 내 계좌
             </button>
@@ -57,7 +93,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
                     ? styles.active
                     : ''}
                 `}
-                onClick={() => navigate('/transfer')}
+                onClick={() => movePage('/transfer')}
             >
                 이체하기
             </button>
@@ -69,7 +105,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
                     ? styles.active
                     : ''}
                 `}
-                onClick={() => navigate('/history')}
+                onClick={() => movePage('/history')}
             >
                 거래 내역
             </button>
@@ -81,7 +117,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen }) => {
                     ? styles.active
                     : ''}
                 `}
-                onClick={() => navigate('/products')}
+                onClick={() => movePage('/products')}
             >
                 가입 상품
             </button>
