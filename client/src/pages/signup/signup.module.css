@@ -7,7 +7,8 @@
 
 @media screen and (max-width: 1024px) {
     .main {
-        flex-direction: column;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
     }
 }
 
@@ -42,13 +43,17 @@
     width: 320px;
     height: 117px;
     padding: 0 20px;
-    border-radius: 20px;
-    background: var(--green-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 8px;
     font-size: 13px;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    background: #f6f1e8;
+    border: 1px solid #d8ccb8;
+    color: #6f8b4e;
 }
 
 .cardTitle {
@@ -100,6 +105,14 @@
     gap: 32px;
     margin: auto;
 }
+
+@media screen and (max-width: 1024px) {
+    .login {
+        width: 100%;
+        padding: 50px 20px;
+    }
+}
+
 
 .formArea {
     display: flex;

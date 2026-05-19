@@ -119,3 +119,21 @@
     border-radius: 999px;
     background-color: var(--red-color);
 }
+
+@media screen and (max-width: 1060px) {
+    .accountInfo {
+        flex-direction: column;
+    }
+    .accountInfo > div {
+        width: 100%;
+    }
+    .inputWrapper {
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+    .inputWrapper input {
+        width: 100%;
+        flex: auto;
+    }
+}
+

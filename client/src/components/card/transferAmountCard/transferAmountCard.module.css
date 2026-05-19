@@ -72,3 +72,10 @@
     width: 100%;
     padding: 0;
 }
+
+@media screen and (max-width: 1060px) {
+    .buttonWrapper {
+        width: 100%;
+        overflow: scroll;
+    }
+}

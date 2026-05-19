@@ -114,3 +114,12 @@
     color: var(--brand-color-secondary);
     transition: all 0.2s;
 }
+
+
+@media screen and (max-width: 1024px) {
+    .modal {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+}
