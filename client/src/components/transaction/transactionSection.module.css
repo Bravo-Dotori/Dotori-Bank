@@ -53,6 +53,11 @@
     align-items: center;
     gap: 18px;
 }
+@media screen and (max-width: 1024px) {
+    .transactionLeft {
+        width: 100%;
+    }
+}
 
 .icon {
     width: 40px;
