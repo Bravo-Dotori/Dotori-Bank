@@ -146,6 +146,9 @@
  *                   items:
  *                     type: object
  *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
  *                       product_name:
  *                         type: string
  *                         example: 도토리 자유예금
@@ -163,11 +166,13 @@
  *               success: true
  *               message: 상품 목록 조회에 성공했습니다.
  *               products:
- *                 - product_name: 도토리 자유예금
+ *                 - id: 4
+ *                   product_name: 도토리 자유예금
  *                   interest_rate: 3.5
  *                   max_period_months: 24
  *                   product_desc: 자유롭게 예치 가능한 예금 상품
- *                 - product_name: 도토리 목돈예금
+ *                 - id: 5
+ *                   product_name: 도토리 목돈예금
  *                   interest_rate: 4.0
  *                   max_period_months: 36
  *                   product_desc: 목돈 마련을 위한 고금리 상품
