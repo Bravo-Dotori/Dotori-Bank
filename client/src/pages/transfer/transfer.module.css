@@ -3,6 +3,7 @@
     max-width: 1170px;
     padding: 0 64px;
 }
+
 @media screen and (max-width: 1060px) {
     .container {
         margin-top: 20px;

@@ -10,7 +10,7 @@ import Btn from '@/components/button/Btn'
 import useStore from '@/store/useStore';
 import { useQueryClient } from '@tanstack/react-query';
 
-const Gnb = ({isMenuOpen, setIsMenuOpen}) => {
+const Gnb = ({isMenuOpen, setIsMenuOpen, menuBtnRef}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -73,42 +73,48 @@ const Gnb = ({isMenuOpen, setIsMenuOpen}) => {
         </div>
       </div>
 
-      {isLogin ? (
-        <div className={styles.userSection}>
-          <div className={styles.userName}>
-            {user?.name}님
-          </div>
+      <div className={styles.loginInfo}>
+        {isLogin ? (
+            <div className={styles.userSection}>
+            <div className={styles.userName}>
+                {user?.name}님
+            </div>
 
-          <div className={styles.logout} onClick={handleLogout}>
-            로그아웃
-          </div>
+            <div className={styles.logout} onClick={handleLogout}>
+                로그아웃
+            </div>
 
-        </div>
-      ) : (
-        <div className={styles.authBtns}>
-          <Btn
-            name="로그인"
-            value="/login"
-            active={activeMenu === 'login'}
-            onClick={() => setActiveMenu('login')}
-          />
+            </div>
+        ) : (
+            <div className={styles.authBtns}>
+            <Btn
+                name="로그인"
+                value="/login"
+                active={activeMenu === 'login'}
+                onClick={() => setActiveMenu('login')}
+            />
 
-          <Btn
-            name="회원가입"
-            value="/signup"
-            active={activeMenu === 'signup'}
-            onClick={() => setActiveMenu('signup')}
-          />
-        </div>
-      )}
-        <button
-        className={styles.menuBtn}
-        onClick={() =>
-            setIsMenuOpen(!isMenuOpen)
-        }
-        >
-            <Menu size={28} />
-        </button>
+            <Btn
+                name="회원가입"
+                value="/signup"
+                active={activeMenu === 'signup'}
+                onClick={() => setActiveMenu('signup')}
+            />
+            </div>
+        )}
+            <button
+                ref={menuBtnRef}
+                className={styles.menuBtn}
+                onClick={() =>
+                    setIsMenuOpen(!isMenuOpen)
+                }
+                >
+                <Menu size={28} />
+            </button>
+
+      </div>
+
+      
     </header>
   );
 };
