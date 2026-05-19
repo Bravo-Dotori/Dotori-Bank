@@ -286,6 +286,7 @@ exports.cancelDeposit = async (user_id, user_product_id) => {
     const elapsedDays = calculateElapsedDays(userProduct.join_date, today);
     const principal = Number(depositAccount.balance);
     const interestAmount = Math.floor(
+    
       principal * (appliedRate / 100) * (elapsedDays / 365)
     );
     const refundAmount = principal + interestAmount;
@@ -329,7 +330,7 @@ exports.cancelDeposit = async (user_id, user_product_id) => {
       demandAccount.id,
       "CANCEL",
       refundAmount,
-      0,
+      demandBalanceAfter,
       isEarlyCancel ? "예금 중도해지" : "예금 만기해지"
     );
 
