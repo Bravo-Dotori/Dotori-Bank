@@ -42,7 +42,7 @@ const ProductsPage = () => {
                       title={product.product_name}
                       type={product.product_type}
                       rate={product.interest_rate}
-                      maxPeriod={
+                      period={
                         product.product_type === "deposit"
                           ? product.target_period_months
                           : undefined

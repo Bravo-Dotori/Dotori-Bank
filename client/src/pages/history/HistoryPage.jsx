@@ -8,6 +8,7 @@ import Btn from "@/components/button/Btn";
 import Pagination from "@/components/pagination/Pagination";
 import { useTransactionsQuery } from "./../../hooks/useTransactionsQuery";
 import StatusCard from "@/components/card/StatusCard/StatusCard";
+import FilterGroup from "@/components/filter/FilterGroup";
 
 const HistoryPage = () => {
   const [page, setPage] = useState(1);
@@ -141,38 +142,24 @@ const HistoryPage = () => {
           />
 
           <div className={styles.filterWrapper}>
-            <div className={styles.filterGroup}>
-              {periodOptions.map((option) => (
-                <Btn
-                  key={option}
-                  type="radio"
-                  name={option}
-                  active={
-                    selectedPeriod === option
-                  }
-                  onClick={() =>
-                    setSelectedPeriod(option)
-                  }
+                <FilterGroup
+                    options={periodOptions}
+                    selected={selectedPeriod}
+                    onChange={(value) => {
+                        setSelectedPeriod(value);
+                        setPage(1);
+                    }}
                 />
-              ))}
-            </div>
 
-            <div className={styles.filterGroup}>
-              {typeOptions.map((option) => (
-                <Btn
-                  key={option}
-                  type="radio"
-                  name={option}
-                  active={
-                    selectedType === option
-                  }
-                  onClick={() =>
-                    setSelectedType(option)
-                  }
+                <FilterGroup
+                    options={typeOptions}
+                    selected={selectedType}
+                    onChange={(value) => {
+                        setSelectedType(value);
+                        setPage(1);
+                    }}
                 />
-              ))}
             </div>
-          </div>
 
           {isLoading ? (
             <StatusCard title="거래내역을 불러오고 있어요" />

@@ -100,14 +100,16 @@ const ProductsDetailPage = () => {
 
                                 <div className={styles.rightSection}>
                                     <div className={styles.rightCard}>
-                                        <div
-                                            className={styles.terminate}
-                                            onClick={() =>
-                                                setModalType('terminate')
-                                            }
-                                        >
-                                            해지하기
-                                        </div>
+                                        {product?.product_type !== "demand" && ( 
+                                            <div
+                                                className={styles.terminate}
+                                                onClick={() =>
+                                                    setModalType('terminate')
+                                                }
+                                            >
+                                                해지하기
+                                            </div>
+                                        )}
 
                                         <div className={styles.protectText}>
                                             예금자 보호법에 따라

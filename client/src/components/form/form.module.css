@@ -6,7 +6,7 @@
 
 .inputWrapper {
     position: relative;
-    width: fit-content;
+    width: 100%;
 }
 
 label {
