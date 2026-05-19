@@ -240,6 +240,11 @@ exports.cancelDeposit = async (user_id, user_product_id) => {
     const productDetails = await productModel.findProductDetailById(userProduct.product_id);
     const product = productDetails[0];
 
+    // 입출금 상품 해지 불가
+    if (product.product_type === 'demand') {
+        throw new Error('입출금 상품은 해지할 수 없습니다.');
+    }
+
     if (!product) {
       throw createServiceError("상품 정보를 찾을 수 없습니다.", 404);
     }

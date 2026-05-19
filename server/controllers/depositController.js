@@ -36,3 +36,33 @@ exports.joinDeposit = async (req, res) => {
     });
   }
 };
+
+exports.cancelDeposit = async (req, res) => {
+    try {
+        const user_id = req.user.id;
+        const { productId } = req.params;
+
+        const result = await depositService.cancelDeposit(user_id, productId);
+
+        if (!result.success) {
+            return res.status(404).json({
+                success: false,
+                message: result.message
+            });
+        } 
+
+        return res.status(200).json({
+            success: true,
+            message: "상품 해지 성공했습니다.",
+            products: result.products
+        });
+
+    } catch (err) {
+        console.error("내 상품 해지 에러:", err);
+
+        return res.status(500).json({
+            success: false,
+            message: "상품 해지를 실패했습니다."
+        });
+    }
+};
