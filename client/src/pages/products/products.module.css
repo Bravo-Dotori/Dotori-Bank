@@ -118,3 +118,10 @@
     color: var(--brand-color);
     font-weight: 700;
 }
+
+@media screen and (max-width: 1060px) {
+    .rightSection {
+        margin: 0 auto;
+        width: 60%;
+    }
+}
