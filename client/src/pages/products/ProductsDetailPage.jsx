@@ -21,7 +21,6 @@ const ProductsDetailPage = () => {
     const productCancelMutation = useProductCancelMutation();
 
     const product = data?.product?.[0];
-    console.log(data);
 
     const productCancel = async () => {
         try {
@@ -31,8 +30,6 @@ const ProductsDetailPage = () => {
             alert(err.message);
         }
     }
-
-    console.log(product)
     return (
         <div className='main'>
             <div className={styles.container}>

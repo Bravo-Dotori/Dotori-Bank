@@ -22,10 +22,10 @@ export const useAdminTransactionsQuery = (keyword) => {
   };
 
 // 회원 목록 조회
-export const useAdminUserQuery = () => {
+export const useAdminUserQuery = (keyword) => {
     return useQuery({
-      queryKey: ["adminUser"],
-      queryFn: getAdminUser,
+      queryKey: ["adminUser", keyword],
+      queryFn: () => getAdminUser(keyword),
       refetchInterval: 5000,
       staleTime: 0,
       refetchOnWindowFocus: true,

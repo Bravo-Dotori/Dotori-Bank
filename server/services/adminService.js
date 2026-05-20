@@ -20,9 +20,9 @@ exports.getAdminTransactions = async (keyword = "") => {
     }
 }
 
-exports.getAdminAccounts = async () => {
+exports.getAdminAccounts = async (keyword = "") => {
     try {
-    const adminAccounts = await accountModel.getAdminAccounts();
+    const adminAccounts = await accountModel.getAdminAccounts(keyword);
 
     return {
       success: true,
