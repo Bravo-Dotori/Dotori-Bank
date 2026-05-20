@@ -123,6 +123,9 @@
     .rightPanel {
         padding-left: 0;
     }
+    .welcomeCard{
+        width: 100%;
+    }
 }
 
 
