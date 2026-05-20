@@ -39,7 +39,6 @@ const App = () => {
                 logout();
                 return;
             }
-            console.log(response.status);
             if (!response.ok) {
                 throw new Error();
             }
