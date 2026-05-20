@@ -58,16 +58,18 @@ exports.products = async () => {
             p.product_name,
             p.product_type,
             p.max_period_months,
-            round(max(i.interest_rate), 2) as interest_rate,
+            i.max_interest_rate AS interest_rate,
             p.product_desc
-        from products p join interests i on p.id = i.product_id
-        where p.product_type = "deposit"
-        group by
-            p.id,
-            p.product_name,
-            p.product_type,
-            p.max_period_months,
-            p.product_desc
+        from products p
+        join (
+            select
+                product_id,
+                ROUND(MAX(interest_rate), 2) AS max_interest_rate
+            from interests
+            group by product_id
+        ) i
+        on p.id = i.product_id
+        where p.product_type = 'deposit';
     `
 
     const [rows] = await pool.query(sql);
