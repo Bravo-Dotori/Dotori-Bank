@@ -66,9 +66,8 @@ exports.getTransactions = async (account_id, period, type) => {
 }
 
 // 관리자 거래 내역 조회
-exports.getAdminTransactions = async (  
-) => {
-  const sql = ` 
+exports.getAdminTransactions = async (keyword = "") => {
+  let sql = ` 
     select 
       t.id,
       t.transaction_at,
@@ -89,9 +88,32 @@ exports.getAdminTransactions = async (
     left join accounts to_account
       on t.to_account_id = to_account.id
  
-    ORDER BY
-      t.transaction_at DESC
+    where 1=1
   `
-  const [rows] = await pool.query(sql);
+  
+  const params = []; // 검색어 들어갈 배열
+
+  if(keyword.trim()) { // 빈 문자열 방지
+    sql += `
+        and (
+            from_account.account_number LIKE ?
+            OR to_account.account_number LIKE ?
+            OR t.description LIKE ?
+        )
+    `
+
+   const search = `%${keyword}%`
+    params.push(
+      search,
+      search,
+      search
+    );
+  }
+
+  sql += `
+    order by t.transaction_at DESC
+  `
+
+  const [rows] = await pool.query(sql, params);
     return rows;
 }

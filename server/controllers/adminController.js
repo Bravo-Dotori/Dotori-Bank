@@ -3,7 +3,8 @@ const adminService = require("../services/adminService");
 // 관리자 거래 내역 조회
 exports.getAdminTransactions = async (req, res) => {
   try {
-    const result = await adminService.getAdminTransactions();
+    const {keyword = ""} = req.query;
+    const result = await adminService.getAdminTransactions(keyword);
 
     if (!result.success) {
       return res.status(400).json(result);
@@ -30,7 +31,8 @@ exports.getAdminTransactions = async (req, res) => {
 // 관리자 고객 내역 조회
 exports.getAdminAccounts = async (req, res) => {
   try {
-    const result = await adminService.getAdminAccounts();
+    const {keyword = ""} = req.query;
+    const result = await adminService.getAdminAccounts(keyword);
 
     if (!result.success) {
       return res.status(400).json(result);
