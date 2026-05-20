@@ -9,17 +9,9 @@ import Snb from '@/components/sidebar/Snb';
 const Adminpage = () => {
   return (
     <>
-        <div className={styles.layout}>
-            <header>
-                <Gnb />
-            </header>
-
-            <main>
-                <div className="main">
-                    <AdminTransaction />
-                    <AdminUser />
-                </div>
-            </main>
+        <div className="main">
+            <AdminTransaction />
+            <AdminUser />
         </div>
     </>
   )
