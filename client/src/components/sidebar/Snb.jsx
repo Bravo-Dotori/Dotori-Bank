@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import useStore from '@/store/useStore';
 import { useEffect, useRef } from 'react';
 
-const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef }) => {
+const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef, isHideSnb }) => {
     const isLogin = useStore((state) => state.isLogin);
     const navigate = useNavigate();
     const location = useLocation();
@@ -60,7 +60,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef }) => {
 
 
   return (
-    <div ref={menuRef} className={`${styles.snb} ${isMenuOpen ? styles.open : ''}`}>
+    <aside ref={menuRef} className={`${styles.snb} ${isMenuOpen ? styles.open : ''} ${isHideSnb ? styles.hide : ''}`}>
       <button
         className={`
           ${styles.menu}
@@ -124,7 +124,7 @@ const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef }) => {
         </>
       )}
       
-    </div>
+    </aside>
   );
 }
 

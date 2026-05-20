@@ -7,8 +7,26 @@
 header {
     flex-shrink: 0;
 }
-
 main {
+    padding: 64px 0 0;
+}
+.mainLayout {
     display: flex;
     flex: 1;
+    padding-left: 270px;
+}
+
+
+.hide {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+
+    .mainLayout {
+        padding-left: 0;
+    }
+    .hide {
+        display: flex;
+    }
 }

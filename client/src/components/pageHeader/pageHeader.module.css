@@ -8,11 +8,13 @@
     color: var(--black-color);
     font-weight: bold;
     font-size: 24px;
+    word-break: keep-all;
 }
 
 .description {
     color: var(--brand-color-secondary);
     font-size: 15px;
+    word-break: keep-all;
 }
 
 .big .title {
