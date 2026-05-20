@@ -20,6 +20,9 @@
     justify-content: center;
     gap: 12px;
     padding: 40px;
+    height: 100vh;
+    position: fixed;
+    width: 50%;
 }
 
 .title {
@@ -95,6 +98,8 @@
     justify-content: center;
     gap: 32px;
     background: var(--base-color);
+    padding-left: 50%;
+    box-sizing: border-box;
 }
 
 .login {
@@ -110,6 +115,13 @@
     .login {
         width: 100%;
         padding: 50px 20px;
+    }
+    .leftPanel {
+        position: static;
+        width: 100%;
+    }
+    .rightPanel {
+        padding-left: 0;
     }
 }
 
