@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import useStore from "@/store/useStore";
 import { login } from "../../api/loginApi";
+import Seo from "@/components/seo/Seo";
 
 const LoginPage = () => {
   const navigator = useNavigate();
@@ -73,82 +74,88 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={styles.main}>
-      <div className={styles.leftPanel}>
-        <div className={styles.title}>도토리은행</div>
-        <div className={styles.subTitle}>내 도토리, 태산이 되다</div>
-
-        <div className={styles.description}>
-          작은 도토리도 꾸준히 모으면 큰 산이 됩니다
-        </div>
-
-        <img
-          src={keyVisual}
-          className={styles.keyVisualImg}
-          alt="key-visual"
+    <>
+        <Seo
+            title="도토리뱅크 로그인"
+            description="로그인 페이지"
         />
-      </div>
+        <div className={styles.main}>
+            <div className={styles.leftPanel}>
+                <div className={styles.title}>도토리은행</div>
+                <div className={styles.subTitle}>내 도토리, 태산이 되다</div>
 
-      <div className={styles.rightPanel}>
-        <div className={styles.login}>
-          <PageHeader
-            title="로그인"
-            description="아이디와 비밀번호로 로그인하세요"
-          />
+                <div className={styles.description}>
+                작은 도토리도 꾸준히 모으면 큰 산이 됩니다
+                </div>
 
-          <div className={styles.formArea}>
-            <Form
-              name="아이디"
-              type="text"
-              placeholder="아이디를 입력하세요"
-              value={form.userId}
-              error={errors.userId}
-              onChange={(e) =>  {
-                setForm((prev) => ({
-                  ...prev,
-                  userId: e.target.value,
-                }))
-                setErrors((prev) => ({
-                ...prev,
-                userId: "",
-                }));
-              }}
-            />
+                <img
+                src={keyVisual}
+                className={styles.keyVisualImg}
+                alt="key-visual"
+                />
+            </div>
 
-            <Form
-              name="비밀번호"
-              type="password"
-              placeholder="비밀번호를 입력하세요"
-              value={form.password}
-              error={errors.password}
-              onChange={(e) =>{
-                setForm((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
-                setErrors((prev) => ({
-                ...prev,
-                password: "",
-                }));
-              }}
-            />
-          </div>
+            <div className={styles.rightPanel}>
+                <div className={styles.login}>
+                <PageHeader
+                    title="로그인"
+                    description="아이디와 비밀번호로 로그인하세요"
+                />
 
-          <Btn
-            name="로그인"
-            size="big"
-            active
-            onClick={loginEvent}
-          />
+                <div className={styles.formArea}>
+                    <Form
+                    name="아이디"
+                    type="text"
+                    placeholder="아이디를 입력하세요"
+                    value={form.userId}
+                    error={errors.userId}
+                    onChange={(e) =>  {
+                        setForm((prev) => ({
+                        ...prev,
+                        userId: e.target.value,
+                        }))
+                        setErrors((prev) => ({
+                        ...prev,
+                        userId: "",
+                        }));
+                    }}
+                    />
 
-          <AuthRedirect
-            text="아직 회원이 아니신가요?"
-            linkText="회원가입"
-            to="/signup"
-          />
-        </div>
-      </div>
-    </div>
+                    <Form
+                    name="비밀번호"
+                    type="password"
+                    placeholder="비밀번호를 입력하세요"
+                    value={form.password}
+                    error={errors.password}
+                    onChange={(e) =>{
+                        setForm((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                        }))
+                        setErrors((prev) => ({
+                        ...prev,
+                        password: "",
+                        }));
+                    }}
+                    />
+                </div>
+
+                <Btn
+                    name="로그인"
+                    size="big"
+                    active
+                    onClick={loginEvent}
+                />
+
+                <AuthRedirect
+                    text="아직 회원이 아니신가요?"
+                    linkText="회원가입"
+                    to="/signup"
+                />
+                </div>
+            </div>
+            </div>
+    </>
   );
 };
 

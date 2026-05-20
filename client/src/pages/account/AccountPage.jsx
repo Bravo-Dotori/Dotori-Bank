@@ -7,6 +7,7 @@ import StatusCard from "@/components/card/StatusCard/StatusCard";
 
 import { useAccountsQuery } from "@/hooks/useAccountsQuery";
 import { useTransactionsQuery } from "@/hooks/useTransactionsQuery";
+import Seo from "@/components/seo/Seo";
 
 const AccountPage = () => {
   const {data, isLoading, isError, error} = useAccountsQuery();
@@ -27,46 +28,52 @@ const AccountPage = () => {
 
 
   return (
-    <div className="main">
-      <div className={styles.container}>
-        <div className={styles.account}>
-          <PageHeader
-            title="내 계좌"
-            description="잔액과 거래내역을 한눈에 확인하세요"
-            big
-            left
-          />
+    <>
+        <Seo
+            title="도토리뱅크 내 계좌"
+            description="내 계좌 페이지"
+        />
+        <div className="main">
+            <div className={styles.container}>
+                <div className={styles.account}>
+                <PageHeader
+                    title="내 계좌"
+                    description="잔액과 거래내역을 한눈에 확인하세요"
+                    big
+                    left
+                />
 
-          {isLoading ? (
-            <StatusCard title="계좌를 불러오고 있어요" />
-          ) : isError ? (
-            <StatusCard
-              title={error.message}
-              isError
-            />
-          ) : (
-            <AccountCard account={account} />
-          )}
+                {isLoading ? (
+                    <StatusCard title="계좌를 불러오고 있어요" />
+                ) : isError ? (
+                    <StatusCard
+                    title={error.message}
+                    isError
+                    />
+                ) : (
+                    <AccountCard account={account} />
+                )}
 
-          {transactionLoading ? (
-            <StatusCard title="거래내역을 불러오고 있어요" />
-          ) : transactionError ? (
-            <StatusCard
-              title={transactionErr.message}
-              isError
-            />
-          ) : (
-            <TransactionSection
-              title="최근 거래"
-              transactions={transactions}
-              accountId={transactionData?.account_id}
-              more
-              totalCount={transactions.length}
-            />
-          )}
-        </div>
-      </div>
-    </div>
+                {transactionLoading ? (
+                    <StatusCard title="거래내역을 불러오고 있어요" />
+                ) : transactionError ? (
+                    <StatusCard
+                    title={transactionErr.message}
+                    isError
+                    />
+                ) : (
+                    <TransactionSection
+                    title="최근 거래"
+                    transactions={transactions}
+                    accountId={transactionData?.account_id}
+                    more
+                    totalCount={transactions.length}
+                    />
+                )}
+                </div>
+            </div>
+            </div>
+    </>
   );
 };
 

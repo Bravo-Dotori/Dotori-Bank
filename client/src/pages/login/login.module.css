@@ -11,7 +11,7 @@
 }
 
 .leftPanel {
-    flex: 1;
+    width: 50%;
     background: var(--surface-color);
     display: flex;
     flex-direction: column;
@@ -45,7 +45,7 @@
 }
 
 .rightPanel {
-    flex: 1;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -66,6 +66,10 @@
     .login {
         width: 100%;
         padding: 50px 20px;
+    }
+    .leftPanel,
+    .rightPanel {
+        width: 100%;
     }
 }
 

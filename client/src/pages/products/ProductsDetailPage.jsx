@@ -7,10 +7,11 @@ import Breadcrumb from "@/components/breadcrumb/Breadcrumb"
 import PageHeader from "@/components/pageHeader/PageHeader"
 
 import RateCard from "@/components/card/rateCard/RateCard"
-import InfoCard from "../../components/card/infoCard/InfoCard"
+import InfoCard from "@/components/card/infoCard/InfoCard"
 import StatusCard from "@/components/card/StatusCard/StatusCard";
 
 import Modal from "@/components/modal/Modal"
+import Seo from '@/components/seo/Seo';
 
 import { useMyProductDetailQuery, useProductCancelMutation } from '../../hooks/useProductsQuery';
 
@@ -31,7 +32,12 @@ const ProductsDetailPage = () => {
         }
     }
     return (
-        <div className='main'>
+        <>
+            <Seo
+                title="도토리뱅크 가입 상품"
+                description="가입 상품 상세 페이지"
+            />
+            <div className='main'>
             <div className={styles.container}>
                 <div className={styles.productsDetail}>
                     {isLoading ? (
@@ -168,6 +174,7 @@ const ProductsDetailPage = () => {
                 />
             )}
         </div>
+        </>
     )
 }
 

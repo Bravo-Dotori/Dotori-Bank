@@ -8,6 +8,7 @@ import Btn from "@/components/button/Btn"
 import TransferAccountCard from "@/components/card/transferAccountCard/TransferAccountCard"
 import TransferAmountCard from "@/components/card/transferAmountCard/TransferAmountCard"
 import Modal from "@/components/modal/Modal"
+import Seo from '@/components/seo/Seo'
 
 const TransferPage = () => {
   const navigate = useNavigate();
@@ -191,119 +192,126 @@ const TransferPage = () => {
   }, []);
 
   return (
-    <div className='main'>
-      <div className={styles.container}>
-        <div className={styles.transfer}>
-          <PageHeader
-            title="이체하기"
-            description="받는 분 정보를 입력하고 금액을 확인해주세요"
-            big
-            left
-          />
+    <>
+        <Seo
+            title="도토리뱅크 이체"
+            description="이체 페이지"
+        />
+        <div className='main'>
+            <div className={styles.container}>
+                <div className={styles.transfer}>
+                <PageHeader
+                    title="이체하기"
+                    description="받는 분 정보를 입력하고 금액을 확인해주세요"
+                    big
+                    left
+                />
 
-          <TransferAccountCard
-            type="send"
-            accountName={sender.accountName}
-            accountNumber={sender.accountNumber}
-            balance={sender.balance}
-          />
+                <TransferAccountCard
+                    type="send"
+                    accountName={sender.accountName}
+                    accountNumber={sender.accountNumber}
+                    balance={sender.balance}
+                />
 
-          <TransferAccountCard
-            type="receive"
-            bank={receiver.bank}
-            accountNumber={receiver.accountNumber}
-            userName={receiver.userName}
-            errorMessage={receiverError}
-            onChange={handleReceiverAccount}
-          />
+                <TransferAccountCard
+                    type="receive"
+                    bank={receiver.bank}
+                    accountNumber={receiver.accountNumber}
+                    userName={receiver.userName}
+                    errorMessage={receiverError}
+                    onChange={handleReceiverAccount}
+                />
 
-          <TransferAmountCard
-            amount={amount}
-            setAmount={setAmount}
-            handleAmount={handleAmount}
-            userAmount={sender.balance}
-          />
+                <TransferAmountCard
+                    amount={amount}
+                    setAmount={setAmount}
+                    handleAmount={handleAmount}
+                    userAmount={sender.balance}
+                />
 
-          <Btn
-            name="다음"
-            size="big"
-            active={
-              amount > 0 &&
-              amount <= sender.balance &&
-              receiver.userName
-            }
-            disabled={
-              amount <= 0 ||
-              amount > sender.balance ||
-              !receiver.userName
-            }
-            onClick={() => setIsConfirmModalOpen(true)}
-          />
+                <Btn
+                    name="다음"
+                    size="big"
+                    active={
+                    amount > 0 &&
+                    amount <= sender.balance &&
+                    receiver.userName
+                    }
+                    disabled={
+                    amount <= 0 ||
+                    amount > sender.balance ||
+                    !receiver.userName
+                    }
+                    onClick={() => setIsConfirmModalOpen(true)}
+                />
+                </div>
+            </div>
+
+            {isConfirmModalOpen && (
+                <Modal
+                type="transfer"
+                title="이체하시겠어요?"
+                amount={amount.toLocaleString()}
+                description={`${receiver.userName}님께 이체합니다`}
+                transferInfo={{
+                    userName: receiver.userName,
+                    senderAccount: sender.accountNumber,
+                    receiverAccount: receiver.accountNumber,
+                    afterBalance: sender.balance - amount,
+                }}
+                buttons={[
+                    {
+                    name: "취소",
+                    onClick: handleClose,
+                    active: false,
+                    },
+                    {
+                    name: "이체하기",
+                    onClick: handleTransfer,
+                    active: true,
+                    }
+                ]}
+                />
+            )}
+
+            {isCompleteModalOpen && (
+                <Modal
+                showLogo
+                title="이체가 완료되었어요"
+                amount={amount.toLocaleString()}
+                description={`${receiver.userName}님께 보냈어요`}
+                rewardLabel="갱신된 잔액"
+                reward={`${(sender.balance - amount).toLocaleString()}원`}
+                rewardDescription={sender.accountNumber}
+                buttons={[
+                    {
+                    name: '확인',
+                    active: true,
+                    onClick: () => navigate('/history'),
+                    },
+                ]}
+                />
+            )}
+
+            {transferErrorMessage && (
+                <Modal
+                showLogo
+                type="fail"
+                title="이체에 실패했어요"
+                description={transferErrorMessage}
+                buttons={[
+                    {
+                    name: '확인',
+                    active: true,
+                    onClick: () => setTransferErrorMessage(''),
+                    },
+                ]}
+                />
+            )}
         </div>
-      </div>
-
-      {isConfirmModalOpen && (
-        <Modal
-          type="transfer"
-          title="이체하시겠어요?"
-          amount={amount.toLocaleString()}
-          description={`${receiver.userName}님께 이체합니다`}
-          transferInfo={{
-            userName: receiver.userName,
-            senderAccount: sender.accountNumber,
-            receiverAccount: receiver.accountNumber,
-            afterBalance: sender.balance - amount,
-          }}
-          buttons={[
-            {
-              name: "취소",
-              onClick: handleClose,
-              active: false,
-            },
-            {
-              name: "이체하기",
-              onClick: handleTransfer,
-              active: true,
-            }
-          ]}
-        />
-      )}
-
-      {isCompleteModalOpen && (
-        <Modal
-          showLogo
-          title="이체가 완료되었어요"
-          amount={amount.toLocaleString()}
-          description={`${receiver.userName}님께 보냈어요`}
-          rewardLabel="갱신된 잔액"
-          reward={`${(sender.balance - amount).toLocaleString()}원`}
-          rewardDescription={sender.accountNumber}
-          buttons={[
-            {
-              name: '확인',
-              active: true,
-              onClick: () => navigate('/history'),
-            },
-          ]}
-        />
-      )}
-
-      {transferErrorMessage && (
-        <Modal
-          showLogo
-          type="fail"
-          title="이체에 실패했어요"
-          description={transferErrorMessage}
-          buttons={[
-            {
-              name: '확인',
-              active: true,
-              onClick: () => setTransferErrorMessage(''),
-            },
-          ]}
-        />
-      )}
-    </div>
+    </>
+    
   )
 }
 

@@ -7,6 +7,7 @@ import styles from "./recommend.module.css"
 import PageHeader from "@/components/pageHeader/PageHeader"
 import RecommendDepositCard from "@/components/card/depositCard/RecommendDepositCard"
 import DepositCard from "@/components/card/depositCard/DepositCard"
+import Seo from '@/components/seo/Seo';
 
 const RecommendPage = () => {
     const location = useLocation();
@@ -20,7 +21,12 @@ const RecommendPage = () => {
     const otherProducts = recommendations.slice(1);
 
     return (
-        <div className='main'>
+        <>
+            <Seo
+                title="도토리뱅크 추천 상품"
+                description="상품 추천 페이지"
+            />
+            <div className='main'>
             <div className={styles.container}>
                 <div className={styles.recommend}>
                     <PageHeader
@@ -61,6 +67,7 @@ const RecommendPage = () => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 
