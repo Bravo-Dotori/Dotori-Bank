@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser"); 
-const cors = require('cors');
 const app = express(); 
 const port = 5000;
 const userRouter = require('./routes/userRouter');
@@ -17,12 +16,6 @@ const adminRouter = require("./routes/adminRouter");
 // swagger
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger/swagger");
-
-// cors 설정
-app.use(cors({
-  origin: true,
-  credentials: true
-})); 
 
 // json 파일 파싱
 app.use(express.json()); 
