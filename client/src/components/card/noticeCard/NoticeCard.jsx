@@ -111,10 +111,11 @@ const NoticeCard = ({
                                         e.target.checked
                                     )
                                 }
+                                id="checkAll"
                             />
 
                             <div className={styles.allText}>
-                                전체 동의
+                                <label htmlFor="checkAll">전체 동의</label>
                             </div>
                         </div>
                     </div>
@@ -144,15 +145,16 @@ const NoticeCard = ({
                                                         .checked
                                                 )
                                             }
+                                            id={`input${index}`}
                                         />
 
                                         <div className={styles.text}>
                                             <span className={styles.necessary}>[필수]</span>
-                                            {item}
+                                            <label htmlFor={`input${index}`}>{item}</label>
                                         </div>
                                     </div>
 
-                                    <div className={styles.arrow}>›</div>
+                                    {/* <div className={styles.arrow}>›</div> */}
                                 </div>
                             );
                         })}

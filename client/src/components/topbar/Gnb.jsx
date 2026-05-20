@@ -108,6 +108,7 @@ const Gnb = ({isMenuOpen, setIsMenuOpen, menuBtnRef}) => {
                 onClick={() =>
                     setIsMenuOpen(!isMenuOpen)
                 }
+                aria-label="메뉴"
                 >
                 <Menu size={28} />
             </button>
