@@ -15,14 +15,21 @@ const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef, isHideSnb }) => {
     const pathname = location.pathname;
 
     const depositMenus = [
-    '/',
-    '/deposit',
-    '/depositDetail',
-    '/depositApply',
+        '/',
+        '/deposit',
     ];
+
+    const depositDetailMenus = [
+        '/depositDetail',
+        '/depositApply',
+    ];
+
     const productsMenus = [
-    '/products',
-    '/productsDetail',
+        '/products',
+    ];
+
+    const productsDetailMenus = [
+        '/products/',
     ];
 
     useEffect(() => {
@@ -59,73 +66,91 @@ const Snb = ({ isMenuOpen, setIsMenuOpen, menuBtnRef, isHideSnb }) => {
     };
 
 
-  return (
-    <aside ref={menuRef} className={`${styles.snb} ${isMenuOpen ? styles.open : ''} ${isHideSnb ? styles.hide : ''}`}>
-      <button
-        className={`
-          ${styles.menu}
-          ${depositMenus.includes(pathname)
-            ? styles.active
-            : ''}
-        `}
-        onClick={() => movePage('/deposit')}
-      >
-        예금 상품
-      </button>
-      {isLogin && (
-        <>
+    return (
+        <aside
+            ref={menuRef}
+            className={`
+                ${styles.snb}
+                ${isMenuOpen ? styles.open : ''}
+                ${isHideSnb ? styles.hide : ''}
+            `}
+        >
             <button
                 className={`
-                ${styles.menu}
-                ${pathname === '/account'
-                    ? styles.active
-                    : ''}
+                    ${styles.menu}
+                    ${
+                        depositMenus.includes(pathname) ||
+                        depositDetailMenus.some((menu) =>
+                            pathname.startsWith(menu)
+                        )
+                            ? styles.active
+                            : ''
+                    }
                 `}
-                onClick={() => movePage('/account')}
+                onClick={() => movePage('/deposit')}
             >
-                내 계좌
+                예금 상품
             </button>
 
-            <button
-                className={`
-                ${styles.menu}
-                ${pathname === '/transfer'
-                    ? styles.active
-                    : ''}
-                `}
-                onClick={() => movePage('/transfer')}
-            >
-                이체하기
-            </button>
+            {isLogin && (
+                <>
+                    <button
+                        className={`
+                            ${styles.menu}
+                            ${pathname === '/account'
+                                ? styles.active
+                                : ''}
+                        `}
+                        onClick={() => movePage('/account')}
+                    >
+                        내 계좌
+                    </button>
 
-            <button
-                className={`
-                ${styles.menu}
-                ${pathname === '/history'
-                    ? styles.active
-                    : ''}
-                `}
-                onClick={() => movePage('/history')}
-            >
-                거래 내역
-            </button>
+                    <button
+                        className={`
+                            ${styles.menu}
+                            ${pathname === '/transfer'
+                                ? styles.active
+                                : ''}
+                        `}
+                        onClick={() => movePage('/transfer')}
+                    >
+                        이체하기
+                    </button>
 
-            <button
-                className={`
-                ${styles.menu}
-                ${productsMenus.includes(pathname)
-                    ? styles.active
-                    : ''}
-                `}
-                onClick={() => movePage('/products')}
-            >
-                가입 상품
-            </button>
-        </>
-      )}
-      
-    </aside>
-  );
+                    <button
+                        className={`
+                            ${styles.menu}
+                            ${pathname === '/history'
+                                ? styles.active
+                                : ''}
+                        `}
+                        onClick={() => movePage('/history')}
+                    >
+                        거래 내역
+                    </button>
+
+                    <button
+                        className={`
+                            ${styles.menu}
+                            ${
+                                productsMenus.includes(pathname) ||
+                                productsDetailMenus.some((menu) =>
+                                    pathname.startsWith(menu)
+                                )
+                                    ? styles.active
+                                    : ''
+                            }
+                        `}
+                        onClick={() => movePage('/products')}
+                    >
+                        가입 상품
+                    </button>
+                </>
+            )}
+
+        </aside>
+    );
 }
 
 export default Snb;
