@@ -189,7 +189,7 @@ const NoticeCard = ({
 
                     <div className={styles.section}>
                         <div className={styles.label}>
-                            월 가입 금액
+                            가입 금액
                         </div>
 
                         <div className={styles.inputWrapper}>
