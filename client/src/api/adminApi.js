@@ -1,6 +1,6 @@
 // 전체 거래 내역
-export const getAdminTransactions = async () => {
-    const response = await fetch('/api/admin/transactions', {
+export const getAdminTransactions = async (keyword = "") => {
+    const response = await fetch(`/api/admin/transactions?keyword=${keyword}`, {
         credentials: 'include',
     });
     
@@ -12,8 +12,8 @@ export const getAdminTransactions = async () => {
 }
 
 // 고객 관리
-export const getAdminUser = async () => {
-    const response = await fetch('/api/admin/accounts', {
+export const getAdminUser = async (keyword = "") => {
+    const response = await fetch(`/api/admin/accounts?keyword=${keyword}`, {
         credentials: 'include',
     });
     

@@ -129,8 +129,8 @@ exports.deactivateDepositAccount = async (conn, account_id, user_id) => {
 }
 
 // 관리자 전체 계좌 조회
-exports.getAdminAccounts = async () => {
-  const sql = `
+exports.getAdminAccounts = async (keyword = "") => {
+  let sql = `
     select
       a.id,
       a.created_at,
@@ -145,10 +145,32 @@ exports.getAdminAccounts = async () => {
     from accounts a
     join users u
       on a.user_id = u.id
-    order by a.created_at desc
-  `;
+    where 1=1
+  `
+  
+  const params = []; // 검색어 들어갈 배열
 
-  const [rows] = await pool.query(sql);
+  if (keyword.trim()) {
+    sql += `
+      and (
+        u.name LIKE ?
+        OR a.account_number LIKE ?
+      )
+    `;
+
+    const search = `%${keyword}%`;
+
+    params.push(
+      search,
+      search
+    );
+  }
+
+  sql += `
+    order by a.created_at desc
+  `
+
+  const [rows] = await pool.query(sql, params);
   return rows;
 };
 

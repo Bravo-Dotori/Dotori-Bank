@@ -11,10 +11,10 @@ import {
 } from "../api/adminApi";
 
 // 전체 거래 내역 조회
-export const useAdminTransactionsQuery = () => {
+export const useAdminTransactionsQuery = (keyword) => {
     return useQuery({
-      queryKey: [ "adminTransaction",],
-      queryFn: getAdminTransactions,
+      queryKey: [ "adminTransaction", keyword],
+      queryFn: () => getAdminTransactions(keyword),
         refetchInterval: 5000,
         staleTime: 0,
         refetchOnWindowFocus: true,
@@ -22,10 +22,10 @@ export const useAdminTransactionsQuery = () => {
   };
 
 // 회원 목록 조회
-export const useAdminUserQuery = () => {
+export const useAdminUserQuery = (keyword) => {
     return useQuery({
-      queryKey: ["adminUser"],
-      queryFn: getAdminUser,
+      queryKey: ["adminUser", keyword],
+      queryFn: () => getAdminUser(keyword),
       refetchInterval: 5000,
       staleTime: 0,
       refetchOnWindowFocus: true,

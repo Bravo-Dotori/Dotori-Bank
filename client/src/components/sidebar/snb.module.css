@@ -1,12 +1,18 @@
 .snb {
+  position: fixed;
+  left: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
   width: 270px;
   border-right: 1px solid var(--surface-color);
   padding: 24px 16px;
+  background: #fff;
+  height: 100vh;
 }
-
+.hide {
+    display: none;
+}
 .menu {
   width: 100%;
   padding: 12px 16px;
@@ -24,11 +30,13 @@
   background-color: var(--brand-color-primary);
   color: white;
 }
+
 @media screen and (max-width: 1024px) {
   .snb {
     position: fixed;
     top: 64px;
     right: -100%;
+    left: inherit;
     width: 260px;
     height: calc(100vh - 64px);
     background: white;
@@ -39,5 +47,8 @@
   }
   .open {
     right: 0;
+  }
+  .hide {
+    display: flex;
   }
 }

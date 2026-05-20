@@ -82,8 +82,6 @@ const DepositApplyPage = () => {
                 target_amount: Number(joinAmount),
             });
 
-            console.log(data);
-
             setIsModalOpen(true);
 
         } catch (error) {

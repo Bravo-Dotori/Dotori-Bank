@@ -1,11 +1,10 @@
 .container {
-    margin: 48px auto;
     max-width: 1170px;
     padding: 0 64px;
 }
 @media screen and (max-width: 1060px) {
     .container {
-        margin-top: 20px;
+        padding-top: 20px;
         padding: 0 20px;
     }
 }
@@ -21,6 +20,36 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.searchArea {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;    
+    background: #ffffff;
+    border: 1px solid #e8dfd3;
+    padding: 32px;
+    border-radius: 20px;
+}
+.searchArea input {
+    width: 100%;
+}
+.formArea {
+    display: flex;
+    gap: 10px;
+}
+.formArea > div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.formArea > div label {
+    width: 80px;
+}
+.formArea button {
+    width: 80px;
+    height: 47px;
 }
 
 @media screen and (max-width: 720px) {

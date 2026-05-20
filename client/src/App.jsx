@@ -39,7 +39,6 @@ const App = () => {
                 logout();
                 return;
             }
-            console.log(response.status);
             if (!response.ok) {
                 throw new Error();
             }
@@ -63,65 +62,64 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        
-        <Route path="/admin" element={
-            !isAuthChecked ? null : !user ? (
-                <Navigate to="/login" />
-            ) : user.role === "admin" ? (
-                <Admin />
-            ) : (
-                <Navigate to="/" />
-            )}
-        />
         <Route path="/" element={<MainLayout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+            <Route path="/admin" element={
+                !isAuthChecked ? null : !user ? (
+                    <Navigate to="/login" />
+                ) : user.role === "admin" ? (
+                    <Admin />
+                ) : (
+                    <Navigate to="/" />
+                )}
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
 
-          <Route
+            <Route
             path="account"
             element={
-              <ProtectedRoute>
+                <ProtectedRoute>
                 <Account />
-              </ProtectedRoute>
+                </ProtectedRoute>
             }
-          />
+            />
 
-          <Route
+            <Route
             path="transfer"
             element={
-              <ProtectedRoute>
+                <ProtectedRoute>
                 <Transfer />
-              </ProtectedRoute>
+                </ProtectedRoute>
             }
-          />
+            />
 
-          <Route
+            <Route
             path="history"
             element={
-              <ProtectedRoute>
+                <ProtectedRoute>
                 <History />
-              </ProtectedRoute>
+                </ProtectedRoute>
             }
-          />
+            />
 
-          <Route path="products" element={<Products />} />
-          <Route path="products/:productId" element={<ProductsDetail />} />
+            <Route path="products" element={<Products />} />
+            <Route path="products/:productId" element={<ProductsDetail />} />
 
-          <Route index element={<Deposit />} />
-          <Route path="deposit" element={<Deposit />} />
-          <Route path="depositDetail/:depositId" element={<DepositDetail />} />
+            <Route index element={<Deposit />} />
+            <Route path="deposit" element={<Deposit />} />
+            <Route path="depositDetail/:depositId" element={<DepositDetail />} />
 
-          <Route
+            <Route
             path="depositApply/:depositId"
             element={
-              <ProtectedRoute>
+                <ProtectedRoute>
                 <DepositApply />
-              </ProtectedRoute>
+                </ProtectedRoute>
             }
-          />
+            />
 
-          <Route path="onboarding" element={<Onboarding />} />
-          <Route path="recommend" element={<Recommend />} />
+            <Route path="onboarding" element={<Onboarding />} />
+            <Route path="recommend" element={<Recommend />} />
         </Route>
       </Routes>
     </BrowserRouter>

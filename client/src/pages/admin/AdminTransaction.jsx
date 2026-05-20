@@ -5,11 +5,13 @@ import styles from "./AdminTransaction.module.css";
 import PageHeader from "@/components/pageHeader/PageHeader";
 import Pagination from "@/components/pagination/Pagination";
 import StatusCard from "@/components/card/StatusCard/StatusCard";
+import Form from "@/components/form/Form";
+import Btn from "@/components/button/Btn"
+import DataTable from "@/components/dataTable/DataTable";
+import FilterGroup from "@/components/filter/FilterGroup";
 
 import { useAdminTransactionsQuery } from "../../hooks/useAdminQuery";
 
-import DataTable from "../../components/dataTable/DataTable";
-import FilterGroup from "@/components/filter/FilterGroup";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -17,8 +19,9 @@ const AdminTransaction = () => {
     const [page, setPage] = useState(1);
     const [selectedPeriod, setSelectedPeriod] = useState("1개월");
     const [selectedType, setSelectedType] = useState("전체");
-
-    const { data, isLoading, isError, error } = useAdminTransactionsQuery();
+    const [form, setForm] = useState({transaction: "",user: ""});
+    const [keyword, setKeyword] = useState("");
+    const { data, isLoading, isError, error } = useAdminTransactionsQuery(keyword);
 
     const transactionData = data?.data;
     const transactions = transactionData?.transactions || [];
@@ -102,6 +105,10 @@ const AdminTransaction = () => {
         },
     ];
 
+    const handleSubmitClick = () => {
+        setKeyword(form.transaction);
+    };
+
     return (
         <div className="main">
             <div className={styles.container}>
@@ -112,25 +119,48 @@ const AdminTransaction = () => {
                         big
                         left
                     />
+                    <div className={styles.searchArea}>
+                        <div className={styles.formArea}>
+                            
+                            <Form
+                                name="검색"
+                                type="text"
+                                placeholder="계좌번호 또는 메모를 입력해보세요"
+                                value={form.transaction}
+                                onChange={(e) => {
+                                    setForm((prev) => ({
+                                        ...prev,
+                                        transaction: e.target.value,
+                                    }));
+                                }}
+                            />
+                            <Btn
+                            name="검색"
+                            size="middle"
+                            active
+                            onClick={() => handleSubmitClick()}
+                            />
+                        </div>
 
-                    <div className={styles.filterWrapper}>
-                        <FilterGroup
-                            options={periodOptions}
-                            selected={selectedPeriod}
-                            onChange={(value) => {
-                                setSelectedPeriod(value);
-                                setPage(1);
-                            }}
-                        />
+                        <div className={styles.filterWrapper}>
+                            <FilterGroup
+                                options={periodOptions}
+                                selected={selectedPeriod}
+                                onChange={(value) => {
+                                    setSelectedPeriod(value);
+                                    setPage(1);
+                                }}
+                            />
 
-                        <FilterGroup
-                            options={typeOptions}
-                            selected={selectedType}
-                            onChange={(value) => {
-                                setSelectedType(value);
-                                setPage(1);
-                            }}
-                        />
+                            <FilterGroup
+                                options={typeOptions}
+                                selected={selectedType}
+                                onChange={(value) => {
+                                    setSelectedType(value);
+                                    setPage(1);
+                                }}
+                            />
+                        </div>
                     </div>
 
                     {isLoading ? (
@@ -140,6 +170,8 @@ const AdminTransaction = () => {
                             title={error.message}
                             isError
                         />
+                    ) : totalCount === 0 ? (
+                        <StatusCard title="거래내역이 없어요" />
                     ) : (
                         <>
                             <DataTable
@@ -149,13 +181,11 @@ const AdminTransaction = () => {
                                 data={paginatedTransactions}
                             />
 
-                            {totalCount !== 0 && (
-                                <Pagination
-                                    currentPage={page}
-                                    totalPages={totalPages}
-                                    onPageChange={setPage}
-                                />
-                            )}
+                            <Pagination
+                                currentPage={page}
+                                totalPages={totalPages}
+                                onPageChange={setPage}
+                            />
                         </>
                     )}
                 </div>

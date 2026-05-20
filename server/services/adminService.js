@@ -1,9 +1,9 @@
 const transactionModel = require("../models/transactionModel");
 const accountModel = require("../models/accountModel");
 
-exports.getAdminTransactions = async () => {
+exports.getAdminTransactions = async (keyword = "") => {
     try {
-    const adminTransaction = await transactionModel.getAdminTransactions ();
+    const adminTransaction = await transactionModel.getAdminTransactions(keyword);
 
     return {
       success: true,
@@ -20,9 +20,9 @@ exports.getAdminTransactions = async () => {
     }
 }
 
-exports.getAdminAccounts = async () => {
+exports.getAdminAccounts = async (keyword = "") => {
     try {
-    const adminAccounts = await accountModel.getAdminAccounts();
+    const adminAccounts = await accountModel.getAdminAccounts(keyword);
 
     return {
       success: true,
