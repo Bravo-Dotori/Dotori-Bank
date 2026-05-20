@@ -4,12 +4,10 @@ const transactionService = require("../services/transactionService");
 exports.getTransactions = async (req, res) => {
   try {
     const user_id = req.user.id;
-    const { period = "all", type = "all" } = req.query;
 
     const result = await transactionService.getTransactions(
       user_id,
-      period,
-      type
+      req.query
     );
 
     if (!result.success) {
@@ -21,7 +19,9 @@ exports.getTransactions = async (req, res) => {
       message: "거래 내역 조회 성공",
       data: {
         account_id: result.account_id,
-        total_count: result.transactions.length,
+        total_count: result.totalCount,
+        page: result.page,
+        limit: result.limit,
         transactions: result.transactions
       }
     });

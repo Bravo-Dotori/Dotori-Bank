@@ -1,8 +1,23 @@
 const transactionModel = require("../models/transactionModel");
 const accountModel = require("../models/accountModel");
 
-exports.getTransactions = async (user_id, period, type) => {
+const TRANSACTION_PAGE_LIMIT = 10;
+
+const getPagination = (page) => {
+    const pageNumber = Number(page);
+    const currentPage = Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
+
+    return {
+      page: currentPage,
+      limit: TRANSACTION_PAGE_LIMIT,
+      offset: (currentPage - 1) * TRANSACTION_PAGE_LIMIT
+    };
+};
+
+exports.getTransactions = async (user_id, query = {}) => {
     try {
+    const { period = "all", type = "all", page = 1 } = query;
+    const pagination = getPagination(page);
     const accounts = await accountModel.getAccounts(user_id);
 
     const demandAccount = accounts.find(
@@ -16,15 +31,23 @@ exports.getTransactions = async (user_id, period, type) => {
       };
     }
 
-    const transactions = await transactionModel.getTransactions(
-      demandAccount.id,
-      period,
-      type
-    );
+    const [transactions, totalCount] = await Promise.all([
+      transactionModel.getTransactions(
+        demandAccount.id,
+        period,
+        type,
+        pagination.limit,
+        pagination.offset
+      ),
+      transactionModel.getTransactionsCount(demandAccount.id, period, type)
+    ]);
 
     return {
       success: true,
       account_id: demandAccount.id,
+      totalCount,
+      page: pagination.page,
+      limit: pagination.limit,
       transactions
     };
 
