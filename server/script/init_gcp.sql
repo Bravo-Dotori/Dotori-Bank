@@ -292,3 +292,6 @@ SELECT
 FROM products p
 JOIN months m
   ON m.month_value BETWEEN p.min_period_months AND p.max_period_months;
+
+-- 예금 상품 목록 조회를 위한 인덱스 추가
+CREATE INDEX idx_interests_product_id ON interests(product_id);
