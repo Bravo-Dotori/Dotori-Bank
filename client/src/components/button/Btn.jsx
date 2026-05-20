@@ -11,6 +11,7 @@ const Btn = ({
   onClick,
   size,
   type,
+  label
 }) => {
   const navigate = useNavigate();
 
@@ -53,6 +54,7 @@ const Btn = ({
   `}
       onClick={handleClick}
       disabled={disabled}
+      aria-label={label}
     >
       {name}
     </button>
