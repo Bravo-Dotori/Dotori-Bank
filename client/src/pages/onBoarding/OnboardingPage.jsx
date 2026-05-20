@@ -7,6 +7,7 @@ import styles from "./onboarding.module.css"
 import PageHeader from "@/components/pageHeader/PageHeader"
 import QuestionCard from "@/components/card/questionCard/QuestionCard"
 import Btn from "@/components/button/Btn"
+import Seo from '@/components/seo/Seo'
 
 const OnboardingPage = () => {
     const navigate = useNavigate();
@@ -145,56 +146,63 @@ const OnboardingPage = () => {
     };
 
     return (
-        <div className='main'>
-            <div className={styles.container}>
-                <div className={styles.onboarding}>
-                    <PageHeader
-                        title="몇 가지 질문에 답해주세요"
-                        description="도토리님께 가장 잘 맞는 예금 상품을 추천해드릴게요  ·  약 1분 소요"
-                        big
-                    />
-
-                    {questions.map((question) => (
-                        <QuestionCard
-                            key={question.number}
-                            number={question.number}
-                            title={question.title}
-                            options={question.options}
-                            selected={selected[question.number]}
-                            onSelect={(value) =>
-                                setSelected((prev) => ({
-                                    ...prev,
-                                    [question.number]: value,
-                                }))
-                            }
-                        />
-                    ))}
-
-                    <div className={styles.buttonSection}>
-                        <Btn
-                            name="추천 결과 보기"
-                            size="big"
-                            active
-                            onClick={handleRecommendClick}
-                            disabled={
-                                !selected[1] ||
-                                !selected[2] ||
-                                !selected[3] ||
-                                !selected[4] ||
-                                !selected[5]
-                            }
+        <>
+            <Seo
+                title="도토리뱅크 추천 상품"
+                description="상품 추천 페이지"
+            />
+            <div className='main'>
+                <div className={styles.container}>
+                    <div className={styles.onboarding}>
+                        <PageHeader
+                            title="몇 가지 질문에 답해주세요"
+                            description="도토리님께 가장 잘 맞는 예금 상품을 추천해드릴게요  ·  약 1분 소요"
+                            big
                         />
 
-                        <div
-                            className={styles.skip}
-                            onClick={() => navigate('/')}
-                        >
-                            건너뛰고 전체 상품 둘러보기
+                        {questions.map((question) => (
+                            <QuestionCard
+                                key={question.number}
+                                number={question.number}
+                                title={question.title}
+                                options={question.options}
+                                selected={selected[question.number]}
+                                onSelect={(value) =>
+                                    setSelected((prev) => ({
+                                        ...prev,
+                                        [question.number]: value,
+                                    }))
+                                }
+                            />
+                        ))}
+
+                        <div className={styles.buttonSection}>
+                            <Btn
+                                name="추천 결과 보기"
+                                size="big"
+                                active
+                                onClick={handleRecommendClick}
+                                disabled={
+                                    !selected[1] ||
+                                    !selected[2] ||
+                                    !selected[3] ||
+                                    !selected[4] ||
+                                    !selected[5]
+                                }
+                            />
+
+                            <div
+                                className={styles.skip}
+                                onClick={() => navigate('/')}
+                            >
+                                건너뛰고 전체 상품 둘러보기
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
+        
     )
 }
 

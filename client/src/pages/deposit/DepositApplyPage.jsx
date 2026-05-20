@@ -30,7 +30,7 @@ const DepositApplyPage = () => {
     const noticeText = [
         '본 상품은 24개월 만기 정기 예금으로 안정적인 이자 수익을 제공합니다',
         '가입 대상: 도토리은행 입출금계좌 보유 회원',
-        `가입 금액: 월 ${Number(product?.min_amount).toLocaleString()}원 ~ ${Number(product?.max_amount).toLocaleString()}원 / 만기 일시 이자 지급`,
+        `가입 금액: ${Number(product?.min_amount).toLocaleString()}원 ~ ${Number(product?.max_amount).toLocaleString()}원 / 만기 일시 이자 지급`,
         '만기 후: 자동 해지 또는 동일 조건 자동 재가입 선택 가능',
         '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다',
     ];

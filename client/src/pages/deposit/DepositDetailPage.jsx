@@ -12,6 +12,7 @@ import NoticeCard from "@/components/card/noticeCard/NoticeCard";
 import SimulationCard from "@/components/card/simulationCard/SimulationCard";
 
 import { useDepositDetailQuery } from "@/hooks/useDepositQuery";
+import Seo from '@/components/seo/Seo';
 
 const DepositDetailPage = () => {
     const { depositId } = useParams();
@@ -30,80 +31,86 @@ const DepositDetailPage = () => {
     }
 
     return (
-        <div className="main">
-            <div className={styles.container}>
-                <div className={styles.depositDetail}>
-                    <Breadcrumb
-                        items={[
-                            {
-                                label: '예금상품',
-                                path: '/deposit',
-                            },
-                            {
-                                label: product.product_name,
-                                path: `/depositDetail/${product.id}`,
-                            },
-                        ]}
-                    />
+        <>
+            <Seo
+                title="도토리뱅크 예금 상품"
+                description="예금 상품 상세 페이지"
+            />
+            <div className="main">
+                <div className={styles.container}>
+                    <div className={styles.depositDetail}>
+                        <Breadcrumb
+                            items={[
+                                {
+                                    label: '예금상품',
+                                    path: '/deposit',
+                                },
+                                {
+                                    label: product.product_name,
+                                    path: `/depositDetail/${product.id}`,
+                                },
+                            ]}
+                        />
 
-                    <div className={styles.section}>
-                        <div className={styles.leftSection}>
-                            <PageHeader
-                                title={product.product_name}
-                                description={product.product_desc}
-                                big
-                                left
-                            />
+                        <div className={styles.section}>
+                            <div className={styles.leftSection}>
+                                <PageHeader
+                                    title={product.product_name}
+                                    description={product.product_desc}
+                                    big
+                                    left
+                                />
 
-                            <RateCard
-                                baseRate={
-                                    product.interests?.[0]?.interest_rate || 0
-                                }
-                            />
+                                <RateCard
+                                    baseRate={
+                                        product.interests?.[0]?.interest_rate || 0
+                                    }
+                                />
 
-                            <InfoCard
-                                items={[
-                                    {
-                                        label: '가입 금액',
-                                        value: `
-                                            ${Number(product.min_amount).toLocaleString()}원
-                                            ~
-                                            ${Number(product.max_amount).toLocaleString()}원
-                                        `,
-                                    },
-                                    {
-                                        label: '가입 개월',
-                                        value:
-                                            product.min_period_months ===
-                                            product.max_period_months
-                                                ? `${product.min_period_months}개월`
-                                                : `${product.min_period_months}개월 ~ ${product.max_period_months}개월`,
-                                    },
-                                    {
-                                        label: '이자 지급',
-                                        value: '만기 일시 지급',
-                                    },
-                                ]}
-                            />
+                                <InfoCard
+                                    items={[
+                                        {
+                                            label: '가입 금액',
+                                            value: `
+                                                ${Number(product.min_amount).toLocaleString()}원
+                                                ~
+                                                ${Number(product.max_amount).toLocaleString()}원
+                                            `,
+                                        },
+                                        {
+                                            label: '가입 개월',
+                                            value:
+                                                product.min_period_months ===
+                                                product.max_period_months
+                                                    ? `${product.min_period_months}개월`
+                                                    : `${product.min_period_months}개월 ~ ${product.max_period_months}개월`,
+                                        },
+                                        {
+                                            label: '이자 지급',
+                                            value: '만기 일시 지급',
+                                        },
+                                    ]}
+                                />
 
-                            <NoticeCard
-                                infoType="warning"
-                                noticeTitle="가입 전 꼭 확인하세요"
-                                noticeText={[
-                                    '중도 해지 시 금리 지급이 안 됩니다.',
-                                    '만기 전 인출 불가 (해지만 가능)',
-                                    '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다',
-                                ]}
-                            />
-                        </div>
+                                <NoticeCard
+                                    infoType="warning"
+                                    noticeTitle="가입 전 꼭 확인하세요"
+                                    noticeText={[
+                                        '만기 이전 해지 시 중도해지 이율이 적용되며, 약정 이자의 일부(50%)만 지급될 수 있습니다.',
+                                        '만기 전 인출 불가 (해지만 가능)',
+                                        '본 상품은 예금자 보호법에 따라 1인당 최고 5천만원까지 보호됩니다',
+                                    ]}
+                                />
+                            </div>
 
-                        <div className={styles.rightSection}>
-                            <SimulationCard product={product} />
+                            <div className={styles.rightSection}>
+                                <SimulationCard product={product} />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
