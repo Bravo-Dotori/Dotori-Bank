@@ -12,8 +12,8 @@ export const getAdminTransactions = async (keyword = "") => {
 }
 
 // 고객 관리
-export const getAdminUser = async () => {
-    const response = await fetch('/api/admin/accounts', {
+export const getAdminUser = async (keyword = "") => {
+    const response = await fetch(`/api/admin/accounts?keyword=${keyword}`, {
         credentials: 'include',
     });
     

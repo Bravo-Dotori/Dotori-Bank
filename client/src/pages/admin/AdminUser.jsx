@@ -6,6 +6,8 @@ import styles from "./AdminTransaction.module.css";
 import PageHeader from "@/components/pageHeader/PageHeader";
 import Pagination from "@/components/pagination/Pagination";
 import StatusCard from "@/components/card/StatusCard/StatusCard";
+import Form from "@/components/form/Form";
+import Btn from "@/components/button/Btn"
 
 import DataTable from "@/components/dataTable/DataTable";
 import FilterGroup from "@/components/filter/FilterGroup";
@@ -15,7 +17,9 @@ const AdminUser = () => {
     const [page, setPage] = useState(1); // 페이지네이션
     const [selectedPeriod, setSelectedPeriod,] = useState("1개월"); // 기간 필터
 
-    const {data, isLoading, isError,error } = useAdminUserQuery();
+    const [form, setForm] = useState({transaction: "",user: ""});
+    const [keyword, setKeyword] = useState("");
+    const {data, isLoading, isError,error } = useAdminUserQuery(keyword);
 
     // 계좌 활성화 mutation
     const {mutate: toggleStatus} = useAccountStatusMutation();
@@ -83,6 +87,10 @@ const AdminUser = () => {
             ),
         },
     ];
+    
+    const handleSubmitClick = () => {
+        setKeyword(form.transaction);
+    };
 
     return (
         <div className={styles.container}>
@@ -94,15 +102,41 @@ const AdminUser = () => {
                     left
                 />
 
-                <div className={styles.filterWrapper}>
-                    <div className={styles.filterGroup}>
-                        <FilterGroup
-                            options={periodOptions}
-                            selected={selectedPeriod}
-                            onChange={setSelectedPeriod}
+
+                <div className={styles.searchArea}>
+                    <div className={styles.formArea}>
+                        
+                        <Form
+                            name="검색"
+                            type="text"
+                            placeholder="계좌번호 또는 메모를 입력해보세요"
+                            value={form.transaction}
+                            onChange={(e) => {
+                                setForm((prev) => ({
+                                    ...prev,
+                                    transaction: e.target.value,
+                                }));
+                            }}
+                        />
+                        <Btn
+                        name="검색"
+                        size="middle"
+                        active
+                        onClick={() => handleSubmitClick()}
                         />
                     </div>
+
+                    <div className={styles.filterWrapper}>
+                        <div className={styles.filterGroup}>
+                            <FilterGroup
+                                options={periodOptions}
+                                selected={selectedPeriod}
+                                onChange={setSelectedPeriod}
+                            />
+                        </div>
+                    </div>
                 </div>
+
 
                 {isLoading ? (
                     <StatusCard title="회원 목록을 불러오고 있어요" />
@@ -111,6 +145,8 @@ const AdminUser = () => {
                         title={error.message}
                         isError
                     />
+                ) : totalCount === 0 ? (
+                    <StatusCard title="거래내역이 없어요" />
                 ) : (
                     <>
                         <DataTable
