@@ -9,9 +9,9 @@ import { useRef, useState } from 'react';
 const MainLayout = () => {
   const location = useLocation();
 
-  const hideSnbPaths = ['/login', '/signup'];
+  const hideSnbPaths = ['/login', '/signup', '/admin'];
 
-//   const isHideSnb = hideSnbPaths.includes(location.pathname);
+  const isHideSnb = hideSnbPaths.includes(location.pathname);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuBtnRef = useRef(null);
 
@@ -25,13 +25,14 @@ const MainLayout = () => {
             />
       </header>
 
-      <main>
+      <main className={isHideSnb ? styles.main : styles.mainLayout}>
             <Snb
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
                 menuBtnRef={menuBtnRef}
+                isHideSnb={isHideSnb}
             />
-        <Outlet />
+            <Outlet />
       </main>
     </div>
   );
