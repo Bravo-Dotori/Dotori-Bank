@@ -6,71 +6,40 @@ import PageHeader from "@/components/pageHeader/PageHeader";
 import Pagination from "@/components/pagination/Pagination";
 import StatusCard from "@/components/card/StatusCard/StatusCard";
 import Form from "@/components/form/Form";
-import Btn from "@/components/button/Btn"
-import DataTable from "@/components/dataTable/DataTable";
+import Btn from "@/components/button/Btn";
+import DataTable from "../../components/dataTable/DataTable";
 import FilterGroup from "@/components/filter/FilterGroup";
 
 import { useAdminTransactionsQuery } from "../../hooks/useAdminQuery";
 
-
 const ITEMS_PER_PAGE = 10;
+const periodOptions = ["전체", "1개월", "3개월", "6개월", "1년"];
+const typeOptions = ["전체", "입금", "출금", "이체"];
+const periodValues = ["all", "1", "3", "6", "12"];
+const typeValues = ["all", "DEPOSIT", "WITHDRAWAL", "TRANSFER"];
 
 const AdminTransaction = () => {
     const [page, setPage] = useState(1);
     const [selectedPeriod, setSelectedPeriod] = useState("1개월");
     const [selectedType, setSelectedType] = useState("전체");
-    const [form, setForm] = useState({transaction: "",user: ""});
+    const [form, setForm] = useState({transaction: "", user: ""});
     const [keyword, setKeyword] = useState("");
-    const { data, isLoading, isError, error } = useAdminTransactionsQuery(keyword);
+
+    const period = periodValues[periodOptions.indexOf(selectedPeriod)] || "1";
+    const type = typeValues[typeOptions.indexOf(selectedType)] || "all";
+
+    const { data, isLoading, isError, error } = useAdminTransactionsQuery({
+        keyword,
+        page,
+        period,
+        type,
+    });
 
     const transactionData = data?.data;
     const transactions = transactionData?.transactions || [];
+    const totalCount = transactionData?.total_count || 0;
+    const totalPages = Math.max(1, Math.ceil(totalCount / ITEMS_PER_PAGE));
 
-    const periodOptions = ["전체", "1개월", "3개월", "6개월", "1년"];
-
-    const typeOptions = ["전체", "입금", "출금", "이체"];
-
-    // 필터 처리
-    const filteredTransactions = transactions.filter((item) => {
-        const transactionDate = new Date(item.transaction_at);
-        const currentDate = new Date();
-
-        const diffTime = currentDate.getTime() - transactionDate.getTime();
-
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-        let maxDays = 30;
-
-        if (selectedPeriod === "전체") maxDays = Infinity;
-        if (selectedPeriod === "3개월") maxDays = 90;
-        if (selectedPeriod === "6개월") maxDays = 180;
-        if (selectedPeriod === "1년") maxDays = 365;
-
-        const periodMatch = diffDays <= maxDays;
-
-        const typeMatch =
-            selectedType === "전체" ||
-            (selectedType === "입금" && item.type === "DEPOSIT") ||
-            (selectedType === "출금" && item.type === "WITHDRAWAL") ||
-            (selectedType === "이체" && item.type === "TRANSFER");
-
-        return periodMatch && typeMatch;
-    });
-
-    // 페이지네이션
-    const totalCount = filteredTransactions.length;
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(totalCount / ITEMS_PER_PAGE)
-    );
-
-    const startIndex = (page - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-
-    const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
-
-    // 테이블 컬럼
     const columns = [
         {
             header: "일시",
@@ -107,6 +76,7 @@ const AdminTransaction = () => {
 
     const handleSubmitClick = () => {
         setKeyword(form.transaction);
+        setPage(1);
     };
 
     return (
@@ -121,7 +91,6 @@ const AdminTransaction = () => {
                     />
                     <div className={styles.searchArea}>
                         <div className={styles.formArea}>
-                            
                             <Form
                                 name="검색"
                                 type="text"
@@ -135,10 +104,10 @@ const AdminTransaction = () => {
                                 }}
                             />
                             <Btn
-                            name="검색"
-                            size="middle"
-                            active
-                            onClick={() => handleSubmitClick()}
+                                name="검색"
+                                size="middle"
+                                active
+                                onClick={() => handleSubmitClick()}
                             />
                         </div>
 
@@ -178,7 +147,7 @@ const AdminTransaction = () => {
                                 title="전체 거래 내역"
                                 totalCount={totalCount}
                                 columns={columns}
-                                data={paginatedTransactions}
+                                data={transactions}
                             />
 
                             <Pagination

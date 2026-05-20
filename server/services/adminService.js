@@ -1,12 +1,34 @@
 const transactionModel = require("../models/transactionModel");
 const accountModel = require("../models/accountModel");
 
-exports.getAdminTransactions = async (keyword = "") => {
+const ADMIN_PAGE_LIMIT = 10;
+
+const getPagination = (page) => {
+    const pageNumber = Number(page);
+    const currentPage = Number.isInteger(pageNumber) && pageNumber > 0 ? pageNumber : 1;
+
+    return {
+        page: currentPage,
+        limit: ADMIN_PAGE_LIMIT,
+        offset: (currentPage - 1) * ADMIN_PAGE_LIMIT
+    };
+};
+
+exports.getAdminTransactions = async (query = {}) => {
     try {
-    const adminTransaction = await transactionModel.getAdminTransactions(keyword);
+    const { keyword = "", period = "all", type = "all", page = 1 } = query;
+    const pagination = getPagination(page);
+    const filters = { keyword, period, type };
+    const [adminTransaction, totalCount] = await Promise.all([
+      transactionModel.getAdminTransactions(filters, pagination.limit, pagination.offset),
+      transactionModel.getAdminTransactionsCount(filters)
+    ]);
 
     return {
       success: true,
+      totalCount,
+      page: pagination.page,
+      limit: pagination.limit,
       adminTransaction
     };
 
@@ -20,12 +42,21 @@ exports.getAdminTransactions = async (keyword = "") => {
     }
 }
 
-exports.getAdminAccounts = async (keyword = "") => {
+exports.getAdminAccounts = async (query = {}) => {
     try {
-    const adminAccounts = await accountModel.getAdminAccounts(keyword);
+    const { keyword = "", period = "all", page = 1 } = query;
+    const pagination = getPagination(page);
+    const filters = { keyword, period };
+    const [adminAccounts, totalCount] = await Promise.all([
+      accountModel.getAdminAccounts(filters, pagination.limit, pagination.offset),
+      accountModel.getAdminAccountsCount(filters)
+    ]);
 
     return {
       success: true,
+      totalCount,
+      page: pagination.page,
+      limit: pagination.limit,
       adminAccounts
     };
 

@@ -3,8 +3,7 @@ const adminService = require("../services/adminService");
 // 관리자 거래 내역 조회
 exports.getAdminTransactions = async (req, res) => {
   try {
-    const {keyword = ""} = req.query;
-    const result = await adminService.getAdminTransactions(keyword);
+    const result = await adminService.getAdminTransactions(req.query);
 
     if (!result.success) {
       return res.status(400).json(result);
@@ -14,7 +13,9 @@ exports.getAdminTransactions = async (req, res) => {
       success: true,
       message: "관리자 거래 내역 조회 성공",
       data: {
-        total_count: result.adminTransaction.length,
+        total_count: result.totalCount,
+        page: result.page,
+        limit: result.limit,
         transactions: result.adminTransaction
       }
     });
@@ -31,8 +32,7 @@ exports.getAdminTransactions = async (req, res) => {
 // 관리자 고객 내역 조회
 exports.getAdminAccounts = async (req, res) => {
   try {
-    const {keyword = ""} = req.query;
-    const result = await adminService.getAdminAccounts(keyword);
+    const result = await adminService.getAdminAccounts(req.query);
 
     if (!result.success) {
       return res.status(400).json(result);
@@ -42,7 +42,9 @@ exports.getAdminAccounts = async (req, res) => {
       success: true,
       message: "관리자 고객내역 조회 성공",
       data: {
-        total_count: result.adminAccounts.length,
+        total_count: result.totalCount,
+        page: result.page,
+        limit: result.limit,
         accounts: result.adminAccounts
       }
     });
